@@ -1,27 +1,33 @@
-import * as express from "express";
-import { SetRoutes } from "./routes";
-import { InitMiddleWare } from "./middlewares";
+import express from "express";
+import { SetRoutes } from "./routes/index.mjs";
+import MiddleWares from "./middlewares/index.mjs";
 import * as swaggerUi from "swagger-ui-express";
-import { swaggerDocument } from "./docs";
-import { Port } from "./config";
-import * as http from 'http';
+import { swaggerDocument } from "./docs/index.mjs";
+import { Port } from "./config.mjs";
+import * as http from "http";
+import Socket from "./socket.mjs";
+import { readFile, getQuestions } from "./utils/index.mjs";
 
+const questions = getQuestions(readFile('quizQuestions.txt'));
+
+console.log(questions);
+
+const server = http.createServer();
 const app = express();
-let server = http.createServer(app);
 
-InitMiddleWare(app);
+Socket.init(server, questions)
+server.listen(8082);
+
+MiddleWares.init(app);
 app.listen(Port, "localhost");
 console.log(`Running on Port : ${Port}`);
 
-
-//Routes
 SetRoutes(app);
 app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.log(err);
-  res.status(400)
-  .send({ success: false, message: err.message || err });
+  res.status(400).send({ success: false, message: err.message || err });
 });
 
 export default app;

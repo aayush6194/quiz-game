@@ -1,8 +1,8 @@
 import * as bodyParser from "body-parser";
-import * as cors from "cors";
+import cors from "cors";
 
 //Cors and Parsers
-const InitMiddleWare = (app) => {
+const init = (app) => {
   app.use(cors());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,4 +22,4 @@ const InitMiddleWare = (app) => {
   });
 };
 
-export { InitMiddleWare };
+export default { init };

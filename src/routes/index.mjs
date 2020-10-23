@@ -1,9 +1,9 @@
 
-import playerController from "./player-controller";
+import playerController from "./player-controller.mjs";
 
 const SetRoutes = (app) => {
   app
-    .get("/hello-world", playerController.hello)
+    .post("/answer", playerController.checkAnswer)
 };
 
 export { SetRoutes };

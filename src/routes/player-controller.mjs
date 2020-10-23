@@ -1,10 +1,10 @@
 
 export default class playerController  {
-  static async hello(req, res, next) {
+  static async checkAnswer(req, res, next) {
     try {
       return res
         .status(200)
-        .send({ success: true, message: "Hello World"  });
+        .send({ success: true  });
     } catch (err) {
       next(err);
     }

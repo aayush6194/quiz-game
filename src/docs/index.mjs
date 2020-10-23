@@ -1,3 +1,3 @@
-import * as swaggerDocument from './swagger.json';
+import swaggerDocument from './swagger.json';
 
 export {swaggerDocument};
