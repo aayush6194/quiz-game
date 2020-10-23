@@ -28,5 +28,6 @@
     "start": "nodemon  src/index"
   },
   "author": "Aayush Shrestha",
-  "license": "MIT"
+  "license": "MIT",
+  "type": "module"
 }
