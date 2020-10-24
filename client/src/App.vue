@@ -1,53 +1,31 @@
 <template>
-  <div class="container">
-    <Question v-if="player.gender" :data="data" />
-    <Player v-else :player="player" :setPlayer="setPlayer"/>
+  <div class="container" id='app'>     
+    <Home v-if="play"  />
+    <div v-else class="grid">
+      <img class="img" style="max-height: 50vh;" src='./assets/quiz.svg' alt='Quiz Image'/>
+      <img class="img" src='./assets/play-button.png' v-on:click="start()" alt='Start Button'/>
+       <img class="img" src='./assets/leaderboard.svg' v-on:click="start()" alt='Start Button'/>
+     </div>
   </div>
 </template>
-
 <script>
-import Question from "./components/Question.vue";
-import Player from "./components/Player.vue";
-
+ import Home from './pages/Home.vue';
 export default {
   name: "App",
   components: {
-    Question,
-    Player
+    Home
   },
-  data: function() {
-    return {
-      player: {
-        gender: undefined,
-     //   name: undefined
-      },
-      data: {
-        question: "None"
-      }
-    };
+  data(){
+    return({
+      play: false
+    })
   },
-
-  methods: {
-    setPlayer: function(gender) {
-      this.player = { gender };
-    },
-    socket: function() {
-      console.log("Starting connection to WebSocket Server");
-      const connection = new WebSocket("ws://localhost:8082");
-
-      connection.onmessage = event => {
-        this.data = JSON.parse(event?.data);
-      };
-
-      connection.onopen = function(event) {
-        console.log(event);
-      };
+  methods : {
+    start(){
+      this.play = true;
     }
-  },
-  created: function() {
-    this.socket();
   }
-};
+}
 </script>
 
 <style>
@@ -74,4 +52,16 @@ body {
   place-items: stretch;
   padding: 0;
 }
+  .img{
+    max-width: 100%;
+  }
+
+  .grid{
+    display: grid;
+    padding: 1em;
+    grid-gap: 1em;
+    place-items: center;
+  }
+
+
 </style>

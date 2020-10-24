@@ -5,14 +5,14 @@
     <ul class="options">
       <li>
         <button class="btn-option" v-on:click="setPlayer('MALE')">
-          <img alt="Male Avatar" :src="maleAvatar" />
+          <img alt="Male Avatar" :src="maleAvatar" class="img"/>
           <div class="txt-center">Player 1</div>
         </button>
       </li>
 
        <li>
         <button class="btn-option" v-on:click="setPlayer('FEMALE')">
-          <img alt="Male Avatar" :src="femaleAvatar" />
+          <img alt="Male Avatar" :src="femaleAvatar" class="img"/>
           <div class="txt-center">Player 2</div>
         </button>
       </li>
@@ -24,7 +24,7 @@
 import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
 export default {
-  name: "Question",
+  name: "Player",
   props: {
     player: Object,
     setPlayer: Function
@@ -41,7 +41,6 @@ export default {
   padding: 1em;
   max-width: 95vw;
   animation: appear 300ms ease;
-  place-self: start center;
 }
 .txt-center {
   text-align: center;
