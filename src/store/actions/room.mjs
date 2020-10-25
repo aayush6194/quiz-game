@@ -1,10 +1,12 @@
+import immer from 'immer';
+const { produce } = immer;
 
-export const RoomActions = {
-    ADD_ROOM: 'ADD_ROOM'
-}
-export const addRoom = () => {
-    return (dispatch) => {
-    
-            dispatch({ type: RoomActions.ADD_ROOM });
-        }
-}
+export const ACTIONS = {
+    ADD_ROOM: 'ADD_ROOM',
+};
+
+export const addRoom = produce((draft, id) => {
+    draft[id] = {
+        players: [],
+    };
+});
