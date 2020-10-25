@@ -1,62 +1,67 @@
 <template>
-    <BackButton :goBack="player? back: resetPlayer" />
-    <Question v-if="player.gender" :data="data" />
-    <Player v-else :player="player" :setPlayer="setPlayer" />
+  <div class="container" id="app" v-bind:style="styleObject">
+    <div class="grid" style="">
+      <img
+        class="img"
+        style="max-height: 50vh;"
+        src="../assets/quiz.svg"
+        alt="Quiz Image"
+      />
+     <router-link to="/game">  <img
+        class="img"
+        src="../assets/play-button.png"
+        alt="Start Button"
+      /></router-link>
+      <img
+        class="img"
+        src="../assets/leaderboard.svg"
+        alt="Start Button"
+      />
+    </div>
+  </div>
 </template>
-
 <script>
-import Question from "../components/Question.vue";
-import Player from "../components/Player.vue";
-import BackButton from "../components/BackButton.vue";
 
+import Games from "../assets/games.svg";
+
+const gradient = (
+  color1 = "rgba(255,255,255,0.95)",
+  color2 = "rgba(255,255,255,0.95)"
+) => `linear-gradient(to right, ${color1} 0%, ${color2} 100%)`;
 export default {
-  name: "Home",
-  components: {
-    Question,
-    Player,
-    BackButton
-  },
-  props:{
-    back: Function
-  },
-  data: function() {
+  name: "App",
+  data() {
     return {
-      player: {
-        gender: undefined,
-      },
-      data: {
-        question: "None",
+      play: false,
+      styleObject: {
+        backgroundImage: `${gradient()}, url("${Games}")`,
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "bottom left",
+        //   backgroundSize: "cover"
       },
     };
-  },
-
-  methods: {
-    setPlayer: function(gender) {
-      this.player = { gender };
-    },
-
-    resetPlayer: function() {
-      this.player = { gender: undefined };
-    },
-    socket: function() {
-      const con = new WebSocket("ws://localhost:8082");
-
-      con.onmessage = (event) => {
-        this.data = JSON.parse(event?.data);
-      };
-
-      con.onopen = function(event) {
-        console.log(event);
-      };
-    },
-  },
-  created: function() {
-    this.socket();
-  },
+  }
 };
 </script>
 
-<style scoped>
+<style>
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+}
+
+#app {
+  height: 100vh;
+}
+
+.container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+}
+
 .options {
   list-style: none;
   display: grid;
@@ -64,5 +69,27 @@ export default {
   grid-gap: 2em;
   place-items: stretch;
   padding: 0;
+}
+.img {
+  max-width: 100%;
+}
+button {
+  border: 0;
+  border-radius: 0.25em;
+  padding: .25em;
+  box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
+  outline: none;
+  cursor: pointer;
+}
+
+button:hover {
+  box-shadow: 0 0 0;
+  transition: 200ms ease;
+}
+.grid {
+  display: grid;
+  padding: 1em;
+  grid-gap: 1em;
+  place-items: center;
 }
 </style>
