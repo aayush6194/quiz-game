@@ -3,7 +3,7 @@ import path from 'path';
 
 const readFile = (fileName) => {
     const filePath = path.join('./', fileName);
-    return fs.readFileSync(filePath, { encoding: 'utf-8' }, (err, data) => err ? err : data)
+    return fs.readFileSync(filePath, { encoding: 'utf-8' }, (err, data) => err ? err : data);
 }
 
 const getQuestions = (data) => {

@@ -1,16 +1,16 @@
-import WebSocket from "ws";
+import WebSocket from 'ws';
 let WebSocketServer = WebSocket.Server;
 
 export const init = (server, questions) => {
     let wss = new WebSocketServer({ server })
-    console.log("websocket server created")
+    console.log('websocket server created')
 
-    wss.on("connection", function (ws) {
+    wss.on('connection', function (ws) {
         const question = questions[Math.floor((Math.random()* questions.length))]
         ws.send(JSON.stringify(question))
 
-        ws.on("close", function () {
-            console.log("websocket connection close")
+        ws.on('close', function () {
+            console.log('websocket connection close')
         })
     })
 }

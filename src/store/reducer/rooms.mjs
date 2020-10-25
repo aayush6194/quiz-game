@@ -1,4 +1,4 @@
-import { RoomActions } from "../actions/room.mjs";
+import { RoomActions } from '../actions/room.mjs';
 
 const intialState = {
     rooms : []
