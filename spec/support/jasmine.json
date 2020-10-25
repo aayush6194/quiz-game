@@ -3,7 +3,7 @@
     "**/*[sS]pec.mjs"
   ],
   "helpers": [
-    "helpers/**/*.mjs"
+    "**/helpers/*.mjs"
   ],
   "stopSpecOnExpectationFailure": false,
   "random": true
