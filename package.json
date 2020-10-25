@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "API for Quiz Game",
   "engines": {
-    "node": ">= 10.13 <11"
+    "node": ">=13"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -29,7 +29,7 @@
     "clean": "rimraf coverage build tmp",
     "test": "jasmine",
     "test:watch": "jest --watch",
-    "start": "node --experimental-json-modules src/index.mjs"
+    "start": "node src/index.mjs"
   },
   "author": "Aayush Shrestha",
   "license": "MIT",
