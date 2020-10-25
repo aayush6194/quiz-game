@@ -9,6 +9,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.16.4",
+    "immer": "^7.0.14",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "node-input-validator": "^4.2.0",
@@ -19,13 +20,14 @@
     "ws": "^5.2.2"
   },
   "devDependencies": {
-    "jest": "~24.9.0",
+    "jasmine": "^3.6.2",
+    "jasmine-spec-reporter": "^6.0.0",
     "prettier": "~1.18.2",
     "rimraf": "^3.0.0"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
-    "test": "jest --coverage",
+    "test": "jasmine",
     "test:watch": "jest --watch",
     "start": "node --experimental-json-modules src/index.mjs"
   },
