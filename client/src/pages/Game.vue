@@ -1,0 +1,81 @@
+<template>
+  <BackButton :goBack="player ? back : resetPlayer" />
+  <Player v-if="!player.gender" :player="player" :setPlayer="setPlayer" />
+  <h1 v-else-if="time > 0">{{ time }}</h1>
+  <Question v-else :data="data" />
+</template>
+
+<script>
+import Question from "../components/Question.vue";
+import Player from "../components/Player.vue";
+import BackButton from "../components/BackButton.vue";
+
+export default {
+  name: "Game",
+  components: {
+    Question,
+    Player,
+    BackButton
+  },
+  props: {
+    back: Function
+  },
+  data: function() {
+    return {
+      player: {
+        gender: undefined
+      },
+      time: 5,
+      data: {
+        question: "None"
+      }
+    };
+  },
+
+  methods: {
+    setPlayer: function(gender) {
+      this.player = { gender };
+      this.time = 5;
+      this.timerUpdate();
+    },
+
+    timerUpdate() {
+      if (this.time > 0) {
+        setTimeout(() => {
+          this.time -= 1;
+          this.timerUpdate();
+        }, 1000);
+      }
+    },
+
+    resetPlayer: function() {
+      this.player = { gender: undefined };
+    },
+    socket: function() {
+      const con = new WebSocket("ws://localhost:8082");
+
+      con.onmessage = event => {
+        this.data = JSON.parse(event?.data);
+      };
+
+      con.onopen = function(event) {
+        console.log(event);
+      };
+    }
+  },
+  created: function() {
+    this.socket();
+  }
+};
+</script>
+
+<style scoped>
+.options {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 2em;
+  place-items: stretch;
+  padding: 0;
+}
+</style>

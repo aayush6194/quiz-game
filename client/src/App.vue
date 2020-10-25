@@ -1,30 +1,10 @@
 <template>
   <div class="container" id="app" v-bind:style="styleObject">
-    <Home v-if="play" :back="back"/>
-    <div v-else class="grid" style="">
-      <img
-        class="img"
-        style="max-height: 50vh;"
-        src="./assets/quiz.svg"
-        alt="Quiz Image"
-      />
-      <img
-        class="img"
-        src="./assets/play-button.png"
-        v-on:click="start()"
-        alt="Start Button"
-      />
-      <img
-        class="img"
-        src="./assets/leaderboard.svg"
-        v-on:click="start()"
-        alt="Start Button"
-      />
-    </div>
+     <router-view />
   </div>
 </template>
 <script>
-import Home from "./pages/Home.vue";
+
 import Games from "./assets/games.svg";
 
 const gradient = (
@@ -33,9 +13,6 @@ const gradient = (
 ) => `linear-gradient(to right, ${color1} 0%, ${color2} 100%)`;
 export default {
   name: "App",
-  components: {
-    Home
-  },
   data() {
     return {
       play: false,
@@ -47,14 +24,6 @@ export default {
         //   backgroundSize: "cover"
       },
     };
-  },
-  methods: {
-    start() {
-      this.play = true;
-    },
-    back() {
-      this.play = false;
-    }
   },
 };
 </script>
