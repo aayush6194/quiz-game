@@ -1,5 +1,9 @@
 <template>
-  <BackButton :goBack="player ? back : resetPlayer" />
+  <router-link v-if="!player.gender" to="/" class="absolute">
+    <BackButton />
+  </router-link>
+  <BackButton v-else :goBack="resetPlayer" />
+
   <Player v-if="!player.gender" :player="player" :setPlayer="setPlayer" />
   <h1 v-else-if="time > 0">{{ time }}</h1>
   <Question v-else :data="data" />
@@ -17,15 +21,13 @@ export default {
     Player,
     BackButton
   },
-  props: {
-    back: Function
-  },
+  props: {},
   data: function() {
     return {
       player: {
         gender: undefined
       },
-      time: 5,
+      time: 3,
       data: {
         question: "None"
       }
@@ -35,7 +37,7 @@ export default {
   methods: {
     setPlayer: function(gender) {
       this.player = { gender };
-      this.time = 5;
+      this.time = 3;
       this.timerUpdate();
     },
 
@@ -77,5 +79,8 @@ export default {
   grid-gap: 2em;
   place-items: stretch;
   padding: 0;
+}
+.absolute {
+  position: absolute;
 }
 </style>

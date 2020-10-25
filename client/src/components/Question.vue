@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper appear">
     {{ time }}
+    {{ question }}
     <h1>{{ data.question }}</h1>
     <ul class="options">
       <li v-for="option in data.options" :key="option">
@@ -13,13 +14,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Question",
   props: {
     data: String
   },
+  computed: mapGetters(["question"]),
   created: function() {
     this.timerUpdate();
+    this.getQuestion();
   },
   data() {
     return {
@@ -27,6 +31,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["getQuestion"]),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {

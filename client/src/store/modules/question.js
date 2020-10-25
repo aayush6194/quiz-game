@@ -1,5 +1,5 @@
 const state = {
-  question: {}
+  question: { question: 'ss'}
 };
 
 const getters = {
@@ -8,14 +8,12 @@ const getters = {
 
 const actions = {
   async getQuestion({ commit }) {
-   
     commit('getQuestion', {});
   }
 }
  
-
 const mutations = {
-  setQuestion: (state, question) => (state.question = question)
+  setQuestion : (state, question) => (state.question = question),
 };
 
 export default {
