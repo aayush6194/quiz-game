@@ -11,6 +11,7 @@
     "express": "^4.16.4",
     "immer": "^7.0.14",
     "nodemon": "^1.19.2",
+    "rambda": "^6.3.1",
     "redux": "^4.0.5",
     "swagger-ui-express": "^4.1.2",
     "uuid": "^3.3.2",
