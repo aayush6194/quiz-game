@@ -1,36 +1,68 @@
 <template>
-  <div class="container" id='app'>     
-    <Home v-if="play"  />
-    <div v-else class="grid">
-      <img class="img" style="max-height: 50vh;" src='./assets/quiz.svg' alt='Quiz Image'/>
-      <img class="img" src='./assets/play-button.png' v-on:click="start()" alt='Start Button'/>
-       <img class="img" src='./assets/leaderboard.svg' v-on:click="start()" alt='Start Button'/>
-     </div>
+  <div class="container" id="app" v-bind:style="styleObject">
+    <Home v-if="play" :back="back"/>
+    <div v-else class="grid" style="">
+      <img
+        class="img"
+        style="max-height: 50vh;"
+        src="./assets/quiz.svg"
+        alt="Quiz Image"
+      />
+      <img
+        class="img"
+        src="./assets/play-button.png"
+        v-on:click="start()"
+        alt="Start Button"
+      />
+      <img
+        class="img"
+        src="./assets/leaderboard.svg"
+        v-on:click="start()"
+        alt="Start Button"
+      />
+    </div>
   </div>
 </template>
 <script>
- import Home from './pages/Home.vue';
+import Home from "./pages/Home.vue";
+import Games from "./assets/games.svg";
+
+const gradient = (
+  color1 = "rgba(255,255,255,0.95)",
+  color2 = "rgba(255,255,255,0.95)"
+) => `linear-gradient(to right, ${color1} 0%, ${color2} 100%)`;
 export default {
   name: "App",
   components: {
     Home
   },
-  data(){
-    return({
-      play: false
-    })
+  data() {
+    return {
+      play: false,
+      styleObject: {
+        backgroundImage: `${gradient()}, url("${Games}")`,
+        backgroundAttachment: "fixed",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "bottom left",
+        //   backgroundSize: "cover"
+      },
+    };
   },
-  methods : {
-    start(){
+  methods: {
+    start() {
       this.play = true;
+    },
+    back() {
+      this.play = false;
     }
-  }
-}
+  },
+};
 </script>
 
 <style>
 body {
   margin: 0;
+  font-family: Roboto, sans-serif;
 }
 
 #app {
@@ -52,16 +84,26 @@ body {
   place-items: stretch;
   padding: 0;
 }
-  .img{
-    max-width: 100%;
-  }
+.img {
+  max-width: 100%;
+}
+button {
+  border: 0;
+  border-radius: 0.25em;
+  padding: .25em;
+  box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
+  outline: none;
+  cursor: pointer;
+}
 
-  .grid{
-    display: grid;
-    padding: 1em;
-    grid-gap: 1em;
-    place-items: center;
-  }
-
-
+button:hover {
+  box-shadow: 0 0 0;
+  transition: 200ms ease;
+}
+.grid {
+  display: grid;
+  padding: 1em;
+  grid-gap: 1em;
+  place-items: center;
+}
 </style>

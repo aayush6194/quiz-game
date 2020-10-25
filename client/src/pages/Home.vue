@@ -1,4 +1,5 @@
 <template>
+    <BackButton :goBack="player? back: resetPlayer" />
     <Question v-if="player.gender" :data="data" />
     <Player v-else :player="player" :setPlayer="setPlayer" />
 </template>
@@ -6,12 +7,17 @@
 <script>
 import Question from "../components/Question.vue";
 import Player from "../components/Player.vue";
+import BackButton from "../components/BackButton.vue";
 
 export default {
   name: "Home",
   components: {
     Question,
     Player,
+    BackButton
+  },
+  props:{
+    back: Function
   },
   data: function() {
     return {
@@ -27,6 +33,10 @@ export default {
   methods: {
     setPlayer: function(gender) {
       this.player = { gender };
+    },
+
+    resetPlayer: function() {
+      this.player = { gender: undefined };
     },
     socket: function() {
       const con = new WebSocket("ws://localhost:8082");

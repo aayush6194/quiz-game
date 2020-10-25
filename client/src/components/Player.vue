@@ -39,7 +39,7 @@ export default {
 <style scoped>
 .wrapper {
   padding: 1em;
-  max-width: 95vw;
+  max-width: 90vw;
   animation: appear 300ms ease;
 }
 .txt-center {

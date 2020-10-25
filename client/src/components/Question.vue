@@ -24,7 +24,7 @@ export default {
 .wrapper {
   padding: 1em;
   width: 1200px;
-  max-width: 95vw;
+  max-width: 90vw;
   animation: appear 300ms ease;
 }
 
@@ -44,7 +44,7 @@ h1 {
 
 .btn-option {
   width: 100%;
-  padding: 0.5em;
+  padding: 1em;
 }
 
 @media (max-width: 820px) {

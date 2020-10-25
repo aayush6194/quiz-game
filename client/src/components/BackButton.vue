@@ -1,0 +1,26 @@
+<template>
+  <button class="btn-back" v-on:click="goBack">
+      <i class='fa fa-chevron-left'/>
+  </button>
+</template>
+
+<script>
+
+export default {
+  name: "BackButton",
+  props: {
+    goBack: Function
+  }
+};
+</script>
+
+<style scoped>
+    .btn-back{
+        position: absolute;
+        top: 1em;
+        left: 1em;
+        font-size: 1.5em;
+        border-radius: 50%;
+        padding: .15em .35em;
+    }
+</style>
