@@ -7,9 +7,10 @@ import { Port } from "./config.mjs";
 import * as http from "http";
 import Socket from "./socket.mjs";
 import { readFile, getQuestions } from "./utils/index.mjs";
+import store from "./store/index.mjs";
 
 const questions = getQuestions(readFile('quizQuestions.txt'));
-
+console.log(store.getState())
 console.log(questions);
 
 const server = http.createServer();
