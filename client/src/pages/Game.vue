@@ -1,7 +1,8 @@
 <template>
   <BackButton :goBack="player ? back : resetPlayer" />
-  <Question v-if="player.gender" :data="data" />
-  <Player v-else :player="player" :setPlayer="setPlayer" />
+  <Player v-if="!player.gender" :player="player" :setPlayer="setPlayer" />
+  <h1 v-else-if="time > 0">{{ time }}</h1>
+  <Question v-else :data="data" />
 </template>
 
 <script>
@@ -14,25 +15,37 @@ export default {
   components: {
     Question,
     Player,
-    BackButton,
+    BackButton
   },
   props: {
-    back: Function,
+    back: Function
   },
   data: function() {
     return {
       player: {
-        gender: undefined,
+        gender: undefined
       },
+      time: 5,
       data: {
-        question: "None",
-      },
+        question: "None"
+      }
     };
   },
 
   methods: {
     setPlayer: function(gender) {
       this.player = { gender };
+      this.time = 5;
+      this.timerUpdate();
+    },
+
+    timerUpdate() {
+      if (this.time > 0) {
+        setTimeout(() => {
+          this.time -= 1;
+          this.timerUpdate();
+        }, 1000);
+      }
     },
 
     resetPlayer: function() {
@@ -41,18 +54,18 @@ export default {
     socket: function() {
       const con = new WebSocket("ws://localhost:8082");
 
-      con.onmessage = (event) => {
+      con.onmessage = event => {
         this.data = JSON.parse(event?.data);
       };
 
       con.onopen = function(event) {
         console.log(event);
       };
-    },
+    }
   },
   created: function() {
     this.socket();
-  },
+  }
 };
 </script>
 

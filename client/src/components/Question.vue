@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper appear">
+    {{ time }}
     <h1>{{ data.question }}</h1>
     <ul class="options">
       <li v-for="option in data.options" :key="option">
-        <button class="btn-option" >
+        <button class="btn-option">
           {{ option }}
         </button>
       </li>
@@ -15,7 +16,25 @@
 export default {
   name: "Question",
   props: {
-   data: String
+    data: String
+  },
+  created: function() {
+    this.timerUpdate();
+  },
+  data() {
+    return {
+      time: 10
+    };
+  },
+  methods: {
+    timerUpdate() {
+      if (this.time > 0) {
+        setTimeout(() => {
+          this.time -= 1;
+          this.timerUpdate();
+        }, 1000);
+      }
+    }
   }
 };
 </script>
@@ -40,7 +59,6 @@ h1 {
   padding: 0;
   margin: 0;
 }
-
 
 .btn-option {
   width: 100%;
