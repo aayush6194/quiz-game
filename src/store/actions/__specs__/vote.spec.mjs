@@ -113,8 +113,13 @@ describe('vote', () => {
             tallies: {
                 [questionId]: {},
             },
+            players: Array(4)
+                .fill(0)
+                .map((_, i) => ({
+                    name: i,
+                })),
         };
-        const nextState = actions.addVote(state, { choiceId, playerId });
+        const nextState = actions.handleVote(state, { choiceId, playerId });
         expect(nextState).toEqual({
             questions: [
                 Question(
@@ -129,6 +134,11 @@ describe('vote', () => {
             tallies: {
                 [questionId]: { [choiceId]: [playerId] },
             },
+            players: Array(4)
+                .fill(0)
+                .map((_, i) => ({
+                    name: i,
+                })),
         });
     });
 
@@ -155,8 +165,13 @@ describe('vote', () => {
                     [choiceId]: [3],
                 },
             },
+            players: Array(4)
+                .fill(0)
+                .map((_, i) => ({
+                    name: i,
+                })),
         };
-        const nextState = actions.addVote(state, { choiceId, playerId });
+        const nextState = actions.handleVote(state, { choiceId, playerId });
         expect(nextState).toEqual({
             questions: [
                 Question(
@@ -176,6 +191,72 @@ describe('vote', () => {
                     [choiceId]: [3, playerId],
                 },
             },
+            players: Array(4)
+                .fill(0)
+                .map((_, i) => ({
+                    name: i,
+                })),
+        });
+    });
+
+    it('Should put the next question to vote after all players have voted', () => {
+        const state = {
+            questions: [
+                Question(
+                    'In what year was Sega Genesis released in North America?',
+                    [
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
+                        Choice(1989, true),
+                    ]
+                ),
+                Question(
+                    'Which of the following video games takes place in a dystopian underwater city called Rapture?',
+                    [
+                        ...['Half-Life', 'God Of War', 'Fallout 3'].map((v) =>
+                            Choice(v)
+                        ),
+                        Choice('Bioshock', true),
+                    ]
+                ),
+            ],
+            voting: 0,
+            tallies: {
+                0: {
+                    [1]: [0],
+                },
+            },
+            players: [{ name: 'Noah' }, { name: 'Shiv' }],
+        };
+        const nextState = actions.handleVote(state, {
+            choiceId: 1,
+            playerId: 1,
+        });
+        expect(nextState).toEqual({
+            questions: [
+                Question(
+                    'In what year was Sega Genesis released in North America?',
+                    [
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
+                        Choice(1989, true),
+                    ]
+                ),
+                Question(
+                    'Which of the following video games takes place in a dystopian underwater city called Rapture?',
+                    [
+                        ...['Half-Life', 'God Of War', 'Fallout 3'].map((v) =>
+                            Choice(v)
+                        ),
+                        Choice('Bioshock', true),
+                    ]
+                ),
+            ],
+            voting: 1,
+            tallies: {
+                0: {
+                    [1]: [0, 1],
+                },
+            },
+            players: [{ name: 'Noah' }, { name: 'Shiv' }],
         });
     });
 
@@ -209,6 +290,70 @@ describe('vote', () => {
             },
         };
         const nextState = actions.nextVote(state);
+        expect(nextState).toEqual({
+            results: {
+                'Player #1': {
+                    player: 'Player #1',
+                    right: 0,
+                    wrong: 2,
+                },
+                'Player #2': {
+                    player: 'Player #2',
+                    right: 1,
+                    wrong: 1,
+                },
+                'Player #3': {
+                    player: 'Player #3',
+                    right: 2,
+                    wrong: 0,
+                },
+                'Player #4': {
+                    player: 'Player #4',
+                    right: 0,
+                    wrong: 2,
+                },
+                'Player #5': {
+                    player: 'Player #5',
+                    right: 1,
+                    wrong: 1,
+                },
+            },
+        });
+    });
+
+    it('Should have the results after the last player left to vote has voted for the last question', () => {
+        const state = {
+            questions: [
+                Question(
+                    'In what year was Sega Genesis released in North America?',
+                    [
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
+                        Choice(1989, true),
+                    ]
+                ),
+                Question(
+                    'Which of the following video games takes place in a dystopian underwater city called Rapture?',
+                    [
+                        Choice('Bioshock', true),
+                        ...['Half-Life', 'God Of War', 'Fallout 3'].map((v) =>
+                            Choice(v)
+                        ),
+                    ]
+                ),
+            ],
+            players: Array(5)
+                .fill(0)
+                .map((_, i) => `Player #${i + 1}`),
+            voting: 1,
+            tallies: {
+                0: { 0: [0], 1: [1, 3], 3: [2, 4] },
+                1: { 0: [1, 2], 1: [0], 2: [3] },
+            },
+        };
+        const nextState = actions.handleVote(state, {
+            playerId: 4,
+            choiceId: 3,
+        });
         expect(nextState).toEqual({
             results: {
                 'Player #1': {

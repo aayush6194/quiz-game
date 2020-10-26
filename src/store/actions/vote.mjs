@@ -25,12 +25,16 @@ const getScoreBoard = ({ players, questions, tallies }) => {
     return scores;
 };
 
-export const ACTIONS = {
-    ADD_VOTE: 'ADD_VOTE',
-    NEXT_VOTE: 'NEXT_VOTE',
+const totalVotes = (choices) => {
+    if (!choices) {
+        return 0;
+    }
+    return Object.values(choices).reduce((total, players) => {
+        return total + players.length;
+    }, 0);
 };
 
-export const addVote = produce((draft, { playerId, choiceId }) => {
+const addVote = produce((draft, { playerId, choiceId }) => {
     if (!draft.tallies[draft.voting]) {
         draft.tallies[draft.voting] = {};
     }
@@ -49,3 +53,19 @@ export const nextVote = produce((draft) => {
     }
     draft.voting = voting;
 });
+
+export const handleVote = (state, payload) => {
+    const nextState = addVote(state, payload);
+    if (
+        totalVotes(nextState.tallies[nextState.voting]) ===
+        nextState.players.length
+    ) {
+        return nextVote(nextState);
+    }
+    return nextState;
+};
+
+export const ACTIONS = {
+    ADD_VOTE: 'ADD_VOTE',
+    NEXT_VOTE: 'NEXT_VOTE',
+};

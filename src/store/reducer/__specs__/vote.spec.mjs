@@ -23,6 +23,11 @@ describe('vote reducer', () => {
             tallies: {
                 [questionId]: {},
             },
+            players: Array(4)
+                .fill(0)
+                .map((_, i) => ({
+                    name: i,
+                })),
         };
         const action = {
             type: ACTIONS.ADD_VOTE,
@@ -43,6 +48,11 @@ describe('vote reducer', () => {
             tallies: {
                 [questionId]: { [choiceId]: [playerId] },
             },
+            players: Array(4)
+                .fill(0)
+                .map((_, i) => ({
+                    name: i,
+                })),
         });
     });
 
