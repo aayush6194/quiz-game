@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: "Question",
   props: {
@@ -37,6 +39,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['setPlayer']),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
@@ -57,14 +60,6 @@ export default {
   animation: appear 300ms ease;
 }
 
-@keyframes appear {
-  0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
 h1 {
   padding: 0;
   margin: 0;

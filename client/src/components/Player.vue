@@ -1,16 +1,20 @@
 <template>
   <div class="wrapper appear">
+    <router-link to="/">
+      <BackButton />
+    </router-link>
+
     <h1>Select a player</h1>
     <ul class="options">
       <li>
-        <button :class="getButtonClass(0)" v-on:click="setAvatar(0)">
+        <button :class="getButtonClass(0)" @click="setAvatar(0)">
           <img alt="Male Avatar" :src="maleAvatar" class="img" />
           <div class="txt-center">Player 1</div>
         </button>
       </li>
 
       <li>
-        <button :class="getButtonClass(1)" v-on:click="setAvatar(1)">
+        <button :class="getButtonClass(1)" @click="setAvatar(1)">
           <img alt="Male Avatar" :src="femaleAvatar" class="img" />
           <div class="txt-center">Player 2</div>
         </button>
@@ -22,10 +26,7 @@
         placeholder="Enter your name"
         v-model="localPlayer.name"
       />
-      <button
-        placeholder="Enter your name"
-        @click="setPlayer(localPlayer)"
-      >
+      <button placeholder="Enter your name" @click="setPlayer(localPlayer)">
         Start
       </button>
     </div>
@@ -35,17 +36,21 @@
 <script>
 import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
+import BackButton from '../components/BackButton'
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Player",
+  components: {
+    BackButton
+  },
   data: () => ({
     maleAvatar,
     femaleAvatar,
     localPlayer: {
       name: "",
-      avatar: -1,
-    },
+      avatar: -1
+    }
   }),
 
   computed: mapGetters(["player"]),
@@ -58,11 +63,11 @@ export default {
       return avatar === this.localPlayer.avatar
         ? "btn-option active"
         : "btn-option";
-    },
+    }
   },
   created: function() {
     this.localPlayer = this.player;
-  },
+  }
 };
 </script>
 
@@ -72,9 +77,7 @@ export default {
   max-width: 90vw;
   animation: appear 300ms ease;
 }
-.txt-center {
-  text-align: center;
-}
+
 .btn-option {
   border: 2px solid transparent;
 }
@@ -90,12 +93,5 @@ export default {
   place-items: stretch;
 }
 
-@keyframes appear {
-  0% {
-    transform: scale(0.5);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
+
 </style>

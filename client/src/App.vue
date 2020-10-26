@@ -3,14 +3,15 @@
      <router-view />
   </div>
 </template>
-<script>
 
+<script>
 import Games from "./assets/games.svg";
 
 const gradient = (
   color1 = "rgba(255,255,255,0.95)",
   color2 = "rgba(255,255,255,0.95)"
 ) => `linear-gradient(to right, ${color1} 0%, ${color2} 100%)`;
+
 export default {
   name: "App",
   data() {
@@ -21,7 +22,6 @@ export default {
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "bottom left",
-        //   backgroundSize: "cover"
       },
     };
   },
@@ -84,5 +84,26 @@ button:hover {
   padding: 1em;
   grid-gap: 1em;
   place-items: center;
+}
+
+.txt-center {
+  text-align: center;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.absolute {
+  position: absolute;
+}
+
+@keyframes appear {
+  0% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <button class="btn-back" v-on:click="goBack">
+  <button class="btn-back" @click="goBack">
       <i class='fa fa-chevron-left'/>
   </button>
 </template>
@@ -9,7 +9,7 @@
 export default {
   name: "BackButton",
   props: {
-    goBack: Function
+    goBack: Function 
   }
 };
 </script>
