@@ -3,7 +3,7 @@
     <h1>{{ question.question }}</h1>
     <ul class="options">
       <li v-for="(option, index) in question.choices" :key="option">
-        <button @click="setVoting(index)" class="btn-option">
+        <button @click="vote(index)" class="btn-option">
           {{ option.value }}
         </button>
       </li>
@@ -12,13 +12,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   name: "Question",
   props: {
     data: String,
-    question: []
+    question: [],
+    vote: Function
   },
   created: function() {
     this.timerUpdate();
@@ -29,7 +28,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["setVoting"]),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
