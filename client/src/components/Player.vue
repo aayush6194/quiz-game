@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper appear">
+    {{ player }}
     <h1>Select a player</h1>
     <ul class="options">
       <li>
@@ -17,8 +18,15 @@
       </li>
     </ul>
     <div class="grid">
-      <input class="" placeholder="Enter your name" v-model="name"/>
-      <button placeholder="Enter your name" @click="setPlayer({ name, avatar })">
+      <input
+        class=""
+        placeholder="Enter your name"
+        v-model="localPlayer.name"
+      />
+      <button
+        placeholder="Enter your name"
+        @click="setPlayer(localPlayer) && timerUpdate()"
+      >
         Start
       </button>
     </div>
@@ -28,26 +36,37 @@
 <script>
 import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Player",
   props: {
-    player: Object,
-    setPlayer: Function
+    timerUpdate: Function
   },
   data: () => ({
     maleAvatar,
     femaleAvatar,
-    name: "",
-    avatar: -1
+    localPlayer: {
+      name: "",
+      avatar: -1,
+    },
   }),
+
+  computed: mapGetters(["player"]),
   methods: {
+    ...mapActions(["setPlayer"]),
     setAvatar: function(avatar) {
-      this.avatar = avatar;
+      this.localPlayer = { ...this.localPlayer, avatar };
     },
     getButtonClass: function(avatar) {
-      return avatar === this.avatar ? "btn-option active" : "btn-option";
-    }
-  }
+      return avatar === this.localPlayer.avatar
+        ? "btn-option active"
+        : "btn-option";
+    },
+  },
+  created: function() {
+    this.localPlayer = this.player;
+  },
 };
 </script>
 

@@ -1,11 +1,17 @@
 <template>
   <!-- Back Button -->
-  <router-link v-if="!player.avatar" to="/" class="absolute">
+  <router-link
+    v-if="player.length < 2 || player.avatar === -1"
+    to="/"
+    class="absolute"
+  >
     <BackButton />
   </router-link>
   <BackButton v-else :goBack="resetPlayer" />
-
-  <Player v-if="!player.avatar" :player="player" :setPlayer="setPlayer" />
+  <Player
+    v-if="player.name.length < 2 || player.avatar === -1"
+    :timerUpdate="timerUpdate"
+  />
   <h1 v-else-if="time > 0">{{ time }}</h1>
   <Question v-else :data="data" />
 </template>
@@ -14,6 +20,7 @@
 import Question from "../components/Question.vue";
 import Player from "../components/Player.vue";
 import BackButton from "../components/BackButton.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Game",
@@ -22,13 +29,10 @@ export default {
     Player,
     BackButton
   },
-  props: {},
+  computed: mapGetters(["player"]),
+
   data: function() {
     return {
-      player: {
-        avatar: undefined,
-        name: ""
-      },
       room: undefined,
       time: 3,
       data: {
@@ -38,15 +42,6 @@ export default {
   },
 
   methods: {
-    setPlayer: function(avatar) {
-      this.player = { avatar };
-      this.time = 3;
-      this.timerUpdate();
-    },
-    resetPlayer: function() {
-      this.player = { avatar: undefined, name: "" };
-    },
-
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
