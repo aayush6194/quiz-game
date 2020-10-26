@@ -1,18 +1,19 @@
 <template>
-  <!-- Back Button -->
-  <router-link
-    v-if="player.length < 2 || player.avatar === -1"
-    to="/"
-    class="absolute"
-  >
-   <BackButton />
-  </router-link>
-  <BackButton v-else :goBack="resetPlayer" />
-  <Player v-if="player.name.length < 2 || player.avatar === -1" />
-
-  <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
-  <h1 v-else-if="time > 0">{{ time }}</h1>
-  <Question v-else :data="data" />
+  <div>
+    <!-- Back Button -->
+    <router-link
+      v-if="players.length < 2 || player.avatar === -1"
+      to="/"
+      class="absolute"
+    >
+      <BackButton />
+    </router-link>
+    <BackButton v-else :goBack="resetPlayer" />
+    <Player v-if="!(player.name && player.avatar !== undefined)" />
+    <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
+    <h1 v-else-if="time > 0">{{ time }}</h1>
+    <Question v-else :data="data" />
+  </div>
 </template>
 
 <script>
@@ -30,18 +31,15 @@ export default {
     Room,
     BackButton
   },
-  computed: mapGetters(["player"]),
+  computed: {
+    ...mapGetters(["player", "players", "questions"])
+  },
 
   data: function() {
     return {
-      room: undefined,
-      time: 3,
-      data: {
-        question: "None"
-      }
+      room: undefined
     };
   },
-
   methods: {
     timerUpdate() {
       if (this.time > 0) {
@@ -50,22 +48,7 @@ export default {
           this.timerUpdate();
         }, 1000);
       }
-    },
-
-    socket: function() {
-      const con = new WebSocket("ws://localhost:8082");
-
-      con.onmessage = event => {
-        this.data = JSON.parse(event?.data);
-      };
-
-      con.onopen = function(event) {
-        console.log(event);
-      };
     }
-  },
-  created: function() {
-    this.socket();
   }
 };
 </script>

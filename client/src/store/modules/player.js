@@ -1,33 +1,37 @@
 const state = {
-  player: {
-    name: "",
-    avatar: -1,
-    room: undefined,
-  },
+    player: {
+        name: undefined,
+        avatar: undefined,
+        // TODO: implement rooms
+        room: 1,
+    },
+    players: [],
 };
 
 const getters = {
-  player: (state) => state.player,
+    player: (state) => state.player,
+    players: (state) => state.players,
 };
 
 const actions = {
-  setPlayer({ commit }, player) {
-    commit("set", player);
-  },
+    setPlayer({ commit }, player) {
+        commit('set', player);
+    },
 
-  setRoom({ commit }, room) {
-    commit("roomSet", room);
-  },
+    setRoom({ commit }, room) {
+        commit('roomSet', room);
+    },
 };
 
 const mutations = {
-  set: (state, player) => (state.player = player),
-  roomSet: (state, room) => (state.player = {...state.player, room}),
+    set: (state, player) => (state.player = player),
+    roomSet: (state, room) => (state.player.room = room),
+    loadPlayers: (state, players) => (state.players = players),
 };
 
 export default {
-  state,
-  actions,
-  getters,
-  mutations,
+    state,
+    actions,
+    getters,
+    mutations,
 };

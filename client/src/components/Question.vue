@@ -1,29 +1,35 @@
 <template>
   <div class="wrapper appear">
-    {{ time }}
-    {{ question }}
-    <h1>{{ data.question }}</h1>
-    <ul class="options">
-      <li v-for="option in data.options" :key="option">
-        <button class="btn-option">
-          {{ option }}
-        </button>
-      </li>
-    </ul>
+    <div v-if="!getQuestion">
+      <h1>Waiting for players</h1>
+    </div>
+    <div v-else>
+      <h1>{{ getQuestion.question }}</h1>
+      <ul class="options">
+        <li v-for="option in getQuestion.choices" :key="option">
+          <button class="btn-option">
+            {{ option.value }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Question",
   props: {
     data: String
   },
-  computed: mapGetters(["question"]),
+  computed: {
+    getQuestion() {
+      console.log(this.$store.getters.getQuestionUnderVote);
+      return this.$store.getters.getQuestionUnderVote;
+    }
+  },
   created: function() {
     this.timerUpdate();
-    this.getQuestion();
   },
   data() {
     return {
@@ -31,7 +37,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getQuestion"]),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
