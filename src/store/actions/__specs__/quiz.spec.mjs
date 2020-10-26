@@ -1,6 +1,6 @@
 import * as actions from '../quiz.mjs';
-import { Question } from '../../domains/Question.mjs';
-import { Choice } from '../../domains/Choice.mjs';
+import { Question } from '../../../domains/Question.mjs';
+import { Choice } from '../../../domains/Choice.mjs';
 
 describe('quiz', () => {
     it('should add the questions to the state', () => {

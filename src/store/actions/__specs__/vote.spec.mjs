@@ -1,6 +1,6 @@
 import * as actions from '../vote.mjs';
-import { Question } from '../../domains/Question.mjs';
-import { Choice } from '../../domains/Choice.mjs';
+import { Question } from '../../../domains/Question.mjs';
+import { Choice } from '../../../domains/Choice.mjs';
 
 describe('vote', () => {
     it('Should start voting on a quiz', () => {

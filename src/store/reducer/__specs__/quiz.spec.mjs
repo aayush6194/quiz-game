@@ -1,7 +1,7 @@
 import * as quiz from '../../actions/quiz.mjs';
 import reducer from '../quiz.mjs';
-import { Question } from '../../domains/Question.mjs';
-import { Choice } from '../../domains/Choice.mjs';
+import { Question } from '../../../domains/Question.mjs';
+import { Choice } from '../../../domains/Choice.mjs';
 const ACTIONS = quiz.ACTIONS;
 
 describe('quiz reducer', () => {
