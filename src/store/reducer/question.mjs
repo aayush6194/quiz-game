@@ -1,5 +1,5 @@
-import * as quiz from '../actions/question.mjs';
-const ACTIONS = quiz.ACTIONS;
+import * as questions from '../actions/question.mjs';
+const ACTIONS = questions.ACTIONS;
 
 const intialState = {
     questions: [],
@@ -7,8 +7,8 @@ const intialState = {
 
 export default function reducer(state = intialState, action) {
     switch (action.type) {
-        case ACTIONS.CREATE_QUIZ:
-            return quiz.createQuiz(state, action.payload.questions);
+        case ACTIONS.ADD_QUESTIONS:
+            return questions.addQuestions(state, action.payload.questions);
         default:
             return state;
     }

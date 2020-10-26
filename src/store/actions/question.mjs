@@ -5,6 +5,6 @@ export const ACTIONS = {
     ADD_QUESTIONS: 'ADD_QUESTIONS',
 };
 
-export const createQuiz = produce((draft, questions) => {
+export const addQuestions = produce((draft, questions) => {
     draft.questions = questions;
 });
