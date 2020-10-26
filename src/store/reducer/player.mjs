@@ -7,7 +7,7 @@ const intialState = {
 
 export default function reducer(state = intialState, action) {
     switch (action.type) {
-        case ACTIONS.CREATE_player:
+        case ACTIONS.ADD_PLAYER:
             return player.addPlayer(state, action.payload.player);
         default:
             return state;
