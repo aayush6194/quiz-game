@@ -12,7 +12,7 @@
       </ul>
       <button @click="startVoting">Start Quiz!</button>
     </div>
-    <Question v-else :data="data" :question="getQuestion" />
+    <Question v-else :data="data" :question="getQuestion" :vote="addVote" />
   </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["startVoting"]),
+    ...mapActions(["startVoting", "addVote"]),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
