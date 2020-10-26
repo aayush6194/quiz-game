@@ -7,7 +7,7 @@ const ACTIONS = quiz.ACTIONS;
 describe('quiz reducer', () => {
     it(`should handle ${ACTIONS.CREATE_QUIZ}`, () => {
         const baseState = {};
-        const choices = [1999, 1975, 1991].map((v) => Choice(v, false));
+        const choices = [1999, 1975, 1991].map((v) => Choice(v));
         choices.push(Choice(1989, true));
         const questions = [
             Question(
@@ -22,7 +22,7 @@ describe('quiz reducer', () => {
                 Question(
                     'In what year was Sega Genesis released in North America?',
                     [
-                        ...[1999, 1975, 1991].map((v) => Choice(v, false)),
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
                         Choice(1989, true),
                     ]
                 ),
