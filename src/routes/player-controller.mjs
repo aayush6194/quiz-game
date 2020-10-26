@@ -1,4 +1,3 @@
-
 export default class playerController  {
   static async leaderboard(req, res, next) {
     try {

@@ -16,9 +16,16 @@
         </button>
       </li>
     </ul>
-    <div class="grid">
-      <input class="" placeholder="Enter your name" v-model="name"/>
-      <button placeholder="Enter your name" @click="setPlayer({ name, avatar })">
+    <div class="grid cols">
+      <input
+        class=""
+        placeholder="Enter your name"
+        v-model="localPlayer.name"
+      />
+      <button
+        placeholder="Enter your name"
+        @click="setPlayer(localPlayer)"
+      >
         Start
       </button>
     </div>
@@ -28,26 +35,34 @@
 <script>
 import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Player",
-  props: {
-    player: Object,
-    setPlayer: Function
-  },
   data: () => ({
     maleAvatar,
     femaleAvatar,
-    name: "",
-    avatar: -1
+    localPlayer: {
+      name: "",
+      avatar: -1,
+    },
   }),
+
+  computed: mapGetters(["player"]),
   methods: {
+    ...mapActions(["setPlayer"]),
     setAvatar: function(avatar) {
-      this.avatar = avatar;
+      this.localPlayer = { ...this.localPlayer, avatar };
     },
     getButtonClass: function(avatar) {
-      return avatar === this.avatar ? "btn-option active" : "btn-option";
-    }
-  }
+      return avatar === this.localPlayer.avatar
+        ? "btn-option active"
+        : "btn-option";
+    },
+  },
+  created: function() {
+    this.localPlayer = this.player;
+  },
 };
 </script>
 
@@ -69,10 +84,8 @@ export default {
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }
 
-.grid {
-  display: grid;
+.cols {
   padding: 0;
-  grid-gap: 1em;
   grid-template-columns: 1fr auto;
   place-items: stretch;
 }

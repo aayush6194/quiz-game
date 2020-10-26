@@ -1,7 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { Question } from "../domains/Question.mjs";
-import { Choice } from "../domains/Choice.mjs";
 
 /**
  * Read file syncronously to return its content
@@ -24,7 +22,8 @@ const readFile = (fileName, location = "./") => {
 const getQuestions = (data) => {
   const questions = [];
   data = data.split("\n"); //Split by new line
-  // Iterating each lin
+
+  // Iterating each line
   for (let i = 0; i < data.length; i += 6) {
     const question = data[i].trim();
     const options = [];
@@ -32,8 +31,8 @@ const getQuestions = (data) => {
 
     for (let j = 1; j < 5; j++) {
       let option = data[i + j].trim();
-      
-    // Checking if option is corrent; Correct answer contains (correct)
+
+      // Checking if option is corrent; Correct answer contains (correct)
       if (option.includes("(correct)")) {
         // Removing the (correct) keyword
         option = option.split(" ")[0];
@@ -41,16 +40,8 @@ const getQuestions = (data) => {
       }
       options.push(option);
     }
-    // FIXME: last is always ans
-    questions.push(
-      Question(question, [
-        ...options.map((option) => Choice(option)),
-        Choice(correctOption, true),
-      ])
-    );
+    questions.push({ question, options, correctOption });
   }
-  //questions.push({ question, options, correctOption });
-  //  }
 
   return questions;
 };
