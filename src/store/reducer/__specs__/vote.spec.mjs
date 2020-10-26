@@ -14,7 +14,7 @@ describe('vote reducer', () => {
                 Question(
                     'In what year was Sega Genesis released in North America?',
                     [
-                        ...[1999, 1975, 1991].map((v) => Choice(v, false)),
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
                         Choice(1989, true),
                     ]
                 ),
@@ -34,7 +34,7 @@ describe('vote reducer', () => {
                 Question(
                     'In what year was Sega Genesis released in North America?',
                     [
-                        ...[1999, 1975, 1991].map((v) => Choice(v, false)),
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
                         Choice(1989, true),
                     ]
                 ),
