@@ -1,5 +1,5 @@
 import * as player from '../../actions/player.mjs';
-import reducer from '../player.mjs';
+import reducer from '../reducer.mjs';
 
 const ACTIONS = player.ACTIONS;
 

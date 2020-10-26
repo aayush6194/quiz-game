@@ -31,18 +31,21 @@ export const ACTIONS = {
 };
 
 export const addVote = produce((draft, { playerId, choiceId }) => {
+    if (!draft.tallies[draft.voting]) {
+        draft.tallies[draft.voting] = {};
+    }
     if (!draft.tallies[draft.voting][choiceId]) {
-        draft.tallies[draft.voting] = {
-            [choiceId]: [],
-        };
+        draft.tallies[draft.voting][choiceId] = [];
     }
     draft.tallies[draft.voting][choiceId].push(playerId);
 });
 
 export const nextVote = produce((draft) => {
-    if (draft.voting === draft.questions.length - 1) {
-        return { results: getScoreBoard(draft) };
-    } else {
-        draft.voting = draft.voting + 1 || 0;
+    let voting = draft.voting + 1 || 0;
+    if (voting === draft.questions.length) {
+        return {
+            results: getScoreBoard(draft),
+        };
     }
+    draft.voting = voting;
 });

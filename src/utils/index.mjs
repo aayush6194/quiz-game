@@ -1,17 +1,13 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
+import { Question } from '../domains/Question.mjs';
+import { Choice } from '../domains/Choice.mjs';
 
-/**
- * Read file syncronously to return its content
- * @param {string} fileName name of the file to be read
- * @param {string} location path to the file
- * @returns {string} content of the file
- */
-const readFile = (fileName, location = "./") => {
-  const filePath = path.join(location, fileName);
-  return fs.readFileSync(filePath, { encoding: "utf-8" }, (err, data) =>
-    err ? err : data
-  );
+const readFile = (fileName) => {
+    const filePath = path.join('./', fileName);
+    return fs.readFileSync(filePath, { encoding: 'utf-8' }, (err, data) =>
+        err ? err : data
+    );
 };
 
 /**
@@ -23,27 +19,31 @@ const getQuestions = (data) => {
   const questions = [];
   data = data.split("\n"); //Split by new line
 
-  // Iterating each line
-  for (let i = 0; i < data.length; i += 6) {
-    const question = data[i].trim();
-    const options = [];
-    let correctOption = undefined;
+    for (let i = 0; i < data.length; i += 6) {
+        const question = data[i].trim();
+        const options = [];
+        let correctOption = undefined;
 
-    for (let j = 1; j < 5; j++) {
-      let option = data[i + j].trim();
-
-      // Checking if option is corrent; Correct answer contains (correct)
-      if (option.includes("(correct)")) {
-        // Removing the (correct) keyword
-        option = option.split(" ")[0];
-        correctOption = option;
-      }
-      options.push(option);
+        for (let j = 1; j < 5; j++) {
+            let option = data[i + j].trim();
+            if (option.includes('(correct)')) {
+                option = option.split(' ')[0];
+                correctOption = option;
+            }
+            options.push(option);
+        }
+        // FIXME: last is always ans
+        questions.push(
+            Question(question, [
+                ...options.map((option) => Choice(option)),
+                Choice(correctOption, true),
+            ])
+        );
     }
     questions.push({ question, options, correctOption });
   }
 
-  return questions;
-};
+   // return questions;
+//};
 
 export { readFile, getQuestions };
