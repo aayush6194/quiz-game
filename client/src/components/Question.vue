@@ -1,19 +1,13 @@
 <template>
   <div class="wrapper appear">
-    <div v-if="!getQuestion">
-      <h1>Waiting for players</h1>
-      <button @click="startVoting">Start Quiz!</button>
-    </div>
-    <div v-else>
-      <h1>{{ getQuestion.question }}</h1>
-      <ul class="options">
-        <li v-for="option in getQuestion.choices" :key="option">
-          <button class="btn-option">
-            {{ option.value }}
-          </button>
-        </li>
-      </ul>
-    </div>
+    <h1>{{ question.question }}</h1>
+    <ul class="options">
+      <li v-for="(option, index) in question.choices" :key="option">
+        <button @click="setVoting(index)" class="btn-option">
+          {{ option.value }}
+        </button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -23,12 +17,8 @@ import { mapActions } from "vuex";
 export default {
   name: "Question",
   props: {
-    data: String
-  },
-  computed: {
-    getQuestion() {
-      return this.$store.getters.getQuestionUnderVote;
-    }
+    data: String,
+    question: []
   },
   created: function() {
     this.timerUpdate();
@@ -39,7 +29,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["startVoting", "setVoting"]),
+    ...mapActions(["setVoting"]),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
