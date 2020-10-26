@@ -6,7 +6,7 @@ const wss = new WebSocket.Server({ noServer: true });
 store.subscribe(() => wss.emit('state', store.getState()));
 
 wss.on('connection', (socket) => {
-    socket.emit('state', store.getState());
+    socket.send(JSON.stringify({ type: 'LOAD_STATE', data: store.getState() }));
     socket.on('action', store.dispatch.bind(store));
 });
 
