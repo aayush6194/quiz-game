@@ -5,7 +5,9 @@ export default function createWebSocketPlugin(socket) {
             switch (action.type) {
                 case 'LOAD_STATE':
                     store.commit('loadQuestions', action.payload.questions);
-                    store.commit('loadPlayers', action.payload.players);
+                    store.commit('loadPlayers', {
+                        players: action.payload.players,
+                    });
                     store.commit('setVoting', action.payload.voting);
                     break;
                 case 'NEXT_VOTE':
@@ -15,8 +17,6 @@ export default function createWebSocketPlugin(socket) {
                     break;
             }
         };
-        // store.subscribe((mutation) => {
-        //     socket.emit('action', mutation);
-        // });
+        store.subscribeAction((action) => socket.send(JSON.stringify(action)));
     };
 }

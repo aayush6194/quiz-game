@@ -26,7 +26,10 @@
         placeholder="Enter your name"
         v-model="localPlayer.name"
       />
-      <button placeholder="Enter your name" @click="setPlayer(localPlayer)">
+      <button
+        placeholder="Enter your name"
+        @click="setPlayer({ player: localPlayer })"
+      >
         Start
       </button>
     </div>
@@ -36,7 +39,7 @@
 <script>
 import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
-import BackButton from '../components/BackButton'
+import BackButton from "../components/BackButton";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -52,7 +55,6 @@ export default {
       avatar: -1
     }
   }),
-
   computed: mapGetters(["player"]),
   methods: {
     ...mapActions(["setPlayer"]),
@@ -92,6 +94,4 @@ export default {
   grid-template-columns: 1fr auto;
   place-items: stretch;
 }
-
-
 </style>
