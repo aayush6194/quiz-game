@@ -56,13 +56,23 @@ body {
 .img {
   max-width: 100%;
 }
-button {
-  border: 0;
-  border-radius: 0.25em;
-  padding: .25em;
-  box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
+
+button, input, .card {
+  border-radius: .25em;
   outline: none;
+  border-width: 0;
+}
+
+button {
+  box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
   cursor: pointer;
+}
+
+input{
+  width: 100%;
+  box-sizing: border-box;
+  padding: .5em;
+  border-width: 1px
 }
 
 button:hover {
