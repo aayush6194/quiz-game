@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import store from './store/index.mjs';
+import { mapClientActions } from './store/actions/helpers.mjs';
 
 const wss = new WebSocket.Server({ noServer: true });
 
@@ -22,7 +23,10 @@ wss.on('connection', (socket) => {
     );
     socket.on('message', (data) => {
         const action = JSON.parse(data);
-        store.dispatch.bind(store)(action);
+        store.dispatch.bind(store)({
+            type: mapClientActions(action.type),
+            payload: action.payload,
+        });
     });
 });
 
