@@ -3,7 +3,7 @@ import * as player from '../actions/player.mjs';
 import * as vote from '../actions/vote.mjs';
 
 const initialState = {
-    voting: undefined,
+    voting: null,
     tallies: {},
     players: [],
     questions: [],

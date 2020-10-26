@@ -51,7 +51,7 @@ describe('root reducer', () => {
                 ),
             ],
             players: [],
-            voting: undefined,
+            voting: null,
             tallies: {},
         });
     });

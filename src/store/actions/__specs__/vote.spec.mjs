@@ -23,6 +23,7 @@ describe('vote', () => {
                     ]
                 ),
             ],
+            voting: null,
         };
         const nextState = actions.nextVote(state);
         expect(nextState).toEqual({

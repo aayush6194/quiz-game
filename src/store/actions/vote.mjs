@@ -41,7 +41,7 @@ export const addVote = produce((draft, { playerId, choiceId }) => {
 });
 
 export const nextVote = produce((draft) => {
-    let voting = draft.voting + 1 || 0;
+    let voting = (draft.voting ?? -1) + 1;
     if (voting === draft.questions.length) {
         return {
             results: getScoreBoard(draft),
