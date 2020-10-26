@@ -13,6 +13,8 @@ export default function reducer(state = intialState, action) {
                 playerId: action.payload.playerId,
                 choiceId: action.payload.choiceId,
             });
+        case ACTIONS.NEXT_VOTE:
+            return vote.nextVote(state);
         default:
             return state;
     }

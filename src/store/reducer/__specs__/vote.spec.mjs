@@ -45,4 +45,50 @@ describe('vote reducer', () => {
             },
         });
     });
+
+    it(`should handle ${ACTIONS.NEXT_VOTE}`, () => {
+        const state = {
+            questions: [
+                Question(
+                    'In what year was Sega Genesis released in North America?',
+                    [
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
+                        Choice(1989, true),
+                    ]
+                ),
+                Question(
+                    'Which of the following video games takes place in a dystopian underwater city called Rapture?',
+                    [
+                        ...['Half-Life', 'God Of War', 'Fallout 3'].map((v) =>
+                            Choice(v)
+                        ),
+                        Choice('Bioshock', true),
+                    ]
+                ),
+            ],
+            voting: 0,
+        };
+        const nextState = vote.nextVote(state);
+        expect(nextState).toEqual({
+            questions: [
+                Question(
+                    'In what year was Sega Genesis released in North America?',
+                    [
+                        ...[1999, 1975, 1991].map((v) => Choice(v)),
+                        Choice(1989, true),
+                    ]
+                ),
+                Question(
+                    'Which of the following video games takes place in a dystopian underwater city called Rapture?',
+                    [
+                        ...['Half-Life', 'God Of War', 'Fallout 3'].map((v) =>
+                            Choice(v)
+                        ),
+                        Choice('Bioshock', true),
+                    ]
+                ),
+            ],
+            voting: 1,
+        });
+    });
 });
