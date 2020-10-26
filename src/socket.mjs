@@ -1,15 +1,13 @@
 import WebSocket from 'ws';
 import store from './store/index.mjs';
 
-export const init = (server) => {
-    let wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ noServer: true });
 
-    store.subscribe(() => wss.emit('state', store.getState()));
+store.subscribe(() => wss.emit('state', store.getState()));
 
-    wss.on('connection', (socket) => {
-        socket.emit('state', store.getState());
-        socket.on('action', store.dispatch.bind(store));
-    });
-};
+wss.on('connection', (socket) => {
+    socket.emit('state', store.getState());
+    socket.on('action', store.dispatch.bind(store));
+});
 
-export default { init };
+export default wss;

@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 //import { swaggerDocument } from './docs/index.mjs';
 import { Port } from './config.mjs';
 import * as http from 'http';
-import Socket from './socket.mjs';
+import wss from './socket.mjs';
 import { readFile, getQuestions } from './utils/index.mjs';
 import store from './store/index.mjs';
 import { ACTIONS } from './store/actions/question.mjs';
@@ -16,14 +16,16 @@ store.dispatch({
     payload: { questions },
 });
 
-const server = http.createServer();
 const app = express();
 
-Socket.init(server);
-server.listen(8082);
-
 MiddleWares.init(app);
-app.listen(Port, 'localhost');
+
+const server = app.listen(Port);
+server.on('upgrade', (req, socket, head) => {
+    wss.handleUpgrade(req, socket, head, (ws) => {
+        wss.emit('connection', ws, req);
+    });
+});
 console.log(`Running on Port : ${Port}`);
 
 SetRoutes(app);
