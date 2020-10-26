@@ -35,7 +35,6 @@ export default {
         backgroundAttachment: "fixed",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "bottom left"
-        //   backgroundSize: "cover"
       }
     };
   }
