@@ -1,6 +1,11 @@
 <template>
-  <BackButton :goBack="player ? back : resetPlayer" />
-  <Player v-if="!player.gender" :player="player" :setPlayer="setPlayer" />
+  <!-- Back Button -->
+  <router-link v-if="!player.avatar" to="/" class="absolute">
+    <BackButton />
+  </router-link>
+  <BackButton v-else :goBack="resetPlayer" />
+
+  <Player v-if="!player.avatar" :player="player" :setPlayer="setPlayer" />
   <h1 v-else-if="time > 0">{{ time }}</h1>
   <Question v-else :data="data" />
 </template>
@@ -17,15 +22,15 @@ export default {
     Player,
     BackButton
   },
-  props: {
-    back: Function
-  },
+  props: {},
   data: function() {
     return {
       player: {
-        gender: undefined
+        avatar: undefined,
+        name: ""
       },
-      time: 5,
+      room: undefined,
+      time: 3,
       data: {
         question: "None"
       }
@@ -33,10 +38,13 @@ export default {
   },
 
   methods: {
-    setPlayer: function(gender) {
-      this.player = { gender };
-      this.time = 5;
+    setPlayer: function(avatar) {
+      this.player = { avatar };
+      this.time = 3;
       this.timerUpdate();
+    },
+    resetPlayer: function() {
+      this.player = { avatar: undefined, name: "" };
     },
 
     timerUpdate() {
@@ -48,9 +56,6 @@ export default {
       }
     },
 
-    resetPlayer: function() {
-      this.player = { gender: undefined };
-    },
     socket: function() {
       const con = new WebSocket("ws://localhost:8082");
 
@@ -77,5 +82,8 @@ export default {
   grid-gap: 2em;
   place-items: stretch;
   padding: 0;
+}
+.absolute {
+  position: absolute;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper appear">
-    <h1>Select a player</h1>
+    <h1>Select a Room</h1>
     <ul class="options">
       <li>
         <button :class="getButtonClass(0)" v-on:click="setAvatar(0)">
@@ -16,12 +16,6 @@
         </button>
       </li>
     </ul>
-    <div class="grid">
-      <input class="" placeholder="Enter your name" v-model="name"/>
-      <button placeholder="Enter your name" @click="setPlayer({ name, avatar })">
-        Start
-      </button>
-    </div>
   </div>
 </template>
 
@@ -29,25 +23,14 @@
 import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
 export default {
-  name: "Player",
+  name: "Room",
   props: {
-    player: Object,
-    setPlayer: Function
+    room: Object,
+    setRoom: Function
   },
   data: () => ({
-    maleAvatar,
-    femaleAvatar,
-    name: "",
-    avatar: -1
+   
   }),
-  methods: {
-    setAvatar: function(avatar) {
-      this.avatar = avatar;
-    },
-    getButtonClass: function(avatar) {
-      return avatar === this.avatar ? "btn-option active" : "btn-option";
-    }
-  }
 };
 </script>
 
