@@ -1,10 +1,16 @@
+import { sendMessage } from '../index';
+
 const state = {
     voting: null,
 };
 
 const getters = {};
 
-const actions = {};
+const actions = {
+    startVoting() {
+        sendMessage({ type: 'NEXT_VOTE' });
+    },
+};
 
 const mutations = {
     setVoting: (state, voting) => (state.voting = voting),

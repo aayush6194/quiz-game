@@ -15,18 +15,17 @@ const getters = {
 
 const actions = {
     setPlayer({ commit }, player) {
-        commit('set', player);
+        commit('setPlayer', player);
     },
-
     setRoom({ commit }, room) {
         commit('roomSet', room);
     },
 };
 
 const mutations = {
-    set: (state, player) => (state.player = player),
+    setPlayer: (state, payload) => (state.player = payload.player),
     roomSet: (state, room) => (state.player.room = room),
-    loadPlayers: (state, players) => (state.players = players),
+    loadPlayers: (state, payload) => (state.players = payload.players),
 };
 
 export default {
