@@ -2,7 +2,7 @@ import express from 'express';
 import { SetRoutes } from './routes/index.mjs';
 import MiddleWares from './middlewares/index.mjs';
 import swaggerUi from 'swagger-ui-express';
-import { swaggerDocument } from './docs/index.mjs';
+//import { swaggerDocument } from './docs/index.mjs';
 import { Port } from './config.mjs';
 import * as http from 'http';
 import Socket from './socket.mjs';

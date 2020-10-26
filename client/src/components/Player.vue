@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper appear">
-    {{ player }}
     <h1>Select a player</h1>
     <ul class="options">
       <li>
@@ -17,7 +16,7 @@
         </button>
       </li>
     </ul>
-    <div class="grid">
+    <div class="grid cols">
       <input
         class=""
         placeholder="Enter your name"
@@ -25,7 +24,7 @@
       />
       <button
         placeholder="Enter your name"
-        @click="setPlayer(localPlayer) && timerUpdate()"
+        @click="setPlayer(localPlayer)"
       >
         Start
       </button>
@@ -40,9 +39,6 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Player",
-  props: {
-    timerUpdate: Function
-  },
   data: () => ({
     maleAvatar,
     femaleAvatar,
@@ -88,10 +84,8 @@ export default {
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }
 
-.grid {
-  display: grid;
+.cols {
   padding: 0;
-  grid-gap: 1em;
   grid-template-columns: 1fr auto;
   place-items: stretch;
 }

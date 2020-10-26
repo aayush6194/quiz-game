@@ -5,13 +5,12 @@
     to="/"
     class="absolute"
   >
-    <BackButton />
+   <BackButton />
   </router-link>
   <BackButton v-else :goBack="resetPlayer" />
-  <Player
-    v-if="player.name.length < 2 || player.avatar === -1"
-    :timerUpdate="timerUpdate"
-  />
+  <Player v-if="player.name.length < 2 || player.avatar === -1" />
+
+  <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
   <h1 v-else-if="time > 0">{{ time }}</h1>
   <Question v-else :data="data" />
 </template>
@@ -19,6 +18,7 @@
 <script>
 import Question from "../components/Question.vue";
 import Player from "../components/Player.vue";
+import Room from "../components/Room.vue";
 import BackButton from "../components/BackButton.vue";
 import { mapGetters } from "vuex";
 
@@ -27,6 +27,7 @@ export default {
   components: {
     Question,
     Player,
+    Room,
     BackButton
   },
   computed: mapGetters(["player"]),
