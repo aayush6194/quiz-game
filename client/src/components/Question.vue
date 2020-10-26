@@ -2,6 +2,7 @@
   <div class="wrapper appear">
     <div v-if="!getQuestion">
       <h1>Waiting for players</h1>
+      <button @click="startVoting">Start Quiz!</button>
     </div>
     <div v-else>
       <h1>{{ getQuestion.question }}</h1>
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "Question",
   props: {
@@ -24,7 +26,6 @@ export default {
   },
   computed: {
     getQuestion() {
-      console.log(this.$store.getters.getQuestionUnderVote);
       return this.$store.getters.getQuestionUnderVote;
     }
   },
@@ -37,6 +38,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["startVoting"]),
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
