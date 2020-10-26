@@ -1,14 +1,14 @@
-import * as quiz from '../actions/quiz.mjs';
+import * as quiz from '../actions/question.mjs';
 const ACTIONS = quiz.ACTIONS;
 
 const intialState = {
-    quiz: [],
+    questions: [],
 };
 
 export default function reducer(state = intialState, action) {
     switch (action.type) {
         case ACTIONS.CREATE_QUIZ:
-            return quiz.createQuiz(state, action.questions);
+            return quiz.createQuiz(state, action.payload.questions);
         default:
             return state;
     }
