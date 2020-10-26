@@ -1,7 +1,11 @@
-import { combineReducers } from 'redux';
+import redux from 'redux';
 // import rooms from './room.mjs';
-import quiz from './quiz.mjs';
+import question from './question.mjs';
+import vote from './vote.mjs';
+import player from './player.mjs';
 
-export default combineReducers({
-    quiz,
+export default redux.combineReducers({
+    questions: question,
+    players: player,
+    ...vote,
 });

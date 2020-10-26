@@ -1,8 +1,8 @@
-import * as actions from '../quiz.mjs';
-import { Question } from '../../domains/Question.mjs';
-import { Choice } from '../../domains/Choice.mjs';
+import * as actions from '../question.mjs';
+import { Question } from '../../../domains/Question.mjs';
+import { Choice } from '../../../domains/Choice.mjs';
 
-describe('quiz', () => {
+describe('question', () => {
     it('should add the questions to the state', () => {
         const state = {};
         const choices = [1999, 1975, 1991].map((v) => Choice(v));
@@ -13,7 +13,7 @@ describe('quiz', () => {
                 choices
             ),
         ];
-        const nextState = actions.createQuiz(state, questions);
+        const nextState = actions.addQuestions(state, questions);
         expect(nextState).toEqual({
             questions: [
                 Question(

@@ -1,7 +1,7 @@
 import * as vote from '../../actions/vote.mjs';
 import reducer from '../vote.mjs';
-import { Question } from '../../domains/Question.mjs';
-import { Choice } from '../../domains/Choice.mjs';
+import { Question } from '../../../domains/Question.mjs';
+import { Choice } from '../../../domains/Choice.mjs';
 const ACTIONS = vote.ACTIONS;
 
 describe('vote reducer', () => {

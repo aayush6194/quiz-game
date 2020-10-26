@@ -1,11 +1,12 @@
-import * as quiz from '../../actions/quiz.mjs';
-import reducer from '../quiz.mjs';
-import { Question } from '../../domains/Question.mjs';
-import { Choice } from '../../domains/Choice.mjs';
-const ACTIONS = quiz.ACTIONS;
+import * as question from '../../actions/question.mjs';
+import reducer from '../question.mjs';
+import { Question } from '../../../domains/Question.mjs';
+import { Choice } from '../../../domains/Choice.mjs';
 
-describe('quiz reducer', () => {
-    it(`should handle ${ACTIONS.CREATE_QUIZ}`, () => {
+const ACTIONS = question.ACTIONS;
+
+describe('question reducer', () => {
+    it(`should handle ${ACTIONS.ADD_QUESTIONS}`, () => {
         const baseState = {};
         const choices = [1999, 1975, 1991].map((v) => Choice(v));
         choices.push(Choice(1989, true));
@@ -15,7 +16,7 @@ describe('quiz reducer', () => {
                 choices
             ),
         ];
-        const action = { type: ACTIONS.CREATE_QUIZ, questions };
+        const action = { type: ACTIONS.ADD_QUESTIONS, payload: { questions } };
         const nextState = reducer(baseState, action);
         expect(nextState).toEqual({
             questions: [
