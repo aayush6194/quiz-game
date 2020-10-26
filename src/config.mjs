@@ -1,6 +1,6 @@
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 
 dotenv.config();
-const Port =  Number(process.env.PORT) || 8081;
+const Port = Number(process.env.PORT) || 8081;
 
 export { Port };
