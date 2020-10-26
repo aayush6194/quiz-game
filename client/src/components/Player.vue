@@ -12,6 +12,7 @@
           <div class="txt-center">Player 1</div>
         </button>
       </li>
+    
 
       <li>
         <button :class="getButtonClass(1)" @click="setAvatar(1)">
