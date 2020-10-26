@@ -32,25 +32,28 @@ describe('root reducer', () => {
         };
         const nextState = reducer(undefined, action);
         expect(nextState).toEqual({
-            questions: [
-                Question(
-                    'In what year was Sega Genesis released in North America?',
-                    [
-                        ...[1999, 1975, 1991].map((v) => Choice(v)),
-                        Choice(1989, true),
-                    ]
-                ),
-                Question(
-                    'Which of the following video games takes place in a dystopian underwater city called Rapture?',
-                    [
-                        Choice('Bioshock', true),
-                        ...['Half-Life', 'God Of War', 'Fallout 3'].map((v) =>
-                            Choice(v)
-                        ),
-                    ]
-                ),
-            ],
-            players: [],
+            question: {
+                questions: [
+                    Question(
+                        'In what year was Sega Genesis released in North America?',
+                        [
+                            ...[1999, 1975, 1991].map((v) => Choice(v)),
+                            Choice(1989, true),
+                        ]
+                    ),
+                    Question(
+                        'Which of the following video games takes place in a dystopian underwater city called Rapture?',
+                        [
+                            Choice('Bioshock', true),
+                            ...['Half-Life', 'God Of War', 'Fallout 3'].map(
+                                (v) => Choice(v)
+                            ),
+                        ]
+                    ),
+                ],
+            },
+            player: { players: [] },
+            vote: { voting: 0, tallies: {} },
         });
     });
 });

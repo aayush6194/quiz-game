@@ -5,7 +5,7 @@ import vote from './vote.mjs';
 import player from './player.mjs';
 
 export default redux.combineReducers({
-    questions: question,
-    players: player,
-    ...vote,
+    question,
+    player,
+    vote,
 });
