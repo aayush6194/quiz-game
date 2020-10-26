@@ -13,7 +13,7 @@ describe('question', () => {
                 choices
             ),
         ];
-        const nextState = actions.addQuestions(state, questions);
+        const nextState = actions.loadQuestions(state, questions);
         expect(nextState).toEqual({
             questions: [
                 Question(

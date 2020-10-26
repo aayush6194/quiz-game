@@ -1,5 +1,5 @@
 import * as vote from '../../actions/vote.mjs';
-import reducer from '../vote.mjs';
+import reducer from '../reducer.mjs';
 import { Question } from '../../../domains/Question.mjs';
 import { Choice } from '../../../domains/Choice.mjs';
 const ACTIONS = vote.ACTIONS;
@@ -47,7 +47,7 @@ describe('vote reducer', () => {
     });
 
     it(`should handle ${ACTIONS.NEXT_VOTE}`, () => {
-        const state = {
+        const baseState = {
             questions: [
                 Question(
                     'In what year was Sega Genesis released in North America?',
@@ -68,7 +68,10 @@ describe('vote reducer', () => {
             ],
             voting: 0,
         };
-        const nextState = vote.nextVote(state);
+        const action = {
+            type: ACTIONS.NEXT_VOTE,
+        };
+        const nextState = reducer(baseState, action);
         expect(nextState).toEqual({
             questions: [
                 Question(
