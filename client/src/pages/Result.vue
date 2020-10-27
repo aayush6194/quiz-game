@@ -7,7 +7,7 @@
     <div class='score card' >
       <img class='img' src='../assets/prize.svg' :style='{ width: `150px` }' />
       <div class='txt-md bold' :style='{placeSelf: `center`}'>
-        You Score
+        Your Score
         <div class='txt-md txt-left'>10</div>
       </div>
     </div>
