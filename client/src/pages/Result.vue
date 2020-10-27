@@ -3,7 +3,6 @@
     <router-link to="/">
       <BackButton />
     </router-link>
-{{ results}}
     <div class="txt-primary txt-center txt-lg bold">Scores</div>
 
     <div class="winner">
@@ -11,11 +10,11 @@
     </div>
 
     <ul class="results">
-      <li v-for="(data, index) in result" :key="data.player">
+      <li v-for="(data, index) in results" :key="data.player">
         <div class="result card">
           <div class="txt-md bold">{{ index + 1 }}.</div>
           <img class="img avatar"  src='../assets/user1.png'/>
-          <div class="capitalize">{{ data.player }}</div>
+          <div class="capitalize">{{ data.player.name }}</div>
           <div class="txt-primary txt-md bold score">
             {{ data.right }}
             <span class="txt-lg">/</span>
@@ -37,15 +36,6 @@ export default {
     BackButton,
   },
   computed: mapGetters(["results"]),
-  data: function() {
-    return {
-      result: [
-        { player: "dude1", right: 0, wrong: 12 },
-        { player: "dude2", right: 0, wrong: 12 },
-      ],
-    };
-  },
-
   methods: {
     setPlayer: function(gender) {
       this.player = { gender };
