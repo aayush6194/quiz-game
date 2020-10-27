@@ -119,7 +119,7 @@ describe('vote', () => {
                     name: i,
                 })),
         };
-        const nextState = actions.handleVote(state, { choiceId, playerId });
+        const nextState = actions.addVote(state, { choiceId, playerId });
         expect(nextState).toEqual({
             questions: [
                 Question(
@@ -171,7 +171,7 @@ describe('vote', () => {
                     name: i,
                 })),
         };
-        const nextState = actions.handleVote(state, { choiceId, playerId });
+        const nextState = actions.addVote(state, { choiceId, playerId });
         expect(nextState).toEqual({
             questions: [
                 Question(
@@ -227,7 +227,7 @@ describe('vote', () => {
             },
             players: [{ name: 'Noah' }, { name: 'Shiv' }],
         };
-        const nextState = actions.handleVote(state, {
+        const nextState = actions.addVote(state, {
             choiceId: 1,
             playerId: 1,
         });
@@ -350,7 +350,7 @@ describe('vote', () => {
                 1: { 0: [1, 2], 1: [0], 2: [3] },
             },
         };
-        const nextState = actions.handleVote(state, {
+        const nextState = actions.addVote(state, {
             playerId: 4,
             choiceId: 3,
         });

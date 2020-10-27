@@ -12,7 +12,7 @@ const initialState = {
 export default function rootReducer(state = initialState, action) {
     switch (action.type) {
         case vote.ACTIONS.ADD_VOTE:
-            return vote.handleVote(state, {
+            return vote.addVote(state, {
                 playerId: action.payload.playerId,
                 choiceId: action.payload.choiceId,
             });

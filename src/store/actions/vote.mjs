@@ -28,25 +28,6 @@ const getScoreBoard = ({ players, questions, tallies }) => {
     return Object.values(scores);
 };
 
-const totalVotes = (choices) => {
-    if (!choices) {
-        return 0;
-    }
-    return Object.values(choices).reduce((total, players) => {
-        return total + players.length;
-    }, 0);
-};
-
-const addVote = produce((draft, { playerId, choiceId }) => {
-    if (!draft.tallies[draft.voting]) {
-        draft.tallies[draft.voting] = {};
-    }
-    if (!draft.tallies[draft.voting][choiceId]) {
-        draft.tallies[draft.voting][choiceId] = [];
-    }
-    draft.tallies[draft.voting][choiceId].push(playerId);
-});
-
 export const nextVote = produce((draft) => {
     let voting = (draft.voting ?? -1) + 1;
     if (voting === draft.questions.length) {
@@ -57,16 +38,15 @@ export const nextVote = produce((draft) => {
     draft.voting = voting;
 });
 
-export const handleVote = (state, payload) => {
-    const nextState = addVote(state, payload);
-    if (
-        totalVotes(nextState.tallies[nextState.voting]) ===
-        nextState.players.length
-    ) {
-        return nextVote(nextState);
+export const addVote = produce((draft, { playerId, choiceId }) => {
+    if (!draft.tallies[draft.voting]) {
+        draft.tallies[draft.voting] = {};
     }
-    return nextState;
-};
+    if (!draft.tallies[draft.voting][choiceId]) {
+        draft.tallies[draft.voting][choiceId] = [];
+    }
+    draft.tallies[draft.voting][choiceId].push(playerId);
+});
 
 export const ACTIONS = {
     ADD_VOTE: 'ADD_VOTE',
