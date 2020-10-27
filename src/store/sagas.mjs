@@ -37,7 +37,6 @@ function* beginVote() {
                 yield put({ type: VOTE.NEXT_VOTE });
             }
         } else {
-            console.log('else flow');
             yield put({ type: VOTE.NEXT_VOTE });
         }
         i++;
