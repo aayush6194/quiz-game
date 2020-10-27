@@ -1,32 +1,47 @@
 <template>
-    <BackButton :goBack="player? back: resetPlayer" />
-    <Question v-if="player.gender" :data="data" />
-    <Player v-else :player="player" :setPlayer="setPlayer" />
+  <div class="wrapper card">
+    <router-link to="/">
+      <BackButton />
+    </router-link>
+
+    <div class="txt-primary txt-center txt-lg bold">Scores</div>
+
+    <div class="winner">
+      <img class="img" src="../assets/prize.svg" :style="{ width: '150px' }" />
+    </div>
+
+    <ul class="results">
+      <li v-for="(data, index) in result" :key="data.player">
+        <div class="result card">
+          <div class="txt-md bold">{{ index + 1 }}.</div>
+          <img class="img avatar"  src='../assets/user1.png'/>
+          <div class="capitalize">{{ data.player }}</div>
+          <div class="txt-primary txt-md bold score">
+            {{ data.right }}
+            <span class="txt-lg">/</span>
+            {{ data.right + data.wrong }}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
-import Question from "../components/Question.vue";
-import Player from "../components/Player.vue";
 import BackButton from "../components/BackButton.vue";
 
 export default {
-  name: "Home",
+  name: "Result",
   components: {
-    Question,
-    Player,
-    BackButton
+    BackButton,
   },
-  props:{
-    back: Function
-  },
+
   data: function() {
     return {
-      player: {
-        gender: undefined,
-      },
-      data: {
-        question: "None",
-      },
+      result: [
+        { player: "dude1", right: 0, wrong: 12 },
+        { player: "dude2", right: 0, wrong: 12 },
+      ],
     };
   },
 
@@ -57,12 +72,29 @@ export default {
 </script>
 
 <style scoped>
-.options {
-  list-style: none;
+.wrapper {
+  place-self: center;
+}
+
+.winner,
+.result,
+.results,
+.option {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 2em;
-  place-items: stretch;
+  grid-gap: 1em;
+  place-items: center stretch;
+}
+.results {
+  list-style: none;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(12, auto);
+  min-height: 50vh;
+  width: 400px;
+  place-items: start stretch;
   padding: 0;
+}
+
+.result {
+  grid-template-columns: auto auto 1fr auto;
 }
 </style>

@@ -15,7 +15,7 @@ const routes = [
     component: Game,
   },
   {
-    path: "/",
+    path: "/result",
     name: "result",
     component: Result,
   },

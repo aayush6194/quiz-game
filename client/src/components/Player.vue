@@ -4,7 +4,7 @@
       <BackButton />
     </router-link>
 
-    <h1 class="txt-center">Select a player</h1>
+    <h1 class="txt-center txt-primary">Select a player</h1>
     <ul class="options">
       <li>
         <button :class="getButtonClass(0)" @click="setAvatar(0)">
@@ -32,7 +32,7 @@
         @click="submit()"
         :style="{ padding: '.5em 1em' }"
       >
-        <i class="fa fa-chevron-right" />
+        <i class="fa fa-chevron-right txt-primary" />
       </button>
 
       <label for="error" :style="{ color: error ? 'red' : 'transparent' }">

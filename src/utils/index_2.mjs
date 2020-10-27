@@ -34,7 +34,7 @@ const getQuestions = (data) => {
 
       // Checking if option is corrent; Correct answer contains (correct)
       if (option.includes("(correct)")) {
-        // Removing the (correct) keyword
+        
         option = option.split(" ")[0];
         correctOption = option;
       }
