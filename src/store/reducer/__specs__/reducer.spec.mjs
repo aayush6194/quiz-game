@@ -61,7 +61,7 @@ describe('root reducer', () => {
             {
                 type: player.ACTIONS.ADD_PLAYER,
                 payload: {
-                    player: 'Tracer',
+                    player: { name: 'Tracer' },
                 },
             },
             {
@@ -90,13 +90,13 @@ describe('root reducer', () => {
             {
                 type: player.ACTIONS.ADD_PLAYER,
                 payload: {
-                    player: 'Dave',
+                    player: { name: 'Dave' },
                 },
             },
             {
                 type: player.ACTIONS.ADD_PLAYER,
                 payload: {
-                    player: 'Hanzo',
+                    player: { name: 'Hanzo' },
                 },
             },
             {

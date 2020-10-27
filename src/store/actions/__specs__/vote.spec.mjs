@@ -282,7 +282,7 @@ describe('vote', () => {
             ],
             players: Array(5)
                 .fill(0)
-                .map((_, i) => `Player #${i + 1}`),
+                .map((_, i) => ({ name: `Player #${i + 1}` })),
             voting: 1,
             tallies: {
                 0: { 0: [0], 1: [1, 3], 3: [2, 4] },
@@ -343,7 +343,7 @@ describe('vote', () => {
             ],
             players: Array(5)
                 .fill(0)
-                .map((_, i) => `Player #${i + 1}`),
+                .map((_, i) => ({ name: `Player #${i + 1}` })),
             voting: 1,
             tallies: {
                 0: { 0: [0], 1: [1, 3], 3: [2, 4] },
