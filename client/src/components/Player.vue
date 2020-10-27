@@ -3,6 +3,7 @@
     <router-link to="/">
       <BackButton />
     </router-link>
+
     <h1 class="txt-center">Select a player</h1>
     <ul class="options">
       <li>
@@ -76,7 +77,7 @@ export default {
 
     validate() {
       const { name, avatar } = this.localPlayer;
-      this.error = name.length > 2 && avatar !== -1;
+      this.error = name.length < 2 || avatar === -1 || avatar === undefined;
     },
     submit() {
       this.validate();
