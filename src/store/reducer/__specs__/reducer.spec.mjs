@@ -129,23 +129,23 @@ describe('root reducer', () => {
         const finalState = actions.reduce(reducer, undefined);
 
         expect(finalState).toEqual({
-            results: {
-                Tracer: {
-                    player: 'Tracer',
+            results: jasmine.arrayContaining([
+                {
+                    player: { name: 'Tracer' },
                     right: 2,
                     wrong: 0,
                 },
-                Dave: {
-                    player: 'Dave',
+                {
+                    player: { name: 'Dave' },
                     right: 0,
                     wrong: 1,
                 },
-                Hanzo: {
-                    player: 'Hanzo',
+                {
+                    player: { name: 'Hanzo' },
                     right: 1,
                     wrong: 1,
                 },
-            },
+            ]),
         });
     });
 });

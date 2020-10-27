@@ -291,33 +291,33 @@ describe('vote', () => {
         };
         const nextState = actions.nextVote(state);
         expect(nextState).toEqual({
-            results: {
-                'Player #1': {
-                    player: 'Player #1',
+            results: jasmine.arrayContaining([
+                {
+                    player: { name: 'Player #1' },
                     right: 0,
                     wrong: 2,
                 },
-                'Player #2': {
-                    player: 'Player #2',
+                {
+                    player: { name: 'Player #2' },
                     right: 1,
                     wrong: 1,
                 },
-                'Player #3': {
-                    player: 'Player #3',
+                {
+                    player: { name: 'Player #3' },
                     right: 2,
                     wrong: 0,
                 },
-                'Player #4': {
-                    player: 'Player #4',
+                {
+                    player: { name: 'Player #4' },
                     right: 0,
                     wrong: 2,
                 },
-                'Player #5': {
-                    player: 'Player #5',
+                {
+                    player: { name: 'Player #5' },
                     right: 1,
                     wrong: 1,
                 },
-            },
+            ]),
         });
     });
 
@@ -355,33 +355,33 @@ describe('vote', () => {
             choiceId: 3,
         });
         expect(nextState).toEqual({
-            results: {
-                'Player #1': {
-                    player: 'Player #1',
+            results: jasmine.arrayContaining([
+                {
+                    player: { name: 'Player #1' },
                     right: 0,
                     wrong: 2,
                 },
-                'Player #2': {
-                    player: 'Player #2',
+                {
+                    player: { name: 'Player #2' },
                     right: 1,
                     wrong: 1,
                 },
-                'Player #3': {
-                    player: 'Player #3',
+                {
+                    player: { name: 'Player #3' },
                     right: 2,
                     wrong: 0,
                 },
-                'Player #4': {
-                    player: 'Player #4',
+                {
+                    player: { name: 'Player #4' },
                     right: 0,
                     wrong: 2,
                 },
-                'Player #5': {
-                    player: 'Player #5',
+                {
+                    player: { name: 'Player #5' },
                     right: 1,
                     wrong: 1,
                 },
-            },
+            ]),
         });
     });
 });

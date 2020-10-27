@@ -12,7 +12,9 @@ const getScoreBoard = ({ players, questions, tallies }) => {
                 const player = players[playerId].name;
                 if (!scores[player]) {
                     scores[player] = {
-                        player,
+                        player: {
+                            name: player,
+                        },
                         right: 0,
                         wrong: 0,
                     };
@@ -23,7 +25,7 @@ const getScoreBoard = ({ players, questions, tallies }) => {
             });
         });
     });
-    return scores;
+    return Object.values(scores);
 };
 
 const totalVotes = (choices) => {
