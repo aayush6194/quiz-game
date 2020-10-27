@@ -115,6 +115,9 @@ describe('root reducer', () => {
                 payload: { playerId: 2, choiceId: 3 },
             },
             {
+                type: vote.ACTIONS.NEXT_VOTE,
+            },
+            {
                 type: vote.ACTIONS.ADD_VOTE,
                 payload: { playerId: 0, choiceId: 0 },
             },
