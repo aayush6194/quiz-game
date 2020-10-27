@@ -32,6 +32,7 @@ export default {
   body {
     margin: 0;
     font-family: Roboto, sans-serif;
+    color: rgb(50, 50, 93);
   }
 
   #app {
@@ -62,13 +63,14 @@ export default {
     outline: none;
     border-width: 0;
     padding: .75em;
+    color: rgb(50, 50, 93);
     box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
     background: white;
   }
  .capitalize {
   text-transform: capitalize;
  }
-  .card {
+  .no-select {
     -webkit-touch-callout: none; 
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -88,6 +90,11 @@ export default {
     box-shadow: 0 0 0;
     transition: 200ms ease;
   }
+
+  .btn-primary {
+    color: white;
+    background: #7fab96;
+  }
   .grid {
     display: grid;
     padding: 1em;
@@ -97,6 +104,13 @@ export default {
 
   .txt-center {
     text-align: center;
+  }
+   .txt-left {
+    text-align: left;
+  }
+
+    .txt-right {
+    text-align: right;
   }
 
   .txt-lg{

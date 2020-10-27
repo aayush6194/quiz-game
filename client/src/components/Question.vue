@@ -1,6 +1,10 @@
 <template>
 <div class="wrapper">
-  <h1 class="txt-center">{{ time.toFixed(0) }}</h1>
+  <h1 class="txt-right bold">
+    <span>
+      <i class="fas fa-stopwatch" /> {{ time.toFixed(0) }}
+    </span>
+  </h1>
   <div :class="animate ? 'appear' : ''">
     <h1>{{ question.question }}</h1>
     <ul class="options">
@@ -66,6 +70,12 @@ export default {
 h1 {
   padding: 0;
   margin: 0;
+}
+
+.timer {
+  border-radius: 1em;
+  border: 2px solid;
+  padding: .2em;
 }
 
 @media (max-width: 820px) {
