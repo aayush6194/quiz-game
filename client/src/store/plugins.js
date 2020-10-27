@@ -4,11 +4,17 @@ export default function createWebSocketPlugin(socket) {
             const action = JSON.parse(data);
             switch (action.type) {
                 case 'LOAD_STATE':
-                    store.commit('loadQuestions', action.payload.questions);
-                    store.commit('loadPlayers', {
-                        players: action.payload.players,
-                    });
-                    store.commit('setVoting', action.payload.voting);
+                    if (action.payload.results) {
+                        store.commit('loadResults', {
+                            results: action.payload.results,
+                        });
+                    } else {
+                        store.commit('loadQuestions', action.payload.questions);
+                        store.commit('loadPlayers', {
+                            players: action.payload.players,
+                        });
+                        store.commit('setVoting', action.payload.voting);
+                    }
                     break;
                 case 'NEXT_VOTE':
                     store.commit('setVoting', action.payload.voting);

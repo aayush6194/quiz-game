@@ -1,58 +1,15 @@
 <template>
-    <BackButton :goBack="player? back: resetPlayer" />
-    <Question v-if="player.gender" :data="data" />
-    <Player v-else :player="player" :setPlayer="setPlayer" />
+  <div>
+    <h1>Results</h1>
+    {{ results }}
+  </div>
 </template>
 
 <script>
-import Question from "../components/Question.vue";
-import Player from "../components/Player.vue";
-import BackButton from "../components/BackButton.vue";
+import { mapGetters } from "vuex";
 
 export default {
-  name: "Home",
-  components: {
-    Question,
-    Player,
-    BackButton
-  },
-  props:{
-    back: Function
-  },
-  data: function() {
-    return {
-      player: {
-        gender: undefined,
-      },
-      data: {
-        question: "None",
-      },
-    };
-  },
-
-  methods: {
-    setPlayer: function(gender) {
-      this.player = { gender };
-    },
-
-    resetPlayer: function() {
-      this.player = { gender: undefined };
-    },
-    socket: function() {
-      const con = new WebSocket("ws://localhost:8082");
-
-      con.onmessage = (event) => {
-        this.data = JSON.parse(event?.data);
-      };
-
-      con.onopen = function(event) {
-        console.log(event);
-      };
-    },
-  },
-  created: function() {
-    this.socket();
-  },
+  computed: mapGetters(["results"])
 };
 </script>
 
