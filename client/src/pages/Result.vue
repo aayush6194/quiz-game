@@ -4,18 +4,21 @@
       <BackButton />
     </router-link>
     <div class="txt-primary txt-center txt-lg bold">Scores</div>
-
-    <div class="winner">
+    <div class="score card" >
       <img class="img" src="../assets/prize.svg" :style="{ width: '150px' }" />
+      <div class="txt-md bold" :style='{placeSelf: "center"}'>
+        You Score
+        <div class="txt-md txt-left">10</div>
+      </div>
     </div>
 
     <ul class="results">
       <li v-for="(data, index) in results" :key="data.player">
-        <div class="result card">
+        <div class="result card no-select">
           <div class="txt-md bold">{{ index + 1 }}.</div>
           <img class="img avatar"  src='../assets/user1.png'/>
           <div class="capitalize">{{ data.player.name }}</div>
-          <div class="txt-primary txt-md bold score">
+          <div class="txt-primary txt-md bold">
             {{ data.right }}
             <span class="txt-lg">/</span>
             {{ data.right + data.wrong }}
@@ -23,6 +26,9 @@
         </div>
       </li>
     </ul>
+    <button class="btn-primary bold" :style="{fontSize: '1.2em'}">
+        Play Again
+    </button>
   </div>
 </template>
 
@@ -35,7 +41,10 @@ export default {
   components: {
     BackButton,
   },
-  computed: mapGetters(["results"]),
+  // props: function (){
+  //   return{ results: [ ]}
+  // },
+ computed: mapGetters(["results"]),
   methods: {
     setPlayer: function(gender) {
       this.player = { gender };
@@ -65,9 +74,11 @@ export default {
 <style scoped>
 .wrapper {
   place-self: center;
+  place-items: stretch;
+  display: grid;
 }
 
-.winner,
+.score,
 .result,
 .results,
 .option {
@@ -84,7 +95,9 @@ export default {
   place-items: start stretch;
   padding: 0;
 }
-
+.score{
+   grid-template-columns: auto 1fr;
+}
 .result {
   grid-template-columns: auto auto 1fr auto;
 }

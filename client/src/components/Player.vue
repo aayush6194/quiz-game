@@ -71,8 +71,8 @@ export default {
     },
     getButtonClass: function(avatar) {
       return avatar === this.localPlayer.avatar
-        ? "btn-option active"
-        : "btn-option";
+        ? "btn-option no-select active"
+        : "btn-option no-select";
     },
 
     validate() {
@@ -101,7 +101,7 @@ export default {
   border: 2px solid transparent;
 }
 .active {
-  border-color: teal;
+  border-color: #7fab96;
   box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }
