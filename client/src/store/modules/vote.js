@@ -8,7 +8,7 @@ const getters = {};
 
 const actions = {
     startVoting() {
-        sendMessage({ type: 'NEXT_VOTE' });
+        sendMessage({ type: 'BEGIN_VOTE' });
     },
     setVoting(voting) {
         state.voting = voting;
