@@ -78,7 +78,7 @@ h1 {
   padding: 0.2em;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 768px) {
   .options {
     grid-template-columns: 1fr;
   }

@@ -100,12 +100,12 @@ export default {
 .btn-option {
   border: 2px solid transparent;
 }
+
 .active {
-  border-color: #7fab96;
+  border-color: teal;
   box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }
-
 .cols {
   padding: 0;
   grid-template-columns: 1fr auto;

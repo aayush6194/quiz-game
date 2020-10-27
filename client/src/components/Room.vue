@@ -1,32 +1,34 @@
 <template>
   <div class="wrapper appear">
     <div v-if="join === undefined">
-    <h1>Select a Room</h1>
-    <ul class="options">
-      <li>
-        <button  @click="timerUpdate() || setJoin(false) || setRoom('111')" >
-        Create a Room
-        </button>
-      </li>
+      <h1 class="txt-center">Select a Room</h1>
+      <ul class="options">
+        <li>
+          <button
+            @click="timerUpdate() || setJoin(false) || setRoom('111')"
+            class="txt-md btn-primary"
+          >
+            <i class="fas fa-hammer"></i> Create a Room
+          </button>
+        </li>
 
-      <li>
-        <button @click="setJoin(true)">
-          Join a Room
-        </button>
-      </li>
-    </ul>
+        <li>
+          <button @click="setJoin(true)" class="txt-md btn-primary">
+            <i class="fas fa-plus-circle"></i> Join a Room
+          </button>
+        </li>
+      </ul>
     </div>
 
     <div v-else-if="join">
       <h1>Enter the Room Code</h1>
       <div class="grid cols">
-      <input v-model="roomId">
-      <button @click="timerUpdate() || setRoom(roomId)">
-        Submit
-      </button>
+        <input v-model="roomId" />
+        <button @click="timerUpdate() || setRoom(roomId)">
+          Submit
+        </button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -39,12 +41,12 @@ export default {
     timerUpdate: Function
   },
   data: () => ({
-   join: undefined,
-   roomId: ""
+    join: undefined,
+    roomId: ""
   }),
   methods: {
     ...mapActions(["setRoom"]),
-    setJoin: function(join){
+    setJoin: function(join) {
       this.join = join;
     }
   }
@@ -56,6 +58,10 @@ export default {
   padding: 0;
   grid-template-columns: 1fr auto;
   place-items: stretch;
-  grid-gap: .5em;
+  grid-gap: 0.5em;
+}
+
+.options {
+  grid-gap: 1em;
 }
 </style>
