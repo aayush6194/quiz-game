@@ -1,17 +1,17 @@
 <template>
-<div class="wrapper">
-  <h1 class="txt-center">{{ time.toFixed(0) }}</h1>
-  <div :class="animate ? 'appear' : ''">
-    <h1>{{ question.question }}</h1>
-    <ul class="options">
-      <li v-for="(option, index) in question.choices" :key="option">
-        <button @click="submit(index)" class="btn-option">
-          {{ option.value }}
-        </button>
-      </li>
-    </ul>
+  <div class="wrapper">
+    <h1 class="txt-center">{{ time.toFixed(0) }}</h1>
+    <div :class="animate ? 'appear' : ''">
+      <h1>{{ question.question }}</h1>
+      <ul class="options">
+        <li v-for="(option, index) in question.choices" :key="option">
+          <button @click="submit(index)" class="btn-option">
+            {{ option.value }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -42,13 +42,15 @@ export default {
           this.timerUpdate();
         }, 500);
       } else if (this.time === 0) {
-        this.submit();
+        this.submit(undefined);
         this.timerUpdate();
       }
     },
     className() {},
-    submit(i = 0) {
-      this.vote(i);
+    submit(i) {
+      if (i !== undefined) {
+        this.vote(i);
+      }
       this.animate = true;
       this.time = 10;
     }

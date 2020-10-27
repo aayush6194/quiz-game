@@ -14,7 +14,7 @@ const actions = {
         state.voting = voting;
     },
     addVote(_, { playerId, choiceId }) {
-        sendMessage({ type: 'ADD_VOTE', payload: { playerId, choiceId } });
+        sendMessage({ type: 'CAST_VOTE', payload: { playerId, choiceId } });
     },
 };
 
