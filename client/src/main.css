@@ -30,7 +30,7 @@ body {
 button,
 input,
 .card {
-  border-radius: 0.25em;
+  border-radius: 2em;
   outline: none;
   border-width: 0;
   padding: 0.75em;
@@ -52,6 +52,9 @@ button {
   cursor: pointer;
 }
 
+.btn-rounded {
+    border-radius: 2em;
+}
 input {
   width: 100%;
   box-sizing: border-box;

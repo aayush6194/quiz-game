@@ -16,7 +16,6 @@ export default {
   name: "App",
   data() {
     return {
-      play: false,
       styleObject: {
         backgroundImage: `${gradient()}, url("${Games}")`,
         backgroundAttachment: "fixed",
@@ -24,10 +23,11 @@ export default {
         backgroundPosition: "bottom left",
       },
     };
-  },
+  }
 };
 </script>
 
 <style>
   @import url('./main.css');
+
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div class="wrapper">
-    <h1 class="txt-right bold">
+    <div class='bold txt-md'>Question 1/10</div>
+    <div class="txt-right bold txt-lg">
       <span> <i class="fas fa-stopwatch" /> {{ time.toFixed(0) }} </span>
-    </h1>
+    </div>
     <div :class="animate ? 'appear' : ''">
-      <h1>{{ question.question }}</h1>
+      <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
         <li v-for="(option, index) in question.choices" :key="option">
-          <button @click="submit(index)" class="btn-option">
+          <button @click="submit(index)" :class="buttonClassName(index)">
             {{ option.value }}
           </button>
         </li>
@@ -29,6 +30,7 @@ export default {
   },
   data() {
     return {
+      selectedAnswer: -1,
       time: 10,
       animate: true
     };
@@ -48,7 +50,9 @@ export default {
         this.timerUpdate();
       }
     },
-    className() {},
+    buttonClassName(index) {
+      return (this.selectedAnswer === index)? 'btn-option txt-md bold select': 'btn-option txt-md bold';
+    },
     submit(i) {
       if (i !== undefined) {
         this.vote(i);
@@ -61,15 +65,24 @@ export default {
 </script>
 
 <style scoped>
+
+.btn-option {
+  border: 2px solid transparent;
+}
+
+.btn-option:hover, .select {
+  border-color:#7fab96;
+  box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
+    1px 2px 2px rgba(15, 102, 29, 0.22);
+}
 .wrapper {
   padding: 1em;
-  width: 1200px;
+  width: 1400px;
   max-width: 90vw;
 }
 
 h1 {
-  padding: 0;
-  margin: 0;
+  margin: 1em;
 }
 
 .timer {

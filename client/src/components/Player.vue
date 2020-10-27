@@ -4,7 +4,7 @@
       <BackButton />
     </router-link>
 
-    <h1 class="txt-center txt-primary">Select a player</h1>
+    <h1 class="txt-center txt-primary">Create a player  <i class="fas fa-gamepad"></i></h1>
     <ul class="options">
       <li>
         <button :class="getButtonClass(0)" @click="setAvatar(0)">
@@ -70,9 +70,10 @@ export default {
       this.localPlayer = { ...this.localPlayer, avatar };
     },
     getButtonClass: function(avatar) {
+      const className = 'btn-option btn-rounded no-select'
       return avatar === this.localPlayer.avatar
-        ? "btn-option no-select active"
-        : "btn-option no-select";
+        ? `${className} active`
+        : className;
     },
 
     validate() {
@@ -102,7 +103,7 @@ export default {
 }
 
 .active {
-  border-color: teal;
+  border-color:#7fab96;
   box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }
