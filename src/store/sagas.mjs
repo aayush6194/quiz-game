@@ -20,7 +20,9 @@ const totalVotes = (choices) => {
 
 function* beginVote() {
     yield put({ type: VOTE.NEXT_VOTE });
-    while (true) {
+    let i = 0;
+    const totalQuestions = yield select((state) => state.questions.length);
+    while (i < totalQuestions) {
         const { vote } = yield race({
             vote: take('CAST_VOTE'),
             timeout: delay(10_000),
@@ -35,8 +37,10 @@ function* beginVote() {
                 yield put({ type: VOTE.NEXT_VOTE });
             }
         } else {
+            console.log('else flow');
             yield put({ type: VOTE.NEXT_VOTE });
         }
+        i++;
     }
 }
 
