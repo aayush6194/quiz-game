@@ -11,7 +11,7 @@
           <div class="txt-center">Player 1</div>
         </button>
       </li>
-  
+
       <li>
         <button :class="getButtonClass(1)" @click="setAvatar(1)">
           <img alt="Male Avatar" :src="femaleAvatar" class="img" />
@@ -29,9 +29,15 @@
       <button
         placeholder="Enter your name"
         @click="submit()"
+        :style="{ padding: '.5em 1em' }"
       >
-        Start
+        <i class="fa fa-chevron-right" />
       </button>
+
+      <label for="error" :style="{ color: error ? 'red' : 'transparent' }">
+        Error! Name must at least contain 2 characters and avatar must be
+        selected.
+      </label>
     </div>
   </div>
 </template>
@@ -50,6 +56,7 @@ export default {
   data: () => ({
     maleAvatar,
     femaleAvatar,
+    error: false,
     localPlayer: {
       name: "",
       avatar: -1
@@ -66,8 +73,14 @@ export default {
         ? "btn-option active"
         : "btn-option";
     },
-    submit(){
-      this.setPlayer({ player: this.localPlayer })
+
+    validate() {
+      const { name, avatar } = this.localPlayer;
+      this.error = name.length > 2 && avatar !== -1;
+    },
+    submit() {
+      this.validate();
+      if (!this.error) this.setPlayer({ player: this.localPlayer });
     }
   },
   created: function() {

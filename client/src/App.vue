@@ -8,8 +8,8 @@
 import Games from "./assets/games.svg";
 
 const gradient = (
-  color1 = "rgba(255,255,255,0.95)",
-  color2 = "rgba(255,255,255,0.95)"
+  color1 = "rgb(240,243,244, 0.95)",
+  color2 = "rgb(240,243,244,0.95)"
 ) => `linear-gradient(to right, ${color1} 0%, ${color2} 100%)`;
 
 export default {
@@ -61,6 +61,7 @@ export default {
     border-radius: .25em;
     outline: none;
     border-width: 0;
+    background: white;
   }
 
   button {
@@ -71,7 +72,7 @@ export default {
   input{
     width: 100%;
     box-sizing: border-box;
-    padding: .5em;
+    padding: .75em;
     border-width: 1px
   }
 
