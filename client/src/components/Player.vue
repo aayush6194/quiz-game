@@ -4,7 +4,7 @@
       <BackButton />
     </router-link>
 
-    <h1>Select a player</h1>
+    <h1 class="txt-center">Select a player</h1>
     <ul class="options">
       <li>
         <button :class="getButtonClass(0)" @click="setAvatar(0)">
@@ -25,13 +25,20 @@
         class=""
         placeholder="Enter your name"
         v-model="localPlayer.name"
+        v-on:keyup.enter="submit()"
       />
       <button
         placeholder="Enter your name"
-        @click="setPlayer({ player: localPlayer })"
+        @click="submit()"
+        :style="{ padding: '.5em 1em' }"
       >
-        Start
+        <i class="fa fa-chevron-right" />
       </button>
+
+      <label for="error" :style="{ color: error ? 'red' : 'transparent' }">
+        Error! Name must at least contain 2 characters and avatar must be
+        selected.
+      </label>
     </div>
   </div>
 </template>
@@ -50,6 +57,7 @@ export default {
   data: () => ({
     maleAvatar,
     femaleAvatar,
+    error: false,
     localPlayer: {
       name: "",
       avatar: -1
@@ -65,6 +73,15 @@ export default {
       return avatar === this.localPlayer.avatar
         ? "btn-option active"
         : "btn-option";
+    },
+
+    validate() {
+      const { name, avatar } = this.localPlayer;
+      this.error = name.length < 2 || avatar === -1 || avatar === undefined;
+    },
+    submit() {
+      this.validate();
+      if (!this.error) this.setPlayer({ player: this.localPlayer });
     }
   },
   created: function() {

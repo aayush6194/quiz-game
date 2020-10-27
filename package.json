@@ -27,7 +27,7 @@
     "clean": "rimraf coverage build tmp",
     "test": "jasmine",
     "test:watch": "jest --watch",
-    "start": "node src/index.mjs"
+    "start": "nodemon src/index.mjs"
   },
   "author": "Aayush Shrestha",
   "license": "MIT",

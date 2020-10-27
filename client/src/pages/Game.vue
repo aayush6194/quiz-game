@@ -3,15 +3,7 @@
     <Player v-if="!(player.name && player.avatar !== undefined)" />
     <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
     <h1 v-else-if="time > 0">{{ time }}</h1>
-    <div v-else-if="!getQuestion">
-      <h1>Waiting for players to join...</h1>
-      <ul class="options">
-        <li v-for="p in players" :key="p">
-          {{ p.name }}
-        </li>
-      </ul>
-      <button @click="startVoting">Start Quiz!</button>
-    </div>
+    <Lobby v-else-if="!getQuestion" />
     <Question v-else :data="data" :question="getQuestion" :vote="vote" />
   </div>
 </template>
@@ -20,6 +12,7 @@
 import Question from "../components/Question.vue";
 import Player from "../components/Player.vue";
 import Room from "../components/Room.vue";
+import Lobby from "../components/Lobby.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -27,7 +20,8 @@ export default {
   components: {
     Question,
     Player,
-    Room
+    Room,
+    Lobby
   },
   computed: {
     ...mapGetters(["player", "players", "questions"]),
@@ -67,8 +61,5 @@ export default {
   grid-gap: 2em;
   place-items: stretch;
   padding: 0;
-}
-.absolute {
-  position: absolute;
 }
 </style>
