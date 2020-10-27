@@ -61,19 +61,27 @@ export default {
     border-radius: .25em;
     outline: none;
     border-width: 0;
+    padding: .75em;
+    box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
     background: white;
+  }
+ .capitalize {
+  text-transform: capitalize;
+ }
+  .card {
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none; 
   }
 
   button {
-    box-shadow: 0 1px 3px rgba(10, 20, 10, 0.15), 0 1px 2px rgba(0, 0, 0, 0.22);
     cursor: pointer;
   }
 
   input{
     width: 100%;
     box-sizing: border-box;
-    padding: .75em;
-    border-width: 1px
   }
 
   button:hover {
@@ -91,6 +99,14 @@ export default {
     text-align: center;
   }
 
+  .txt-lg{
+    font-size: 2em;
+  }
+
+   .txt-md{
+    font-size: 1.5em;
+  }
+
   .bold {
     font-weight: bold;
   }
@@ -99,8 +115,21 @@ export default {
     width: 100%;
     padding: 1em;
   }
+
+  .txt-primary{
+    color: teal;
+  }
   .spin {
   animation: spin 900ms linear infinite;
+}
+
+  .appear {
+  animation: appear 300ms ease;
+} 
+
+.avatar {
+  border-radius: 50%;
+  width: 50px;
 }
 
   @-moz-keyframes spin {
