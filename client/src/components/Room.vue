@@ -1,30 +1,30 @@
 <template>
-  <div class="wrapper appear">
-    <div v-if="join === undefined">
-      <h1 class="txt-center">Select a Room</h1>
-      <ul class="options">
+  <div class='wrapper appear'>
+    <div v-if='join === undefined'>
+      <h1 class='txt-center'>Select a Room</h1>
+      <ul class='options'>
         <li>
           <button
-            @click="timerUpdate() || setJoin(false) || setRoom('111')"
-            class="txt-md btn-primary"
+            @click='timerUpdate() || setJoin(false) || setRoom(`111`)'
+            class='txt-md btn-primary'
           >
-            <i class="fas fa-hammer"></i> Create a Room
+            <i class='fas fa-hammer'></i> Create a Room
           </button>
         </li>
 
         <li>
-          <button @click="setJoin(true)" class="txt-md btn-primary">
-            <i class="fas fa-plus-circle"></i> Join a Room
+          <button @click='setJoin(true)' class='txt-md btn-primary'>
+            <i class='fas fa-plus-circle'></i> Join a Room
           </button>
         </li>
       </ul>
     </div>
 
-    <div v-else-if="join">
+    <div v-else-if='join'>
       <h1>Enter the Room Code</h1>
-      <div class="grid cols">
-        <input v-model="roomId" />
-        <button @click="timerUpdate() || setRoom(roomId)">
+      <div class='grid cols'>
+        <input v-model='roomId' />
+        <button @click='timerUpdate() || setRoom(roomId)'>
           Submit
         </button>
       </div>
@@ -33,19 +33,19 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
-  name: "Room",
+  name: 'Room',
   props: {
     timerUpdate: Function
   },
   data: () => ({
     join: undefined,
-    roomId: ""
+    roomId: ''
   }),
   methods: {
-    ...mapActions(["setRoom"]),
+    ...mapActions(['setRoom']),
     setJoin: function(join) {
       this.join = join;
     }

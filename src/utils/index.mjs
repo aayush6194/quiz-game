@@ -1,7 +1,7 @@
-import fs from "fs";
-import path from "path";
-import { Question } from "../domains/Question.mjs";
-import { Choice } from "../domains/Choice.mjs";
+import fs from 'fs';
+import path from 'path';
+import { Question } from '../domains/Question.mjs';
+import { Choice } from '../domains/Choice.mjs';
 
 /**
  * Read file syncronously to return its content
@@ -9,9 +9,9 @@ import { Choice } from "../domains/Choice.mjs";
  * @param {string} location path to the file
  * @returns {string} content of the file
  */
-const readFile = (fileName, location = "./") => {
+const readFile = (fileName, location = './') => {
   const filePath = path.join(location, fileName);
-  return fs.readFileSync(filePath, { encoding: "utf-8" }, (err, data) =>
+  return fs.readFileSync(filePath, { encoding: 'utf-8' }, (err, data) =>
     err ? err : data
   );
 };
@@ -23,7 +23,7 @@ const readFile = (fileName, location = "./") => {
  */
 const getQuestions = (data) => {
   const questions = [];
-  data = data.split("\n"); //Split by new line
+  data = data.split('\n'); //Split by new line
   // Iterating each lin
   for (let i = 0; i < data.length; i += 6) {
     const question = data[i].trim();
@@ -34,9 +34,9 @@ const getQuestions = (data) => {
       let option = data[i + j].trim();
       
     // Checking if option is corrent; Correct answer contains (correct)
-      if (option.includes("(correct)")) {
+      if (option.includes('(correct)')) {
         // Removing the (correct) keyword
-        option = option.split(" ")[0];
+        option = option.split(' ')[0];
         correctOption = option;
       }
       options.push(option);

@@ -1,41 +1,41 @@
 <template>
-  <div class="wrapper appear">
-    <router-link to="/">
+  <div class='wrapper appear'>
+    <router-link to='/'>
       <BackButton />
     </router-link>
 
-    <h1 class="txt-center txt-primary">Create a player  <i class="fas fa-gamepad"></i></h1>
-    <ul class="options">
+    <h1 class='txt-center txt-primary'>Create a player  <i class='fas fa-gamepad'></i></h1>
+    <ul class='options'>
       <li>
-        <button :class="getButtonClass(0)" @click="setAvatar(0)">
-          <img alt="Male Avatar" :src="maleAvatar" class="img" />
-          <div class="txt-center">Player 1</div>
+        <button :class='getButtonClass(0)' @click='setAvatar(0)'>
+          <img alt='Male Avatar' :src='maleAvatar' class='img' />
+          <div class='txt-center'>Player 1</div>
         </button>
       </li>
 
       <li>
-        <button :class="getButtonClass(1)" @click="setAvatar(1)">
-          <img alt="Male Avatar" :src="femaleAvatar" class="img" />
-          <div class="txt-center">Player 2</div>
+        <button :class='getButtonClass(1)' @click='setAvatar(1)'>
+          <img alt='Male Avatar' :src='femaleAvatar' class='img' />
+          <div class='txt-center'>Player 2</div>
         </button>
       </li>
     </ul>
-    <div class="grid cols">
+    <div class='grid cols'>
       <input
-        class=""
-        placeholder="Enter your name"
-        v-model="localPlayer.name"
-        v-on:keyup.enter="submit()"
+        class=''
+        placeholder='Enter your name'
+        v-model='localPlayer.name'
+        v-on:keyup.enter='submit()'
       />
       <button
-        placeholder="Enter your name"
-        @click="submit()"
-        :style="{ padding: '.5em 1em' }"
+        placeholder='Enter your name'
+        @click='submit()'
+        :style='{ padding: `.5em 1em` }'
       >
-        <i class="fa fa-chevron-right txt-primary" />
+        <i class='fa fa-chevron-right txt-primary' />
       </button>
 
-      <label for="error" :style="{ color: error ? 'red' : 'transparent' }">
+      <label for='error' :style='{ color: error ? `red`: `transparent` }'>
         Error! Name must at least contain 2 characters and avatar must be
         selected.
       </label>
@@ -44,13 +44,13 @@
 </template>
 
 <script>
-import maleAvatar from "../assets/user1.png";
-import femaleAvatar from "../assets/user2.png";
-import BackButton from "../components/BackButton";
-import { mapActions, mapGetters } from "vuex";
+import maleAvatar from '../assets/user1.png';
+import femaleAvatar from '../assets/user2.png';
+import BackButton from '../components/BackButton';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "Player",
+  name: 'Player',
   components: {
     BackButton
   },
@@ -59,13 +59,13 @@ export default {
     femaleAvatar,
     error: false,
     localPlayer: {
-      name: "",
+      name: '',
       avatar: -1
     }
   }),
-  computed: mapGetters(["player"]),
+  computed: mapGetters(['player']),
   methods: {
-    ...mapActions(["setPlayer"]),
+    ...mapActions(['setPlayer']),
     setAvatar: function(avatar) {
       this.localPlayer = { ...this.localPlayer, avatar };
     },

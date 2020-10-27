@@ -1,12 +1,12 @@
 <template>
-  <div class="wrapper appear">
+  <div class='wrapper appear'>
     Leaderboard
   </div>
 </template>
 
 <script>
 export default {
-  name: "Leaderboard",
+  name: 'Leaderboard',
   props: {
    data: String
   }

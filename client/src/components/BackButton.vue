@@ -1,5 +1,5 @@
 <template>
-  <button class="btn-back" @click="goBack">
+  <button class='btn-back' @click='goBack'>
       <i class='fa fa-chevron-left txt-primary'/>
   </button>
 </template>
@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: "BackButton",
+  name: 'BackButton',
   props: {
     goBack: Function 
   }

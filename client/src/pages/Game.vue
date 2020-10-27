@@ -1,22 +1,22 @@
 <template>
   <div>
-    <Player v-if="!(player.name && player.avatar !== undefined)" />
-    <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
-    <h1 v-else-if="time > 0">{{ time }}</h1>
-    <Lobby v-else-if="!getQuestion" />
-    <Question v-else :data="data" :question="getQuestion" :vote="vote" />
+    <Player v-if='!(player.name && player.avatar !== undefined)' />
+    <Room v-else-if='!player.room' :timerUpdate='timerUpdate' />
+    <h1 v-else-if='time > 0'>{{ time }}</h1>
+    <Lobby v-else-if='!getQuestion' />
+    <Question v-else :data='data' :question='getQuestion' :vote='vote' />
   </div>
 </template>
 
 <script>
-import Question from "../components/Question.vue";
-import Player from "../components/Player.vue";
-import Room from "../components/Room.vue";
-import Lobby from "../components/Lobby.vue";
-import { mapGetters, mapActions } from "vuex";
+import Question from '../components/Question.vue';
+import Player from '../components/Player.vue';
+import Room from '../components/Room.vue';
+import Lobby from '../components/Lobby.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "Game",
+  name: 'Game',
   components: {
     Question,
     Player,
@@ -24,7 +24,7 @@ export default {
     Lobby
   },
   computed: {
-    ...mapGetters(["player", "players", "questions"]),
+    ...mapGetters(['player', 'players', 'questions']),
     getQuestion() {
       return this.$store.getters.getQuestionUnderVote;
     }
@@ -36,7 +36,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["startVoting", "addVote"]),
+    ...mapActions(['startVoting', 'addVote']),
     vote(choiceId) {
       // FIXME: handle multiple users with their id
       this.addVote({ playerId: 0, choiceId });
