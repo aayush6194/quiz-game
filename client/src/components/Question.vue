@@ -53,11 +53,6 @@ h1 {
   margin: 0;
 }
 
-.btn-option {
-  width: 100%;
-  padding: 1em;
-}
-
 @media (max-width: 820px) {
   .options {
     grid-template-columns: 1fr;

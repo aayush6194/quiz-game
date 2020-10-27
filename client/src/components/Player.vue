@@ -3,8 +3,7 @@
     <router-link to="/">
       <BackButton />
     </router-link>
-
-    <h1>Select a player</h1>
+    <h1 class="txt-center">Select a player</h1>
     <ul class="options">
       <li>
         <button :class="getButtonClass(0)" @click="setAvatar(0)">
@@ -12,8 +11,7 @@
           <div class="txt-center">Player 1</div>
         </button>
       </li>
-    
-
+  
       <li>
         <button :class="getButtonClass(1)" @click="setAvatar(1)">
           <img alt="Male Avatar" :src="femaleAvatar" class="img" />
@@ -26,10 +24,11 @@
         class=""
         placeholder="Enter your name"
         v-model="localPlayer.name"
+        v-on:keyup.enter="submit()"
       />
       <button
         placeholder="Enter your name"
-        @click="setPlayer({ player: localPlayer })"
+        @click="submit()"
       >
         Start
       </button>
@@ -66,6 +65,9 @@ export default {
       return avatar === this.localPlayer.avatar
         ? "btn-option active"
         : "btn-option";
+    },
+    submit(){
+      this.setPlayer({ player: this.localPlayer })
     }
   },
   created: function() {
