@@ -2,6 +2,7 @@ import Vuex from 'vuex';
 import question from './modules/question';
 import player from './modules/player';
 import vote from './modules/vote';
+import result from './modules/result';
 import createWebSocketPlugin from './plugins';
 
 const socket = new WebSocket('ws://localhost:8081');
@@ -16,6 +17,7 @@ export default new Vuex.Store({
         question,
         player,
         vote,
+        result,
     },
     plugins: [plugin],
     getters: {

@@ -3,8 +3,8 @@
     <Player v-if="!(player.name && player.avatar !== undefined)" />
     <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
     <h1 v-else-if="time > 0">{{ time }}</h1>
-    <Lobby v-else-if="!getQuestion"/>
-    <Question v-else :data="data" :question="getQuestion" :vote="addVote" />
+    <Lobby v-else-if="!getQuestion" />
+    <Question v-else :data="data" :question="getQuestion" :vote="vote" />
   </div>
 </template>
 
@@ -37,6 +37,10 @@ export default {
   },
   methods: {
     ...mapActions(["startVoting", "addVote"]),
+    vote(choiceId) {
+      // FIXME: handle multiple users with their id
+      this.addVote({ playerId: 0, choiceId });
+    },
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
@@ -58,5 +62,4 @@ export default {
   place-items: stretch;
   padding: 0;
 }
-
 </style>

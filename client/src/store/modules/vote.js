@@ -13,7 +13,7 @@ const actions = {
     setVoting(voting) {
         state.voting = voting;
     },
-    addVote(playerId, choiceId) {
+    addVote(_, { playerId, choiceId }) {
         sendMessage({ type: 'ADD_VOTE', payload: { playerId, choiceId } });
     },
 };

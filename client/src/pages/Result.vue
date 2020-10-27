@@ -3,7 +3,7 @@
     <router-link to="/">
       <BackButton />
     </router-link>
-
+{{ results}}
     <div class="txt-primary txt-center txt-lg bold">Scores</div>
 
     <div class="winner">
@@ -29,13 +29,14 @@
 
 <script>
 import BackButton from "../components/BackButton.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Result",
   components: {
     BackButton,
   },
-
+  computed: mapGetters(["results"]),
   data: function() {
     return {
       result: [

@@ -8,10 +8,13 @@ const getScoreBoard = ({ players, questions, tallies }) => {
         return Object.entries(tally).forEach(([choiceId, playerIds]) => {
             const choice = choices[choiceId];
             return playerIds.forEach((playerId) => {
-                const player = players[playerId];
+                // TODO: replace with id
+                const player = players[playerId].name;
                 if (!scores[player]) {
                     scores[player] = {
-                        player,
+                        player: {
+                            name: player,
+                        },
                         right: 0,
                         wrong: 0,
                     };
@@ -22,7 +25,7 @@ const getScoreBoard = ({ players, questions, tallies }) => {
             });
         });
     });
-    return scores;
+    return Object.values(scores);
 };
 
 const totalVotes = (choices) => {
