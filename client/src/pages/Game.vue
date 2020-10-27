@@ -12,7 +12,7 @@
       </ul>
       <button @click="startVoting">Start Quiz!</button>
     </div>
-    <Question v-else :data="data" :question="getQuestion" :vote="addVote" />
+    <Question v-else :data="data" :question="getQuestion" :vote="vote" />
   </div>
 </template>
 
@@ -43,6 +43,10 @@ export default {
   },
   methods: {
     ...mapActions(["startVoting", "addVote"]),
+    vote(choiceId) {
+      // FIXME: handle multiple users with their id
+      this.addVote({ playerId: 0, choiceId });
+    },
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
