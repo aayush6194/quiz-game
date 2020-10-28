@@ -9,6 +9,9 @@
     </div>
  
     <Result v-else-if="result"/>
+    <div v-else-if="result === null">
+      <h1>No1 Voted uwu</h1>
+    </div>
     <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
 </template>
