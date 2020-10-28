@@ -9,11 +9,11 @@ import {
     call,
 } from 'redux-saga/dist/redux-saga-effects.umd.js';
 import udid from 'uuid';
+import WebSocket from 'ws';
 import { ACTIONS as VOTE } from './actions/vote.mjs';
 import { ACTIONS as ROOM } from './actions/room.mjs';
 import { ACTIONS as PLAYER } from './actions/player.mjs';
 import { Player } from '../domains/Player.mjs';
-import { evolve } from 'rambda';
 
 const { v1 } = udid;
 
@@ -109,11 +109,13 @@ function* enVote(action) {
             const socket = yield select(
                 (state) => state.players.byId[action.payload.playerId].socket
             );
-            socket.send(
-                JSON.stringify({
-                    type: 'WAIT_RESULT',
-                })
-            );
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(
+                    JSON.stringify({
+                        type: 'WAIT_RESULT',
+                    })
+                );
+            }
         } else {
             const players = yield getPlayersInRoom(roomId);
             const result = yield select((state) => {
@@ -135,7 +137,13 @@ function* enVote(action) {
                 type: 'LOAD_RESULT',
                 payload: { result },
             });
-            yield all(players.map(({ socket }) => socket.send(resultPayload)));
+            yield all(
+                players.map(({ socket }) => {
+                    if (socket.readyState === WebSocket.OPEN) {
+                        return socket.send(resultPayload);
+                    }
+                })
+            );
             yield delay(3_000);
             if (voting === totalQuestions - 1) {
                 const finalScore = getScoreBoard({
@@ -168,7 +176,13 @@ function* enVote(action) {
             type: 'LOAD_RESULT',
             payload: { result },
         });
-        yield all(players.map(({ socket }) => socket.send(resultPayload)));
+        yield all(
+            players.map(({ socket }) => {
+                if (socket.readyState === WebSocket.OPEN) {
+                    return socket.send(resultPayload);
+                }
+            })
+        );
         yield delay(3_000);
         const [voting, questions, totalQuestions, tallies] = yield select(
             (state) => {
@@ -191,7 +205,13 @@ function* enVote(action) {
                 payload: { results: finalScore },
             });
             yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
-            yield all(players.map(({ socket }) => socket.send(scorePayload)));
+            yield all(
+                players.map(({ socket }) => {
+                    if (socket.readyState === WebSocket.OPEN) {
+                        return socket.send(scorePayload);
+                    }
+                })
+            );
         } else {
             yield beginVote(action);
         }
@@ -241,28 +261,32 @@ function* joinRoom(action) {
         select((state) => state.players.byId[playerId]),
         getPlayersInRoom(roomId),
     ]);
-    const serializedPlayers = players.map((player) => player.serialize());
 
-    yield currPlayer.socket.send(
-        JSON.stringify({
-            type: ROOM.JOIN_ROOM,
-            payload: {
-                roomId,
-            },
-        })
-    );
+    const serializedPlayers = players.map((player) => player.serialize());
+    if (currPlayer.socket.readyState === WebSocket.OPEN) {
+        yield currPlayer.socket.send(
+            JSON.stringify({
+                type: ROOM.JOIN_ROOM,
+                payload: {
+                    roomId,
+                },
+            })
+        );
+    }
 
     yield all(
-        players.map(({ socket }) =>
-            socket.send(
-                JSON.stringify({
-                    type: 'LOAD_PLAYERS',
-                    payload: {
-                        players: serializedPlayers,
-                    },
-                })
-            )
-        )
+        players.map(({ socket }) => {
+            if (socket.readyState === WebSocket.OPEN) {
+                return socket.send(
+                    JSON.stringify({
+                        type: 'LOAD_PLAYERS',
+                        payload: {
+                            players: serializedPlayers,
+                        },
+                    })
+                );
+            }
+        })
     );
 }
 
@@ -284,12 +308,15 @@ function* createPlayer(action) {
     yield put({ type: PLAYER.ADD_PLAYER, payload: { player } });
 
     const { socket, ...rest } = player;
-    socket.send(
-        JSON.stringify({
-            type: 'CREATE_PLAYER',
-            payload: { player: rest },
-        })
-    );
+
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(
+            JSON.stringify({
+                type: 'CREATE_PLAYER',
+                payload: { player: rest },
+            })
+        );
+    }
 }
 
 function* playerSaga() {
