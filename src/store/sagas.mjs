@@ -65,7 +65,8 @@ function* notifyQuestion(action, roomId) {
         getPlayersInRoom(action.payload.roomId),
         select((state) => {
             const voting = state.rooms.byId[roomId].voting;
-            const questionId = state.questions.allIds[voting];
+            const questionId = state.rooms.byId[roomId].questions[voting];
+
             return state.questions.byId[questionId];
         }),
     ]);
@@ -75,7 +76,13 @@ function* notifyQuestion(action, roomId) {
             question,
         },
     });
-    yield all(players.map(({ socket }) => socket.send(questionPayload)));
+    yield all(
+        players.map(({ socket }) => {
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(questionPayload);
+            }
+        })
+    );
 }
 
 function* getPlayersInRoom(roomId) {
@@ -140,6 +147,11 @@ function* enVote(action) {
                     ];
                 }
             );
+            getScoreBoard({
+                players,
+                questions,
+                tallies,
+            });
             const resultPayload = JSON.stringify({
                 type: 'LOAD_RESULT',
                 payload: { result },
@@ -151,7 +163,7 @@ function* enVote(action) {
                     }
                 })
             );
-            yield delay(3_000);
+            // yield delay(3_000);
             if (voting === totalQuestions - 1) {
                 const finalScore = getScoreBoard({
                     players,
