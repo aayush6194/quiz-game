@@ -2,8 +2,7 @@ const state = {
     player: {
         name: undefined,
         avatar: undefined,
-        // TODO: implement rooms
-        room: 1,
+        room: undefined,
     },
     players: [],
 };
@@ -23,7 +22,7 @@ const actions = {
 };
 
 const mutations = {
-    setPlayer: (state, payload) => (state.player = payload.player),
+    setPlayer: (state, player) => (state.player = player),
     roomSet: (state, room) => (state.player.room = room),
     loadPlayers: (state, payload) => (state.players = payload.players),
 };

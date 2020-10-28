@@ -6,8 +6,14 @@ import {
     race,
     delay,
     select,
+    call,
 } from 'redux-saga/dist/redux-saga-effects.umd.js';
+import udid from 'uuid';
 import { ACTIONS as VOTE } from './actions/vote.mjs';
+import { ACTIONS as PLAYER } from './actions/player.mjs';
+import { Player } from '../domains/Player.mjs';
+
+const { v1 } = udid;
 
 const totalVotes = (choices) => {
     if (!choices) {
@@ -47,6 +53,28 @@ function* voteSaga() {
     yield takeEvery('BEGIN_VOTE', beginVote);
 }
 
+function* createPlayer(action) {
+    const id = yield call(v1);
+    const player = Player({
+        ...action.payload.player,
+        socket: action.payload.socket,
+        id,
+    });
+    yield put({ type: PLAYER.ADD_PLAYER, payload: { player } });
+
+    const { socket, ...rest } = player;
+    socket.send(
+        JSON.stringify({
+            type: 'CREATE_PLAYER',
+            payload: { player: rest },
+        })
+    );
+}
+
+function* playerSaga() {
+    yield takeEvery('CREATE_PLAYER', createPlayer);
+}
+
 export default function* rootSaga() {
-    yield all([voteSaga()]);
+    yield all([voteSaga(), playerSaga()]);
 }

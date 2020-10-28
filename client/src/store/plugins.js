@@ -19,6 +19,9 @@ export default function createWebSocketPlugin(socket) {
                 case 'NEXT_VOTE':
                     store.commit('setVoting', action.payload.voting);
                     break;
+                case 'CREATE_PLAYER':
+                    store.commit('setPlayer', action.payload.player);
+                    break;
                 default:
                     break;
             }

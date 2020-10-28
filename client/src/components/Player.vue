@@ -4,7 +4,9 @@
       <BackButton />
     </router-link>
 
-    <h1 class="txt-center txt-primary">Create a player  <i class="fas fa-gamepad"></i></h1>
+    <h1 class="txt-center txt-primary">
+      Create a player <i class="fas fa-gamepad"></i>
+    </h1>
     <ul class="options">
       <li>
         <button :class="getButtonClass(0)" @click="setAvatar(0)">
@@ -48,6 +50,7 @@ import maleAvatar from "../assets/user1.png";
 import femaleAvatar from "../assets/user2.png";
 import BackButton from "../components/BackButton";
 import { mapActions, mapGetters } from "vuex";
+import { sendMessage } from "../socket";
 
 export default {
   name: "Player",
@@ -70,7 +73,7 @@ export default {
       this.localPlayer = { ...this.localPlayer, avatar };
     },
     getButtonClass: function(avatar) {
-      const className = 'btn-option btn-rounded no-select'
+      const className = "btn-option btn-rounded no-select";
       return avatar === this.localPlayer.avatar
         ? `${className} active`
         : className;
@@ -82,7 +85,13 @@ export default {
     },
     submit() {
       this.validate();
-      if (!this.error) this.setPlayer({ player: this.localPlayer });
+      if (!this.error) {
+        sendMessage({
+          type: "CREATE_PLAYER",
+          payload: { player: this.localPlayer }
+        });
+        // this.setPlayer({ player: this.localPlayer });
+      }
     }
   },
   created: function() {
@@ -103,7 +112,7 @@ export default {
 }
 
 .active {
-  border-color:#7fab96;
+  border-color: #7fab96;
   box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }
