@@ -32,7 +32,7 @@ export default {
 
 <style scoped>
 .bar {
-  width: 100%;
+  max-width: 80%;
   padding: 0.5em;
   transform-origin: bottom left;
   border-radius: 2em;

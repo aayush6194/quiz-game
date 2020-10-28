@@ -34,8 +34,8 @@ import Option from "./Option";
 export default {
   name: "Question",
   components: {
-    ProgressBar
-    // Option,
+    ProgressBar,
+     Option
   },
   props: {
     data: String,

@@ -1,5 +1,5 @@
 <template>
-  <button class='btn-back' @click='goBack'>
+  <button class='btn-back' @click='goBack && goBack()'>
       <i class='fa fa-chevron-left txt-primary'/>
   </button>
 </template>
