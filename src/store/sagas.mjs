@@ -163,7 +163,7 @@ function* enVote(action) {
                     }
                 })
             );
-            // yield delay(3_000);
+            yield delay(3_000);
             if (voting === totalQuestions - 1) {
                 const finalScore = getScoreBoard({
                     players,
