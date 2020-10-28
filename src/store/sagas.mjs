@@ -126,14 +126,14 @@ function* beginVote(action) {
         const result = yield select((state) => {
             const voting = state.rooms.byId[roomId].voting;
             const questionId = state.questions.allIds[voting];
-            return state.rooms.byId[roomId].tallies[questionId];
+            return state.rooms.byId[roomId].tallies[questionId] ?? null;
         });
         const resultPayload = JSON.stringify({
             type: 'LOAD_RESULT',
             payload: { result },
         });
         yield all(players.map(({ socket }) => socket.send(resultPayload)));
-        yield delay(2_500);
+        yield delay(3_000);
         const [voting, questions, totalQuestions, tallies] = yield select(
             (state) => {
                 return [

@@ -13,6 +13,9 @@
     <div v-else-if="result">
       <h1>{{ result }}</h1>
     </div>
+    <div v-else-if="result === null">
+      <h1>No1 Voted uwu</h1>
+    </div>
     <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
 </template>
@@ -23,7 +26,7 @@ import Player from "../components/Player.vue";
 import Room from "../components/Room.vue";
 import Lobby from "../components/Lobby.vue";
 //import Timer from "../components/Timer";
-import { mapGetters  } from "vuex";
+import { mapGetters } from "vuex";
 import { sendMessage } from "../socket";
 
 export default {
@@ -32,19 +35,19 @@ export default {
     Question,
     Player,
     Room,
-    Lobby,
-  //  Timer
+    Lobby
+    //  Timer
   },
   computed: {
     ...mapGetters(["player", "players", "question", "wait", "result"])
   },
-    data: function() {
+  data: function() {
     return {
       room: undefined,
       time: 0,
       start: false
     };
-    },
+  },
   methods: {
     vote(choiceId) {
       sendMessage({
