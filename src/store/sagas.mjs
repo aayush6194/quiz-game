@@ -25,23 +25,11 @@ const totalVotes = (choices) => {
     }, 0);
 };
 
-function* getPlayersInRoom(roomId) {
-    const [players, allPlayers] = yield select((state) => [
-        state.rooms.byId[roomId].players,
-        state.players.byId,
-    ]);
-    return players.map((playerId) => allPlayers[playerId]);
-}
-
-function* beginVote(action) {
-    yield put({
-        type: VOTE.NEXT_VOTE,
-        payload: { roomId: action.payload.roomId },
-    });
+function* notifyQuestion(action, roomId) {
     const [players, question] = yield all([
         getPlayersInRoom(action.payload.roomId),
         select((state) => {
-            const voting = state.rooms.byId[action.payload.roomId].voting;
+            const voting = state.rooms.byId[roomId].voting;
             const questionId = state.questions.allIds[voting];
             return state.questions.byId[questionId];
         }),
@@ -53,27 +41,53 @@ function* beginVote(action) {
         },
     });
     yield all(players.map(({ socket }) => socket.send(questionPayload)));
+}
 
-    let i = 0;
-    const totalQuestions = yield select((state) => state.questions.length);
-    while (i < totalQuestions) {
-        const { vote } = yield race({
-            vote: take('CAST_VOTE'),
-            timeout: delay(10_000),
+function* getPlayersInRoom(roomId) {
+    const [players, allPlayers] = yield select((state) => [
+        state.rooms.byId[roomId].players,
+        state.players.byId,
+    ]);
+    return players.map((playerId) => allPlayers[playerId]);
+}
+
+function* beginVote(action) {
+    const roomId = action.payload.roomId;
+
+    yield put({
+        type: VOTE.NEXT_VOTE,
+        payload: { roomId },
+    });
+    yield notifyQuestion(action, roomId);
+
+    const { vote } = yield race({
+        vote: take('CAST_VOTE'),
+        timeout: delay(10_000),
+    });
+    if (vote) {
+        const questionId = yield select((state) => {
+            const voting = state.rooms.byId[roomId].voting;
+            return state.questions.allIds[voting];
         });
-        if (vote) {
-            yield put({ type: VOTE.ADD_VOTE, payload: vote.payload });
-            const [choices, totalPlayers] = yield select((state) => [
-                state.tallies[state.voting],
-                state.players.length,
-            ]);
-            if (totalVotes(choices) === totalPlayers) {
-                yield put({ type: VOTE.NEXT_VOTE });
-            }
-        } else {
-            yield put({ type: VOTE.NEXT_VOTE });
+        yield put({
+            type: VOTE.ADD_VOTE,
+            payload: { ...vote.payload, roomId, questionId },
+        });
+        const [choices, totalPlayers] = yield select((state) => {
+            const voting = state.rooms.byId[roomId].voting;
+            const questionId = state.questions.allIds[voting];
+            return [
+                state.rooms.byId[roomId].tallies[questionId],
+                state.rooms.byId[roomId].players.length,
+            ];
+        });
+        if (totalVotes(choices) === totalPlayers) {
+            yield put({ type: VOTE.NEXT_VOTE, payload: { roomId } });
+            yield notifyQuestion(action, roomId);
         }
-        i++;
+    } else {
+        yield put({ type: VOTE.NEXT_VOTE, payload: { roomId } });
+        yield notifyQuestion(action, roomId);
     }
 }
 

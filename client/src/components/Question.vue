@@ -6,8 +6,8 @@
     <div :class="animate ? 'appear' : ''">
       <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
-        <li v-for="(option, index) in question.choices" :key="option">
-          <button @click="submit(index)" :class="buttonClassName(index)">
+        <li v-for="option in question.choices" :key="option">
+          <button @click="submit(option.id)" :class="buttonClassName(index)">
             {{ option.value }}
           </button>
         </li>

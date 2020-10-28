@@ -7,17 +7,26 @@ const roomsById = produce((draft, action) => {
         case ACTIONS.ADD_ROOM:
             draft[action.payload.roomId] = {
                 players: [],
+                voting: -1,
+                tallies: {},
             };
             break;
         case ACTIONS.JOIN_ROOM:
             draft[action.payload.roomId].players.push(action.payload.playerId);
             break;
         case ACTIONS.ADD_VOTE:
-            draft.push(action.payload.vote);
+            const { roomId, choiceId, playerId, questionId } = action.payload;
+
+            if (!draft[roomId].tallies[questionId]) {
+                draft[roomId].tallies[questionId] = {};
+            }
+            if (!draft[roomId].tallies[questionId][choiceId]) {
+                draft[roomId].tallies[questionId][choiceId] = [];
+            }
+            draft[roomId].tallies[questionId][choiceId].push(playerId);
             break;
         case ACTIONS.NEXT_VOTE:
-            draft[action.payload.roomId].voting =
-                (draft[action.payload.roomId].voting ?? -1) + 1;
+            draft[action.payload.roomId].voting += 1;
             break;
     }
 }, {});

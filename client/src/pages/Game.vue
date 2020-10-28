@@ -9,11 +9,12 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import Question from "../components/Question.vue";
 import Player from "../components/Player.vue";
 import Room from "../components/Room.vue";
 import Lobby from "../components/Lobby.vue";
-import { mapGetters, mapActions } from "vuex";
+import { sendMessage } from "../socket";
 
 export default {
   name: "Game",
@@ -27,10 +28,11 @@ export default {
     ...mapGetters(["player", "players", "question"])
   },
   methods: {
-    ...mapActions(["startVoting", "addVote"]),
     vote(choiceId) {
-      // FIXME: handle multiple users with their id
-      this.addVote({ playerId: 0, choiceId });
+      sendMessage({
+        type: "CAST_VOTE",
+        payload: { playerId: this.player.id, choiceId }
+      });
     },
     timerUpdate() {
       if (this.time > 0) {
