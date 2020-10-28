@@ -44,6 +44,13 @@ const getScoreBoard = ({ players, questions, tallies }) => {
     return Object.values(scores);
 };
 
+const shuffle = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+};
+
 const totalVotes = (choices) => {
     if (!choices) {
         return 0;
@@ -90,7 +97,7 @@ function* enVote(action) {
     if (vote) {
         const questionId = yield select((state) => {
             const voting = state.rooms.byId[roomId].voting;
-            return state.questions.allIds[voting];
+            return state.rooms.byId[roomId].questions[voting];
         });
         yield put({
             type: VOTE.ADD_VOTE,
@@ -98,7 +105,7 @@ function* enVote(action) {
         });
         const [tallies, totalPlayers] = yield select((state) => {
             const voting = state.rooms.byId[roomId].voting;
-            const questionId = state.questions.allIds[voting];
+            const questionId = state.rooms.byId[roomId].questions[voting];
             return [
                 state.rooms.byId[roomId].tallies[questionId],
                 state.rooms.byId[roomId].players.length,
@@ -120,7 +127,7 @@ function* enVote(action) {
             const players = yield getPlayersInRoom(roomId);
             const result = yield select((state) => {
                 const voting = state.rooms.byId[roomId].voting;
-                const questionId = state.questions.allIds[voting];
+                const questionId = state.rooms.byId[roomId].questions[voting];
                 return state.rooms.byId[roomId].tallies[questionId] ?? null;
             });
             const [voting, questions, totalQuestions, tallies] = yield select(
@@ -169,7 +176,7 @@ function* enVote(action) {
         const players = yield getPlayersInRoom(roomId);
         const result = yield select((state) => {
             const voting = state.rooms.byId[roomId].voting;
-            const questionId = state.questions.allIds[voting];
+            const questionId = state.rooms.byId[roomId].questions[voting];
             return state.rooms.byId[roomId].tallies[questionId] ?? null;
         });
         const resultPayload = JSON.stringify({
@@ -235,11 +242,14 @@ function* voteSaga() {
 function* createRoom(action) {
     const roomId = yield call(v1);
     const { playerId } = action.payload;
-
+    const questions = yield select((state) => state.questions.allIds);
+    const shuffledQuestions = [...questions];
+    shuffle(shuffledQuestions);
     yield put({
         type: ROOM.ADD_ROOM,
         payload: {
             roomId,
+            questions: shuffledQuestions,
         },
     });
 

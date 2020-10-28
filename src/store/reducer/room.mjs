@@ -9,6 +9,7 @@ const roomsById = produce((draft, action) => {
                 players: [],
                 voting: -1,
                 tallies: {},
+                questions: action.payload.questions,
             };
             break;
         case ACTIONS.JOIN_ROOM:
