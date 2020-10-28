@@ -107,12 +107,9 @@ button:hover {
 .txt-primary {
   color:#648374;
 }
-.spin {
-  animation: spin 900ms linear infinite;
-}
 
-.appear {
-  animation: appear 300ms ease;
+.danger {
+  color: red;
 }
 
 .avatar {
@@ -124,6 +121,44 @@ button:hover {
   text-overflow: ellipsis;
 }
 
+
+
+.spin {
+  animation: spin 900ms linear infinite;
+}
+
+.appear {
+  animation: appear 300ms ease;
+}
+
+.slide-down {
+  animation: slide-down 300ms ease;
+}
+
+@-moz-keyframes slide-down {
+  from {
+    -moz-transform: translateY(-10px);
+  }
+  to {
+    -moz-transform: translateY(0);
+  }
+}
+@-webkit-keyframes slide-down {
+  from {
+    -webkit-transform:translateY(-10px);
+  }
+  to {
+    -webkit-transform: translateY(0);
+  }
+}
+@keyframes  slide-down {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform:translateY(0);
+  }
+}
 
 @-moz-keyframes spin {
   from {

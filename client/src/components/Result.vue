@@ -27,7 +27,7 @@
               <span class="hide-on-mobile"> Correct</span>
             </span>
 
-            <span v-else class="wrong">
+            <span v-else class="danger">
               <i class="fa fa-check" aria-hidden="true"></i>
                 <span class="hide-on-mobile">  Wrong</span>
             </span>
@@ -91,9 +91,7 @@ export default {
   grid-template-columns: auto auto 1fr auto;
 }
 
-.wrong {
-  color: red;
-}
+
 
 @media (max-width: 768px) {
   .results {

@@ -37,7 +37,7 @@
         <i class='fa fa-chevron-right txt-primary' />
       </button>
 
-      <label for='error' :style='{ color: error ? `red`: `transparent` }'>
+      <label for='error' class='danger slide-down' v-if='error'>
         Error! Name must at least contain 2 characters and avatar must be
         selected.
       </label>
