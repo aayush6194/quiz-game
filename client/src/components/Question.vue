@@ -1,13 +1,13 @@
 <template>
   <div class="wrapper">
     <div class="txt-right bold txt-lg">
-      <span> 
-        <i class="fas fa-stopwatch" /> 
-        <Timer :defaultTime='time'/> 
-        {{ time.toFixed(0) }} 
+      <span>
+        <i class="fas fa-stopwatch" />
+        <Timer :defaultTime="time" />
+        {{ time.toFixed(0) }}
       </span>
     </div>
-    <div :class='`appear`'>
+    <div :class="`appear`">
       <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
         <li v-for="option in question.choices" :key="option">
@@ -17,13 +17,13 @@
         </li>
       </ul>
     </div>
-    <ProgressBar :percent='time'/>
+    <ProgressBar :percent="time" />
   </div>
 </template>
 
 <script>
-import ProgressBar from './ProgressBar';
-import Option from './Option';
+import ProgressBar from "./ProgressBar";
+// import Option from './Option';
 
 /**
  * Question component loads question and option sent by server.
@@ -31,8 +31,8 @@ import Option from './Option';
 export default {
   name: "Question",
   components: {
-    ProgressBar,
-    Option,
+    ProgressBar
+    // Option,
   },
   props: {
     data: String,
@@ -46,7 +46,7 @@ export default {
     return {
       selectedAnswer: -1,
       time: 10,
-      voted: false,
+      voted: false
     };
   },
   methods: {
@@ -56,7 +56,7 @@ export default {
         setTimeout(() => {
           this.time -= 0.5;
           if (this.time == 10) {
-          this.voted = false;
+            this.voted = false;
           }
           this.timerUpdate();
         }, 500);
