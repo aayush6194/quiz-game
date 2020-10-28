@@ -47,8 +47,8 @@ const getQuestions = (data) => {
         // FIXME: last is always ans
         questions.push(
             Question(v1(), question, [
-                ...options.map((option) => Choice(option)),
-                Choice(correctOption, true),
+                ...options.map((option) => Choice(v1(), option)),
+                Choice(v1(), correctOption, true),
             ])
         );
     }
