@@ -1,21 +1,35 @@
 <template>
+
   <div class="card result-wrapper">
-    <div class="txt-primary txt-center txt-lg bold">Results <i class="fas fa-medal"></i></div>
+    <div class="txt-primary txt-center txt-lg bold">
+      Results <i class="fas fa-medal"></i>
+    </div>
     <ul class="results">
-      <li v-for="data in result" :key="data.player.name">
+      <li v-for="data in players" :key="data.id">
         <div class="score card no-select">
           <img
             class="img"
             src="../assets/prize.svg"
             :style="{ width: `60px` }"
           />
-          <img class="img avatar" src="../assets/user1.png" />
-          <div class="txt-md bold capitalize">{{ data.player.name }}</div>
+          <img
+            v-if="data.avatar === 0"
+            class="img avatar"
+            src="../assets/user1.png"
+          />
+          <img v-else class="img avatar" src="../assets/user2.png" />
+          <div class="txt-md bold capitalize">{{ data.name }}</div>
           <div
             class="txt-md txt-left txt-primary bold"
             :style="{ placeSelf: `center` }"
           >
-            <i class="fa fa-check" aria-hidden="true"></i> Correct
+            <span v-if="isCorrect(data.id)">
+              <i class="fa fa-check" aria-hidden="true"></i> Correct
+            </span>
+
+            <span v-else class="wrong">
+              <i class="fa fa-check" aria-hidden="true"></i>Wrong
+            </span>
           </div>
         </div>
       </li>
@@ -27,23 +41,20 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Result",
-  computed: mapGetters(["results"]),
-  data() {
-    return {
-      result: [
-        { player: { name: "XYZ" }, correct: true },
-        { player: { name: "XYZ" }, correct: true },
-
-      ]
-    };
-  },
-  methods: {}
+  computed: mapGetters(["result", "question", "players"]),
+  methods: {
+    isCorrect(playerId){
+     const [ answer ] =  this.question.choices.filter(({isAnswer}) => isAnswer );
+     const { id: correctId } = answer;
+     return  this.result[correctId] && this.result[correctId].includes(playerId);
+    }
+  }
 };
 </script>
 
 <style scoped>
 .result-wrapper {
-    margin: 1em;
+  margin: 1em;
 }
 .score,
 .results {

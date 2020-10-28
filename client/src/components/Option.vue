@@ -1,6 +1,6 @@
 <template> 
         <li>
-          <button @click="handleSubmit(index)" :class="buttonClassName(index)">
+          <button @click="handleSubmit(choiceId)" :class="buttonClassName(index)">
             <span class="index">{{ String.fromCharCode(65 + index) }}.</span>
             <span> {{ text }}</span>
           </button>
@@ -16,7 +16,8 @@ export default {
   props: {
     handleSubmit: Function,
     index: Number,
-    text: String
+    text: String,
+    choiceId: String
   },
   data() {
     return {
