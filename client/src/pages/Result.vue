@@ -1,9 +1,9 @@
 <template>
-  <div class="wrapper card">
+  <div class="result-wrapper card">
     <router-link to="/">
       <BackButton />
     </router-link>
-    <div class="txt-primary txt-center txt-lg bold">Scores</div>
+    <div class="txt-primary txt-center txt-lg bold">Final Scores <i class="fas fa-medal"></i></div>
     <div class="score card">
       <img class="img" src="../assets/prize.svg" :style="{ width: `150px` }" />
       <div class="txt-md bold" :style="{ placeSelf: `center` }">
@@ -39,9 +39,9 @@ import { mapGetters } from "vuex";
 export default {
   name: "Result",
   components: {
-    BackButton,
+    BackButton
   },
-  computed: mapGetters(["results"]),
+  computed: mapGetters(["results"])
 };
 </script>
 
@@ -50,6 +50,10 @@ export default {
   place-self: center;
   place-items: stretch;
   display: grid;
+}
+
+.result-wrapper {
+  margin: 1em;
 }
 
 .score,

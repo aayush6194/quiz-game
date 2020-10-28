@@ -1,6 +1,13 @@
 <template>
   <div class='container' id='app' v-bind:style='styleObject'>
+            <img
+        class='img'
+        style='max-height: 50px; place-self: start; padding: 1em'
+        src='../assets/logo.svg'
+        alt='Quiz Image'
+      />
     <div class='grid' style=''>
+
       <img
         class='img'
         style='max-height: 50vh;'
@@ -9,10 +16,6 @@
       />
       <router-link to='/game'>
         <img class='img' src='../assets/play-button.png' alt='Start Button' />
-      </router-link>
-
-      <router-link to='/leaderboard'>
-        <img class='img' src='../assets/leaderboard.svg' alt='Start Button' />
       </router-link>
     </div>
   </div>

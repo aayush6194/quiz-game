@@ -1,10 +1,14 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" v-if='!voted'>
     <div class="bold txt-md">Question 1/10</div>
     <div class="txt-right bold txt-lg">
-      <span> <i class="fas fa-stopwatch" /> {{ time.toFixed(0) }} </span>
+      <span> 
+        <i class="fas fa-stopwatch" /> 
+        <Timer :defaultTime='time'/> 
+        {{ time.toFixed(0) }} 
+      </span>
     </div>
-    <div :class="animate ? `appear` : ``">
+    <div :class='`appear`'>
       <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
         <Option 
@@ -18,17 +22,20 @@
     </div>
     <ProgressBar :percent='time'/>
   </div>
+  <Result v-else/>
 </template>
 
 <script>
 import ProgressBar from './ProgressBar';
 import Option from './Option';
+import Result from './Result';
 
 export default {
   name: "Question",
   components: {
     ProgressBar,
-    Option
+    Option,
+    Result
   },
   props: {
     data: String,
@@ -42,7 +49,7 @@ export default {
     return {
       selectedAnswer: -1,
       time: 10,
-      animate: true
+      voted: false,
     };
   },
   methods: {
@@ -50,8 +57,8 @@ export default {
       if (this.time > 0) {
         setTimeout(() => {
           this.time -= 0.5;
-          if (this.time == 9.5) {
-            this.animate = false;
+          if (this.time == 10) {
+          this.voted = false;
           }
           this.timerUpdate();
         }, 500);
@@ -64,8 +71,8 @@ export default {
       if (i !== undefined) {
         this.vote(i);
       }
-      this.animate = true;
-      this.time = 10;
+      this.voted = true;
+      this.time = 12;
     }
   }
 };
