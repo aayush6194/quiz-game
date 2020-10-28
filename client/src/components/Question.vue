@@ -30,6 +30,9 @@ import ProgressBar from './ProgressBar';
 import Option from './Option';
 import Result from './Result';
 
+/**
+ * Question component loads question and option sent by server.
+ */
 export default {
   name: "Question",
   components: {
@@ -53,6 +56,7 @@ export default {
     };
   },
   methods: {
+    // Runs every 500ms, votes automatically when timer reaches 0
     timerUpdate() {
       if (this.time > 0) {
         setTimeout(() => {
@@ -67,6 +71,8 @@ export default {
         this.timerUpdate();
       }
     },
+
+    // Recoring voted option to send respose to the backend
     submit(i) {
       if (i !== undefined) {
         this.vote(i);

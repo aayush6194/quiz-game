@@ -53,10 +53,10 @@ export default {
 }
 .results {
   list-style: none;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(12, auto);
   min-height: 50vh;
-  width: 400px;
+
   place-items: start stretch;
   padding: 0;
 }

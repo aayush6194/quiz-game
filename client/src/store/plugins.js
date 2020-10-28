@@ -1,3 +1,7 @@
+/**
+ * 
+ * @param {Object} socket object
+ */
 export default function createWebSocketPlugin(socket) {
     return (store) => {
         socket.onmessage = ({ data }) => {

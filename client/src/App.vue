@@ -1,33 +1,29 @@
 <template>
-  <div class='container' id='app' v-bind:style='styleObject'>
-     <router-view />
+  <div class="container" id="app">
+    <!-- Routed Component -->
+    <router-view />
   </div>
 </template>
 
 <script>
-import Games from './assets/games.svg';
-
-const gradient = (
-  color1 = 'rgb(240,243,244, 0.95)',
-  color2 = 'rgb(240,243,244,0.95)'
-) => `linear-gradient(to right, ${color1} 0%, ${color2} 100%)`;
-
-export default {
-  name: 'App',
-  data() {
-    return {
-      styleObject: {
-        backgroundImage: `${gradient()}, url('${Games}')`,
-        backgroundAttachment: 'fixed',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'bottom left',
-      },
-    };
-  }
-};
+/**
+ * Main App Component with router
+ */
+export default { name: "App" };
 </script>
 
 <style>
-  @import url('./main.css');
-
+@import url("./main.css");
+#app {
+  /* Background with JoyStick */
+  background-image: linear-gradient(
+      to right,
+      rgb(240, 243, 244, 0.95) 0%,
+      rgb(240, 243, 244, 0.95) 100%
+    ),
+    url("./assets/games.svg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+}
 </style>

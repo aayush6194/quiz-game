@@ -4,6 +4,7 @@ import Game from './pages/Game.vue';
 import Result from './pages/Result.vue';
 import store from './store';
 
+//routes
 const routes = [
     {
         path: '/',
@@ -25,14 +26,10 @@ const routes = [
                 next();
             }
         },
-    },
-    {
-        path: '/leaderboard',
-        name: 'leaderboard',
-        component: () => import('./pages/Leaderboard.vue'),
-    },
+    }
 ];
 
+// router with history and routes/components
 const router = createRouter({
     history: createWebHistory(),
     routes,

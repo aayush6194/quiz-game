@@ -3,6 +3,9 @@
 </template>
 
 <script>
+/**
+ * ProgressBar component helps visualize remaining time.
+ */
 export default {
   name: "ProgressBar",
   props: {
@@ -10,7 +13,10 @@ export default {
   },
   methods: {
     getBarStyle(percent) {
+      // Length of the bar
       const transform = `scaleX(${percent / 10})`;
+
+      // Red if less than 30%, yellow if less tham 70, green else
       const background =
         percent < 3 ? "#EB5748" : percent < 7 ? "#E6EB48" : "#7fab96";
       return {

@@ -8,6 +8,9 @@
 </template>
 
 <script>
+/**
+ * Option component list all the current options for the question retrieved from the backend
+ */
 export default {
   name: "Option",
   props: {
