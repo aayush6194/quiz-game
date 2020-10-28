@@ -1,7 +1,7 @@
-import playerController from './player-controller.mjs';
+import controller from './controller.mjs';
 
 const SetRoutes = (app) => {
-    app.post('/leaderboard', playerController.leaderboard);
+    app.get('/', controller.message);
 };
 
 export { SetRoutes };

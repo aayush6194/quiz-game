@@ -24,7 +24,7 @@
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
-    "start": "nodemon src/index.mjs"
+    "start": "node src/index.mjs"
   },
   "author": "Aayush Shrestha",
   "license": "MIT",
