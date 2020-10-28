@@ -25,6 +25,7 @@ const actions = {
 const mutations = {
     setPlayer: (state, player) => (state.player = player),
     setRoom: (state, room) => (state.player.room = room),
+    setState: (state, nextState) => (state.player.state = nextState),
     loadPlayers: (state, players) => (state.players = players),
 };
 

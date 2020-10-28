@@ -12,7 +12,7 @@ import udid from 'uuid';
 import WebSocket from 'ws';
 import { ACTIONS as VOTE } from './actions/vote.mjs';
 import { ACTIONS as ROOM } from './actions/room.mjs';
-import { ACTIONS as PLAYER } from './actions/player.mjs';
+import { ACTIONS as PLAYER, PLAYER_STATE } from './actions/player.mjs';
 import { Player } from '../domains/Player.mjs';
 
 const { v1 } = udid;
@@ -66,26 +66,28 @@ function* notifyQuestion(action, roomId) {
         select((state) => {
             const voting = state.rooms.byId[roomId].voting;
             const questionId = state.rooms.byId[roomId].questions[voting];
-
-            const { choices, ...rest } = state.questions.byId[questionId];
-            return {
-                ...rest,
-                choices: choices.map(({ isAnswer, ...r }) => ({ ...r })),
-            };
+            const question = state.questions.byId[questionId];
+            return question.serialize();
         }),
     ]);
-    const questionPayload = JSON.stringify({
-        type: VOTE.NEXT_VOTE,
+    yield put({
+        type: PLAYER.NEXT_STATE,
+        payload: {
+            playerIds: players.map(({ id }) => ({ id })),
+            state: PLAYER_STATE.VOTING,
+        },
+    });
+    const payload = JSON.stringify({
+        type: PLAYER.NEXT_STATE,
         payload: {
             question,
+            state: PLAYER_STATE.VOTING,
         },
     });
     yield all(
-        players.map(({ socket }) => {
-            if (socket.readyState === WebSocket.OPEN) {
-                socket.send(questionPayload);
-            }
-        })
+        players
+            .filter(({ socket }) => socket.readyState === WebSocket.OPEN)
+            .map(({ socket }) => socket.send(payload))
     );
 }
 
@@ -303,6 +305,7 @@ function* joinRoom(action) {
     };
 
     const serializedPlayers = players.map((player) => player.serialize());
+    // TODO: what if game has begun?
     if (currPlayer.socket.readyState === WebSocket.OPEN) {
         yield currPlayer.socket.send(
             JSON.stringify({

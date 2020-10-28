@@ -11,6 +11,10 @@ const playersById = produce((draft, action) => {
         case ACTIONS.DELETE_USER:
             delete draft[action.payload.playerId];
             break;
+        case ACTIONS.NEXT_STATE:
+            action.payload.playerIds.forEach((id) => {
+                draft[id] = action.payload.state;
+            });
     }
 }, {});
 

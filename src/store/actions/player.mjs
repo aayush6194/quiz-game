@@ -4,6 +4,7 @@ const { produce } = immer;
 export const ACTIONS = {
     ADD_PLAYER: 'ADD_PLAYER',
     DELETE_USER: 'DELETE_USER',
+    NEXT_STATE: 'NEXT_STATE',
 };
 
 export const PLAYER_STATE = {
