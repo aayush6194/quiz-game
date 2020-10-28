@@ -2,7 +2,7 @@
   <div>
     <Player v-if="!(player.name && player.avatar !== undefined)" />
     <Room v-else-if="!player.room" />
-    <Lobby v-else-if="player.state === 'IN_VOTING'" />
+    <Lobby v-else-if="player.state === 'IN_LOBBY'" />
     <div v-else-if="player.state === 'WAITING_RESULT'">
       <h1>Waiting for other players to answer...</h1>
     </div>
