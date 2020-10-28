@@ -10,9 +10,7 @@ export default function createWebSocketPlugin(socket) {
                         });
                     } else {
                         store.commit('loadQuestions', action.payload.questions);
-                        store.commit('loadPlayers', {
-                            players: action.payload.players,
-                        });
+
                         store.commit('setVoting', action.payload.voting);
                     }
                     break;
@@ -24,6 +22,9 @@ export default function createWebSocketPlugin(socket) {
                     break;
                 case 'JOIN_ROOM':
                     store.commit('setRoom', action.payload.roomId);
+                    break;
+                case 'LOAD_PLAYERS':
+                    store.commit('loadPlayers', action.payload.players);
                     break;
                 default:
                     break;

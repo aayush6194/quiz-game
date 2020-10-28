@@ -25,6 +25,17 @@ const totalVotes = (choices) => {
     }, 0);
 };
 
+function* getPlayersInRoom(roomId) {
+    const [players, allPlayers] = yield select((state) => [
+        state.rooms.byId[roomId].players,
+        state.players.byId,
+    ]);
+    return players.map((playerId) => {
+        const { socket, ...player } = allPlayers[playerId];
+        return player;
+    });
+}
+
 function* beginVote() {
     yield put({ type: VOTE.NEXT_VOTE });
     let i = 0;
@@ -71,12 +82,23 @@ function* createRoom(action) {
             roomId,
         },
     });
-    const socket = yield select((state) => state.players.byId[playerId].socket);
+    const [socket, players] = yield all([
+        select((state) => state.players.byId[playerId].socket),
+        getPlayersInRoom(roomId),
+    ]);
     socket.send(
         JSON.stringify({
             type: ROOM.JOIN_ROOM,
             payload: {
                 roomId,
+            },
+        })
+    );
+    socket.send(
+        JSON.stringify({
+            type: 'LOAD_PLAYERS',
+            payload: {
+                players,
             },
         })
     );
