@@ -16,6 +16,33 @@ import { Player } from '../domains/Player.mjs';
 
 const { v1 } = udid;
 
+const getScoreBoard = ({ players, questions, tallies }) => {
+    const scores = {};
+    Object.entries(tallies).forEach(([questionId, tally]) => {
+        return Object.entries(tally).forEach(([choiceId, playerIds]) => {
+            const choice = questions[questionId].choices.find(
+                ({ id }) => id === choiceId
+            );
+            return playerIds.forEach((playerId) => {
+                const player = players.find(({ id }) => id === playerId);
+                if (!scores[player.id]) {
+                    scores[player.id] = {
+                        player: {
+                            name: player.name,
+                        },
+                        right: 0,
+                        wrong: 0,
+                    };
+                }
+                choice.isAnswer
+                    ? scores[player.id].right++
+                    : scores[player.id].wrong++;
+            });
+        });
+    });
+    return Object.values(scores);
+};
+
 const totalVotes = (choices) => {
     if (!choices) {
         return 0;
@@ -101,13 +128,37 @@ function* beginVote(action) {
             const questionId = state.questions.allIds[voting];
             return state.rooms.byId[roomId].tallies[questionId];
         });
-        const talliesPayload = JSON.stringify({
+        const resultPayload = JSON.stringify({
             type: 'LOAD_RESULT',
             payload: { result },
         });
-        yield all(players.map(({ socket }) => socket.send(talliesPayload)));
+        yield all(players.map(({ socket }) => socket.send(resultPayload)));
         yield delay(2_500);
-        yield put(action);
+        const [voting, questions, totalQuestions, tallies] = yield select(
+            (state) => {
+                return [
+                    state.rooms.byId[roomId].voting,
+                    state.questions.byId,
+                    state.questions.allIds.length,
+                    state.rooms.byId[roomId].tallies,
+                ];
+            }
+        );
+        if (voting === totalQuestions - 1) {
+            const finalScore = getScoreBoard({
+                players,
+                questions,
+                tallies,
+            });
+            const scorePayload = JSON.stringify({
+                type: 'LOAD_RESULTS',
+                payload: { results: finalScore },
+            });
+            yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
+            yield all(players.map(({ socket }) => socket.send(scorePayload)));
+        } else {
+            yield put(action);
+        }
     }
 }
 

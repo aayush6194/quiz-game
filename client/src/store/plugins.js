@@ -3,16 +3,10 @@ export default function createWebSocketPlugin(socket) {
         socket.onmessage = ({ data }) => {
             const action = JSON.parse(data);
             switch (action.type) {
-                case 'LOAD_STATE':
-                    if (action.payload.results) {
-                        store.commit('loadResults', {
-                            results: action.payload.results,
-                        });
-                    } else {
-                        store.commit('loadQuestions', action.payload.questions);
-
-                        store.commit('setVoting', action.payload.voting);
-                    }
+                case 'LOAD_RESULTS':
+                    store.commit('loadResults', {
+                        results: action.payload.results,
+                    });
                     break;
                 case 'WAIT_RESULT':
                     store.commit('setWait', true);

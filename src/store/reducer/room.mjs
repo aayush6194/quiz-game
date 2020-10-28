@@ -28,6 +28,8 @@ const roomsById = produce((draft, action) => {
         case ACTIONS.NEXT_VOTE:
             draft[action.payload.roomId].voting += 1;
             break;
+        case ACTIONS.DESTROY_ROOM:
+            delete draft[action.payload.roomId];
     }
 }, {});
 
@@ -36,6 +38,11 @@ const allRooms = produce((draft, action) => {
         case ACTIONS.ADD_ROOM:
             draft.push(action.payload.roomId);
             break;
+        case ACTIONS.DESTROY_ROOM:
+            const index = draft.findIndex(
+                (roomId) => roomId === action.payload.roomId
+            );
+            draft.splice(index, 1);
     }
 }, []);
 
