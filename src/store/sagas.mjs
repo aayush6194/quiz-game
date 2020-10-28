@@ -67,7 +67,11 @@ function* notifyQuestion(action, roomId) {
             const voting = state.rooms.byId[roomId].voting;
             const questionId = state.rooms.byId[roomId].questions[voting];
 
-            return state.questions.byId[questionId];
+            const { choices, ...rest } = state.questions.byId[questionId];
+            return {
+                ...rest,
+                choices: choices.map(({ isAnswer, ...r }) => ({ ...r })),
+            };
         }),
     ]);
     const questionPayload = JSON.stringify({
@@ -135,7 +139,10 @@ function* enVote(action) {
             const result = yield select((state) => {
                 const voting = state.rooms.byId[roomId].voting;
                 const questionId = state.rooms.byId[roomId].questions[voting];
-                return state.rooms.byId[roomId].tallies[questionId] ?? null;
+                return [
+                    state.rooms.byId[roomId].tallies[questionId] ?? null,
+                    state.questions.byId[questionId],
+                ];
             });
             const [voting, questions, totalQuestions, tallies] = yield select(
                 (state) => {

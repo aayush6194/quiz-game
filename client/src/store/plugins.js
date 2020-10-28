@@ -23,7 +23,8 @@ export default function createWebSocketPlugin(socket) {
                     break;
                 case 'LOAD_RESULT':
                     store.commit('setWait', false);
-                    store.commit('setResult', action.payload.result);
+                    store.commit('setQuestion', action.payload.result[1]);
+                    store.commit('setResult', action.payload.result[0]);
                     break;
                 case 'NEXT_VOTE':
                     store.commit('setResult', undefined);

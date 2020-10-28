@@ -1,5 +1,4 @@
 <template>
-
   <div class="card result-wrapper">
     <div class="txt-primary txt-center txt-lg bold">
       Results <i class="fas fa-medal"></i>
@@ -43,10 +42,12 @@ export default {
   name: "Result",
   computed: mapGetters(["result", "question", "players"]),
   methods: {
-    isCorrect(playerId){
-     const [ answer ] =  this.question.choices.filter(({isAnswer}) => isAnswer );
-     const { id: correctId } = answer;
-     return  this.result[correctId] && this.result[correctId].includes(playerId);
+    isCorrect(playerId) {
+      const answer = this.question.choices.find(({ isAnswer }) => isAnswer);
+      const { id: correctId } = answer;
+      return (
+        this.result[correctId] && this.result[correctId].includes(playerId)
+      );
     }
   }
 };
