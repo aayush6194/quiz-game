@@ -41,19 +41,13 @@ const getQuestions = (data) => {
                 // Removing the (correct) keyword
                 option = option.split(' ')[0];
                 correctOption = option;
+                options.push(Choice(v1(), correctOption, true));
+            } else {
+                options.push(Choice(v1(), option));
             }
-            options.push(option);
         }
-        // FIXME: last is always ans
-        questions.push(
-            Question(v1(), question, [
-                ...options.map((option) => Choice(v1(), option)),
-                Choice(v1(), correctOption, true),
-            ])
-        );
+        questions.push(Question(v1(), question, options));
     }
-    //questions.push({ question, options, correctOption });
-    //  }
 
     return questions;
 };
