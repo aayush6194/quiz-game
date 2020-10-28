@@ -19,15 +19,11 @@
     "ws": "^5.2.2"
   },
   "devDependencies": {
-    "jasmine": "^3.6.2",
-    "jasmine-spec-reporter": "^6.0.0",
     "prettier": "~1.18.2",
     "rimraf": "^3.0.0"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
-    "test": "jasmine",
-    "test:watch": "jest --watch",
     "start": "nodemon src/index.mjs"
   },
   "author": "Aayush Shrestha",
