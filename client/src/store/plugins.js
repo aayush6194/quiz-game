@@ -14,7 +14,15 @@ export default function createWebSocketPlugin(socket) {
                         store.commit('setVoting', action.payload.voting);
                     }
                     break;
+                case 'WAIT_RESULT':
+                    store.commit('setWait', true);
+                    break;
+                case 'LOAD_RESULT':
+                    store.commit('setWait', false);
+                    store.commit('setResult', action.payload.result);
+                    break;
                 case 'NEXT_VOTE':
+                    store.commit('setResult', undefined);
                     store.commit('setQuestion', action.payload.question);
                     break;
                 case 'CREATE_PLAYER':

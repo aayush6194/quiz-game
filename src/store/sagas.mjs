@@ -53,6 +53,7 @@ function* getPlayersInRoom(roomId) {
 
 function* beginVote(action) {
     const roomId = action.payload.roomId;
+    let flag = false;
 
     yield put({
         type: VOTE.NEXT_VOTE,
@@ -60,7 +61,7 @@ function* beginVote(action) {
     });
     yield notifyQuestion(action, roomId);
 
-    const { vote } = yield race({
+    const { vote, timeout } = yield race({
         vote: take('CAST_VOTE'),
         timeout: delay(10_000),
     });
@@ -73,7 +74,7 @@ function* beginVote(action) {
             type: VOTE.ADD_VOTE,
             payload: { ...vote.payload, roomId, questionId },
         });
-        const [choices, totalPlayers] = yield select((state) => {
+        const [tallies, totalPlayers] = yield select((state) => {
             const voting = state.rooms.byId[roomId].voting;
             const questionId = state.questions.allIds[voting];
             return [
@@ -81,13 +82,32 @@ function* beginVote(action) {
                 state.rooms.byId[roomId].players.length,
             ];
         });
-        if (totalVotes(choices) === totalPlayers) {
-            yield put({ type: VOTE.NEXT_VOTE, payload: { roomId } });
-            yield notifyQuestion(action, roomId);
+        flag = totalVotes(tallies) === totalPlayers;
+        if (!flag) {
+            const socket = yield select(
+                (state) => state.players.byId[action.payload.playerId].socket
+            );
+            socket.send(
+                JSON.stringify({
+                    type: 'WAIT_RESULT',
+                })
+            );
         }
-    } else {
-        yield put({ type: VOTE.NEXT_VOTE, payload: { roomId } });
-        yield notifyQuestion(action, roomId);
+    }
+    if (timeout || flag) {
+        const players = yield getPlayersInRoom(roomId);
+        const result = yield select((state) => {
+            const voting = state.rooms.byId[roomId].voting;
+            const questionId = state.questions.allIds[voting];
+            return state.rooms.byId[roomId].tallies[questionId];
+        });
+        const talliesPayload = JSON.stringify({
+            type: 'LOAD_RESULT',
+            payload: { result },
+        });
+        yield all(players.map(({ socket }) => socket.send(talliesPayload)));
+        yield delay(2_500);
+        yield put(action);
     }
 }
 

@@ -4,6 +4,12 @@
     <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
     <h1 v-else-if="time > 0">{{ time }}</h1>
     <Lobby v-else-if="!question" />
+    <div v-else-if="wait">
+      <h1>Waiting</h1>
+    </div>
+    <div v-else-if="result">
+      <h1>{{ result }}</h1>
+    </div>
     <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
 </template>
@@ -25,7 +31,7 @@ export default {
     Lobby
   },
   computed: {
-    ...mapGetters(["player", "players", "question"])
+    ...mapGetters(["player", "players", "question", "wait", "result"])
   },
   methods: {
     vote(choiceId) {
