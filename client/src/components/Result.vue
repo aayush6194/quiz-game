@@ -2,7 +2,10 @@
   <div class="card result-wrapper">
     <div class="txt-primary txt-center txt-lg bold">Results <i class="fas fa-medal"></i></div>
     <ul class="results">
-      <li v-for="data in result" :key="data.player.name">
+      {{ result }}
+      {{ question }}
+      {{ players }}
+      <!-- <li v-for="data in result" :key="data.player.name">
         <div class="score card no-select">
           <img
             class="img"
@@ -18,7 +21,7 @@
             <i class="fa fa-check" aria-hidden="true"></i> Correct
           </div>
         </div>
-      </li>
+      </li> -->
     </ul>
   </div>
 </template>
@@ -27,17 +30,7 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Result",
-  computed: mapGetters(["results"]),
-  data() {
-    return {
-      result: [
-        { player: { name: "XYZ" }, correct: true },
-        { player: { name: "XYZ" }, correct: true },
-
-      ]
-    };
-  },
-  methods: {}
+  computed: mapGetters(["result", "question", "players"]),
 };
 </script>
 

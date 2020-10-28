@@ -1,29 +1,32 @@
 <template>
   <div class="wrapper">
     <div class="txt-right bold txt-lg">
-      <span> 
-        <i class="fas fa-stopwatch" /> 
-        <Timer :defaultTime='time'/> 
-        {{ time.toFixed(0) }} 
+      <span>
+        <i class="fas fa-stopwatch" />
+        <Timer :defaultTime="time" />
+        {{ time.toFixed(0) }}
       </span>
     </div>
-    <div :class='`appear`'>
+    <div class="appear">
       <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
-        <li v-for="option in question.choices" :key="option">
-          <button @click="submit(option.id)" :class="buttonClassName(index)">
-            {{ option.value }}
-          </button>
-        </li>
+        <Option
+          v-for="(option, index) in question.choices"
+          :key="option"
+          :choiceId="option.id"
+          :handleSubmit="submit"
+          :index="index"
+          :text="option.value"
+        />
       </ul>
     </div>
-    <ProgressBar :percent='time'/>
+    <ProgressBar :percent="time" />
   </div>
 </template>
 
 <script>
-import ProgressBar from './ProgressBar';
-import Option from './Option';
+import ProgressBar from "./ProgressBar";
+import Option from "./Option";
 
 /**
  * Question component loads question and option sent by server.
@@ -37,7 +40,7 @@ export default {
   props: {
     data: String,
     question: String,
-    vote: Function
+    vote: Function,
   },
   created: function() {
     this.timerUpdate();
@@ -56,7 +59,7 @@ export default {
         setTimeout(() => {
           this.time -= 0.5;
           if (this.time == 10) {
-          this.voted = false;
+            this.voted = false;
           }
           this.timerUpdate();
         }, 500);
@@ -76,22 +79,13 @@ export default {
       }
       this.voted = true;
       this.time = 12;
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.btn-option {
-  border: 2px solid transparent;
-}
 
-.btn-option:hover,
-.select {
-  border-color: #7fab96;
-  box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
-    1px 2px 2px rgba(15, 102, 29, 0.22);
-}
 .wrapper {
   padding: 1em;
   width: 1400px;
