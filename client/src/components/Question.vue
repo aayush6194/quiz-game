@@ -23,6 +23,7 @@
 <script>
 import ProgressBar from './ProgressBar';
 import Option from './Option';
+
 export default {
   name: "Question",
   components: {

@@ -5,10 +5,10 @@
     </h1>
     <div class='txt-center txt-md'><i class='fas fa-spinner spin txt-primary'></i></div>
     <div class='card player-panel'>
-    <div class='bold txt-md'> Players Joined</div>
+    <div class='bold txt-md txt-center txt-primary'> Players Joined</div>
     <ul class='options'>
       <li v-for='(p, index) in players' :key='p' class='capitalize card player'>
-         <span class='hide-on-mobile'>{{ index + 1}}. </span><img src='../assets/user1.png' class='avatar'> 
+         <span class='hide-on-mobile bold'>{{ index + 1}}. </span><img src='../assets/user1.png' class='avatar'> 
          <div class='txt-left'>{{ 
            p.name.length > nameLimit? `${p.name.substring(0,  nameLimit)}...`: p.name 
            }}</div>
@@ -28,27 +28,12 @@ export default {
 
   data: function() {
     return {
-      dots: 3,
       nameLimit: 10
     };
   },
   methods: {
     ...mapActions(['startVoting']),
-    timerUpdate() {
-      if (this.dots > 0) {
-        setTimeout(() => {
-          this.dots -= 1;
-          this.timerUpdate();
-        }, 1000);
-      } else {
-        this.dots = 3;
-        this.timerUpdate();
-      }
-    },
-  },
-  created: function() {
-    this.timerUpdate();
-  },
+  }
 };
 </script>
 
