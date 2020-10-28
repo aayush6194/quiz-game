@@ -10,6 +10,10 @@ export default function createWebSocketPlugin(socket) {
             console.log(action);
             switch (action.type) {
                 case 'LOAD_RESULTS':
+                    store.commit('setRoom', undefined);
+                    store.commit('setResult', undefined);
+                    store.commit('loadPlayers', []);
+                    store.commit('setQuestion', null);
                     store.commit('loadResults', {
                         results: action.payload.results,
                     });
