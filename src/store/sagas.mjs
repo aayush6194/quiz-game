@@ -116,6 +116,11 @@ function* enVote(action) {
             );
         } else {
             const players = yield getPlayersInRoom(roomId);
+            const result = yield select((state) => {
+                const voting = state.rooms.byId[roomId].voting;
+                const questionId = state.questions.allIds[voting];
+                return state.rooms.byId[roomId].tallies[questionId] ?? null;
+            });
             const [voting, questions, totalQuestions, tallies] = yield select(
                 (state) => {
                     return [
@@ -126,6 +131,12 @@ function* enVote(action) {
                     ];
                 }
             );
+            const resultPayload = JSON.stringify({
+                type: 'LOAD_RESULT',
+                payload: { result },
+            });
+            yield all(players.map(({ socket }) => socket.send(resultPayload)));
+            yield delay(3_000);
             if (voting === totalQuestions - 1) {
                 const finalScore = getScoreBoard({
                     players,
