@@ -26,6 +26,21 @@ export default function createWebSocketPlugin(socket) {
                     store.commit('setQuestion', action.payload.result[1]);
                     store.commit('setResult', action.payload.result[0]);
                     break;
+                case 'NEXT_STATE':
+                    switch (action.payload.state) {
+                        case 'VOTING':
+                            store.commit(
+                                'setQuestion',
+                                action.payload.question
+                            );
+                            break;
+                        default:
+                            throw new Error(
+                                `unknown state ${JSON.stringify(action)}`
+                            );
+                    }
+                    store.commit('setState', action.payload.state);
+                    break;
                 case 'NEXT_VOTE':
                     store.commit('setResult', undefined);
                     store.commit('setQuestion', action.payload.question);

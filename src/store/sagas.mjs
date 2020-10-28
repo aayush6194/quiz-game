@@ -12,7 +12,7 @@ import udid from 'uuid';
 import WebSocket from 'ws';
 import { ACTIONS as VOTE } from './actions/vote.mjs';
 import { ACTIONS as ROOM } from './actions/room.mjs';
-import { ACTIONS as PLAYER } from './actions/player.mjs';
+import { ACTIONS as PLAYER, PLAYER_STATE } from './actions/player.mjs';
 import { Player } from '../domains/Player.mjs';
 
 const { v1 } = udid;
@@ -66,35 +66,39 @@ function* notifyQuestion(action, roomId) {
         select((state) => {
             const voting = state.rooms.byId[roomId].voting;
             const questionId = state.rooms.byId[roomId].questions[voting];
-
-            const { choices, ...rest } = state.questions.byId[questionId];
-            return {
-                ...rest,
-                choices: choices.map(({ isAnswer, ...r }) => ({ ...r })),
-            };
+            const question = state.questions.byId[questionId];
+            return question.serialize();
         }),
     ]);
-    const questionPayload = JSON.stringify({
-        type: VOTE.NEXT_VOTE,
+    yield put({
+        type: PLAYER.NEXT_STATE,
+        payload: {
+            playerIds: players.map(({ id }) => ({ id })),
+            state: PLAYER_STATE.VOTING,
+        },
+    });
+    const payload = JSON.stringify({
+        type: PLAYER.NEXT_STATE,
         payload: {
             question,
+            state: PLAYER_STATE.VOTING,
         },
     });
     yield all(
-        players.map(({ socket }) => {
-            if (socket.readyState === WebSocket.OPEN) {
-                socket.send(questionPayload);
-            }
-        })
+        players
+            .filter(({ socket }) => socket.readyState === WebSocket.OPEN)
+            .map(({ socket }) => socket.send(payload))
     );
 }
 
 function* getPlayersInRoom(roomId) {
-    const [players, allPlayers] = yield select((state) => [
+    const [playerIds, allPlayers] = yield select((state) => [
         state.rooms.byId[roomId].players,
         state.players.byId,
     ]);
-    return players.map((playerId) => allPlayers[playerId]);
+    const players = [];
+    playerIds.forEach((playerId) => players.push(allPlayers[playerId]));
+    return players;
 }
 
 function* enVote(action) {
@@ -119,7 +123,7 @@ function* enVote(action) {
             const questionId = state.rooms.byId[roomId].questions[voting];
             return [
                 state.rooms.byId[roomId].tallies[questionId],
-                state.rooms.byId[roomId].players.length,
+                state.rooms.byId[roomId].players.size,
             ];
         });
         flag = totalVotes(tallies) === totalPlayers;
@@ -295,7 +299,13 @@ function* joinRoom(action) {
         getPlayersInRoom(roomId),
     ]);
 
+    currPlayer.socket.META = {
+        playerId,
+        roomId,
+    };
+
     const serializedPlayers = players.map((player) => player.serialize());
+    // TODO: what if game has begun?
     if (currPlayer.socket.readyState === WebSocket.OPEN) {
         yield currPlayer.socket.send(
             JSON.stringify({
@@ -338,22 +348,58 @@ function* createPlayer(action) {
         socket: action.payload.socket,
         id,
     });
+    action.payload.socket.META = {
+        playerId: id,
+    };
     yield put({ type: PLAYER.ADD_PLAYER, payload: { player } });
 
-    const { socket, ...rest } = player;
+    const { socket, serialize } = player;
 
     if (socket.readyState === WebSocket.OPEN) {
         socket.send(
             JSON.stringify({
                 type: 'CREATE_PLAYER',
-                payload: { player: rest },
+                payload: { player: serialize() },
+            })
+        );
+    }
+}
+
+function* deletePlayer(action) {
+    yield put({
+        type: PLAYER.DELETE_USER,
+        payload: action.payload,
+    });
+    const players = yield getPlayersInRoom(action.payload.roomId);
+    if (players.length === 0) {
+        yield put({
+            type: ROOM.DESTROY_ROOM,
+            payload: action.payload,
+        });
+    } else {
+        const serializedPlayers = players.map((player) => player.serialize());
+        yield all(
+            players.map(({ socket }) => {
+                if (socket.readyState === WebSocket.OPEN) {
+                    return socket.send(
+                        JSON.stringify({
+                            type: 'LOAD_PLAYERS',
+                            payload: {
+                                players: serializedPlayers,
+                            },
+                        })
+                    );
+                }
             })
         );
     }
 }
 
 function* playerSaga() {
-    yield takeEvery('CREATE_PLAYER', createPlayer);
+    yield all([
+        takeEvery('CREATE_PLAYER', createPlayer),
+        takeEvery('DISCONNECT_USER', deletePlayer),
+    ]);
 }
 
 export default function* rootSaga() {

@@ -8,5 +8,11 @@ export const Choice = R.curry((id, value, isAnswer = false) =>
         id,
         value,
         isAnswer,
+        serialize: (hideAns = true) => {
+            if (hideAns) {
+                return { id, value };
+            }
+            return { id, value, isAnswer };
+        },
     })
 );

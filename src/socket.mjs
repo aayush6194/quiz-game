@@ -22,6 +22,12 @@ wss.on('connection', (socket) => {
             });
         }
     });
+    socket.on('close', () => {
+        store.dispatch.bind(store)({
+            type: 'DISCONNECT_USER',
+            payload: socket.META,
+        });
+    });
 });
 
 export default wss;

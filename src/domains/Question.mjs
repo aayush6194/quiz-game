@@ -8,5 +8,10 @@ export const Question = R.curry((id, question, choices) =>
         id,
         question,
         choices,
+        serialize: (hideAns = true) => ({
+            id,
+            question,
+            choices: choices.map((choice) => choice.serialize(hideAns)),
+        }),
     })
 );
