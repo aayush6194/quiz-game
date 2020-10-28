@@ -2,12 +2,11 @@
   <div>
     <Player v-if="!(player.name && player.avatar !== undefined)" />
     <Room v-else-if="!player.room" />
-    <Lobby v-else-if="!question" />
-    <div v-else-if="wait">
-      <h1>Waiting for other players</h1>
+    <Lobby v-else-if="player.state === 'IN_VOTING'" />
+    <div v-else-if="player.state === 'WAITING_RESULT'">
+      <h1>Waiting for other players to answer...</h1>
     </div>
- 
-    <Result v-else-if="result"/>
+    <Result v-else-if="result" />
     <div v-else-if="result === null">
       <h1>No one Voted!</h1>
     </div>
@@ -34,13 +33,13 @@ export default {
     Player,
     Room,
     Lobby,
-    Result,
+    Result
   },
   computed: mapGetters(["player", "players", "question", "wait", "result"]),
 
   data: function() {
     return {
-      room: undefined,
+      room: undefined
     };
   },
   methods: {
@@ -50,9 +49,9 @@ export default {
     vote(choiceId) {
       sendMessage({
         type: "CAST_VOTE",
-        payload: { playerId: this.player.id, choiceId },
+        payload: { playerId: this.player.id, choiceId }
       });
     }
-  },
+  }
 };
 </script>

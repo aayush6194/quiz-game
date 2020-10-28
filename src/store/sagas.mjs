@@ -350,13 +350,13 @@ function* createPlayer(action) {
     };
     yield put({ type: PLAYER.ADD_PLAYER, payload: { player } });
 
-    const { socket, ...rest } = player;
+    const { socket, serialize } = player;
 
     if (socket.readyState === WebSocket.OPEN) {
         socket.send(
             JSON.stringify({
                 type: 'CREATE_PLAYER',
-                payload: { player: rest },
+                payload: { player: serialize() },
             })
         );
     }

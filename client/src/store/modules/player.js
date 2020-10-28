@@ -3,6 +3,7 @@ const state = {
         name: undefined,
         avatar: undefined,
         room: undefined,
+        state: undefined,
     },
     players: [],
 };
