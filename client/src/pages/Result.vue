@@ -3,7 +3,9 @@
     <router-link to="/">
       <BackButton />
     </router-link>
-    <div class="txt-primary txt-center txt-lg bold">Final Scores <i class="fas fa-medal"></i></div>
+    <div class="txt-primary txt-center txt-lg bold">
+      Final Scores <i class="fas fa-medal"></i>
+    </div>
     <div class="score card">
       <img class="img" src="../assets/prize.svg" :style="{ width: `150px` }" />
       <div class="txt-md bold" :style="{ placeSelf: `center` }">
@@ -16,7 +18,12 @@
       <li v-for="(data, index) in results" :key="data.player">
         <div class="result card no-select">
           <div class="txt-md bold">{{ index + 1 }}.</div>
-          <img class="img avatar" src="../assets/user1.png" />
+          <img
+            v-if="data.player.avatar === 0"
+            class="img avatar"
+            src="../assets/user1.png"
+          />
+          <img v-else class="img avatar" src="../assets/user2.png" />
           <div class="capitalize">{{ data.player.name }}</div>
           <div class="txt-primary txt-md bold">
             {{ data.right }}
@@ -26,9 +33,11 @@
         </div>
       </li>
     </ul>
-    <button class="btn-primary bold" :style="{ fontSize: `1.2em` }">
-      Play Again
-    </button>
+    <router-link to="/">
+      <button class="btn-primary bold" :style="{ fontSize: `1.2em` }">
+        Play Again
+      </button>
+    </router-link>
   </div>
 </template>
 
@@ -39,9 +48,9 @@ import { mapGetters } from "vuex";
 export default {
   name: "Result",
   components: {
-    BackButton
+    BackButton,
   },
-  computed: mapGetters(["results"])
+  computed: mapGetters(["results"]),
 };
 </script>
 

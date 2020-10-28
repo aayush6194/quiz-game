@@ -3,6 +3,7 @@
     <h1 class="txt-primary txt-center">
       Waiting for players to join...
     </h1>
+    
     <div class="txt-center txt-md">
       <i class="fas fa-spinner spin txt-primary"></i>
     </div>
@@ -14,8 +15,9 @@
           :key="p"
           class="capitalize card player"
         >
-          <span class="hide-on-mobile bold">{{ index + 1 }}. </span
-          ><img src="../assets/user1.png" class="avatar" />
+          <span class="hide-on-mobile bold">{{ index + 1 }}. </span>
+          <img v-if="p.avatar === 0" src="../assets/user1.png" class="avatar" />
+          <img v-else src="../assets/user2.png" class="avatar" />
           <div class="txt-left">
             {{
               p.name.length > nameLimit
@@ -25,6 +27,16 @@
           </div>
         </li>
       </ul>
+    </div>
+
+    <div>
+      <div class="txt-center bold txt-primary">Room Id:</div>
+      <div class="cols">
+        <input :value="player.room" ref="input" />
+        <button @click="copy">
+          <i class="fa fa-clipboard"/> Copy
+        </button>
+      </div>
     </div>
     <button
       @click="startVoting"
@@ -46,7 +58,7 @@ import { sendMessage } from "../socket";
  */
 export default {
   name: "Lobby",
-  computed: mapGetters(["players"]),
+  computed: mapGetters(["players", "player"]),
 
   data: function() {
     return {
@@ -60,15 +72,31 @@ export default {
         type: "BEGIN_VOTE",
         payload: {
           playerId,
-          roomId
-        }
+          roomId,
+        },
       });
-    }
-  }
+    },
+    copy() {
+      try {
+        this.$refs.input.select();
+        document.execCommand("copy");
+      } catch (e) {
+        window &&
+          window.prompt("Copy to clipboard: Ctrl+C, Enter", this.player.room);
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
+.cols{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  place-items: center stretch;
+  grid-gap: .5em;
+  margin-top: .5em;
+}
 .options {
   list-style: none;
   display: grid;
