@@ -1,24 +1,17 @@
 const state = {
-    questions: [],
+    question: undefined,
 };
 
 const getters = {
-    questions: (state) => state.questions,
-};
-
-const actions = {
-    async getQuestion({ commit }) {
-        commit('getQuestion', {});
-    },
+    question: (state) => state.question,
 };
 
 const mutations = {
-    loadQuestions: (state, questions) => (state.questions = questions),
+    setQuestion: (state, question) => (state.question = question),
 };
 
 export default {
     state,
     getters,
-    actions,
     mutations,
 };

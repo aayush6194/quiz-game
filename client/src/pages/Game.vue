@@ -1,12 +1,19 @@
 <template>
   <div>
+    {{ question }}
+
+    {{ wait }}
     <Player v-if="!(player.name && player.avatar !== undefined)" />
     <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
-    <Lobby v-else-if="!getQuestion" />
-    <h1 v-else-if="!start">
-      <Timer :defaultTime="time" :onFinish="startGame" />
-    </h1>
-    <Question v-else :data="data" :question="getQuestion" :vote="vote" />
+    <h1 v-else-if="time > 0">{{ time }}</h1>
+    <Lobby v-else-if="!question" />
+    <div v-else-if="wait">
+      <h1>Waiting</h1>
+    </div>
+    <div v-else-if="result">
+      <h1>{{ result }}</h1>
+    </div>
+    <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
 </template>
 
@@ -15,8 +22,9 @@ import Question from "../components/Question.vue";
 import Player from "../components/Player.vue";
 import Room from "../components/Room.vue";
 import Lobby from "../components/Lobby.vue";
-import Timer from "../components/Timer";
-import { mapGetters, mapActions } from "vuex";
+//import Timer from "../components/Timer";
+import { mapGetters  } from "vuex";
+import { sendMessage } from "../socket";
 
 export default {
   name: "Game",
@@ -25,27 +33,24 @@ export default {
     Player,
     Room,
     Lobby,
-    Timer
+  //  Timer
   },
   computed: {
-    ...mapGetters(["player", "players", "questions"]),
-    getQuestion() {
-      return this.$store.getters.getQuestionUnderVote;
-    }
+    ...mapGetters(["player", "players", "question", "wait", "result"])
   },
-
-  data: function() {
+    data: function() {
     return {
       room: undefined,
-      time: 3,
+      time: 0,
       start: false
     };
-  },
+    },
   methods: {
-    ...mapActions(["startVoting", "addVote"]),
     vote(choiceId) {
-      // FIXME: handle multiple users with their id
-      this.addVote({ playerId: 0, choiceId });
+      sendMessage({
+        type: "CAST_VOTE",
+        payload: { playerId: this.player.id, choiceId }
+      });
     },
     startGame() {
       this.start = true;

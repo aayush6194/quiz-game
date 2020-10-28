@@ -2,8 +2,7 @@ const state = {
     player: {
         name: undefined,
         avatar: undefined,
-        // TODO: implement rooms
-        room: 1,
+        room: undefined,
     },
     players: [],
 };
@@ -18,14 +17,14 @@ const actions = {
         commit('setPlayer', player);
     },
     setRoom({ commit }, room) {
-        commit('roomSet', room);
+        commit('setRoom', room);
     },
 };
 
 const mutations = {
-    setPlayer: (state, payload) => (state.player = payload.player),
-    roomSet: (state, room) => (state.player.room = room),
-    loadPlayers: (state, payload) => (state.players = payload.players),
+    setPlayer: (state, player) => (state.player = player),
+    setRoom: (state, room) => (state.player.room = room),
+    loadPlayers: (state, players) => (state.players = players),
 };
 
 export default {

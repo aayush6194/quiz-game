@@ -37,7 +37,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
+import { sendMessage } from "../socket";
 
 /**
  * Lobby component list the players in current room quiz retrieved from the backend
@@ -53,8 +54,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["startVoting"]),
-  },
+    startVoting() {
+      const { id: playerId, room: roomId } = this.$store.getters.player;
+      sendMessage({
+        type: "BEGIN_VOTE",
+        payload: {
+          playerId,
+          roomId
+        }
+      });
+    }
+  }
 };
 </script>
 

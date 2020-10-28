@@ -1,6 +1,6 @@
 import Redux, { applyMiddleware } from 'redux';
 import saga from 'redux-saga';
-import rootReducer from './reducer/reducer.mjs';
+import rootReducer from './reducer/index.mjs';
 import rootSaga from './sagas.mjs';
 
 const { default: createSagaMiddleware } = saga;

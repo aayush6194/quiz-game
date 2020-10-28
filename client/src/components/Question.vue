@@ -1,6 +1,5 @@
 <template>
-  <div class="wrapper" v-if='!voted'>
-    <div class="bold txt-md">Question 1/10</div>
+  <div class="wrapper">
     <div class="txt-right bold txt-lg">
       <span> 
         <i class="fas fa-stopwatch" /> 
@@ -11,24 +10,20 @@
     <div :class='`appear`'>
       <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
-        <Option 
-           v-for="(option, index) in question.choices"
-          :index='index' 
-          :text='option.value'
-          :key="option"
-          :handleSubmit='submit'
-        />
+        <li v-for="option in question.choices" :key="option">
+          <button @click="submit(option.id)" :class="buttonClassName(index)">
+            {{ option.value }}
+          </button>
+        </li>
       </ul>
     </div>
     <ProgressBar :percent='time'/>
   </div>
-  <Result v-else/>
 </template>
 
 <script>
 import ProgressBar from './ProgressBar';
 import Option from './Option';
-import Result from './Result';
 
 /**
  * Question component loads question and option sent by server.
@@ -38,11 +33,10 @@ export default {
   components: {
     ProgressBar,
     Option,
-    Result
   },
   props: {
     data: String,
-    question: [],
+    question: String,
     vote: Function
   },
   created: function() {
@@ -71,8 +65,11 @@ export default {
         this.timerUpdate();
       }
     },
-
-    // Recoring voted option to send respose to the backend
+    buttonClassName(index) {
+      return this.selectedAnswer === index
+        ? "btn-option txt-md bold select"
+        : "btn-option txt-md bold";
+    },
     submit(i) {
       if (i !== undefined) {
         this.vote(i);
@@ -85,6 +82,16 @@ export default {
 </script>
 
 <style scoped>
+.btn-option {
+  border: 2px solid transparent;
+}
+
+.btn-option:hover,
+.select {
+  border-color: #7fab96;
+  box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
+    1px 2px 2px rgba(15, 102, 29, 0.22);
+}
 .wrapper {
   padding: 1em;
   width: 1400px;

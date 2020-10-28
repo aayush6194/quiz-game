@@ -1,12 +1,7 @@
-import immer from 'immer';
-const { produce } = immer;
-
 export const ACTIONS = {
     ADD_ROOM: 'ADD_ROOM',
+    JOIN_ROOM: 'JOIN_ROOM',
+    DESTROY_ROOM: 'DESTROY_ROOM',
+    ADD_VOTE: 'ADD_VOTE',
+    NEXT_VOTE: 'NEXT_VOTE',
 };
-
-export const addRoom = produce((draft, id) => {
-    draft[id] = {
-        players: [],
-    };
-});
