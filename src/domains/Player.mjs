@@ -9,5 +9,10 @@ export const Player = R.curry(({ id, name, avatar, socket }) =>
         avatar,
         socket,
         id,
+        serialize: () => ({
+            id,
+            avatar,
+            name,
+        }),
     })
 );

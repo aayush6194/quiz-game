@@ -30,10 +30,7 @@ function* getPlayersInRoom(roomId) {
         state.rooms.byId[roomId].players,
         state.players.byId,
     ]);
-    return players.map((playerId) => {
-        const { socket, ...player } = allPlayers[playerId];
-        return player;
-    });
+    return players.map((playerId) => allPlayers[playerId]);
 }
 
 function* beginVote() {
@@ -82,11 +79,14 @@ function* createRoom(action) {
             roomId,
         },
     });
-    const [socket, players] = yield all([
-        select((state) => state.players.byId[playerId].socket),
+
+    const [currPlayer, players] = yield all([
+        select((state) => state.players.byId[playerId]),
         getPlayersInRoom(roomId),
     ]);
-    socket.send(
+    const serializedPlayers = players.map((player) => player.serialize());
+
+    yield currPlayer.socket.send(
         JSON.stringify({
             type: ROOM.JOIN_ROOM,
             payload: {
@@ -94,13 +94,18 @@ function* createRoom(action) {
             },
         })
     );
-    socket.send(
-        JSON.stringify({
-            type: 'LOAD_PLAYERS',
-            payload: {
-                players,
-            },
-        })
+
+    yield all(
+        players.map(({ socket }) =>
+            socket.send(
+                JSON.stringify({
+                    type: 'LOAD_PLAYERS',
+                    payload: {
+                        players: serializedPlayers,
+                    },
+                })
+            )
+        )
     );
 }
 
