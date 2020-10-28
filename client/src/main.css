@@ -120,6 +120,10 @@ button:hover {
   width: 50px;
 }
 
+.txt-cap {
+  text-overflow: ellipsis;
+}
+
 
 @-moz-keyframes spin {
   from {

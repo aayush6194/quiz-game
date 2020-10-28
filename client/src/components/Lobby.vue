@@ -18,7 +18,7 @@
           <span class="hide-on-mobile bold">{{ index + 1 }}. </span>
           <img v-if="p.avatar === 0" src="../assets/user1.png" class="avatar" />
           <img v-else src="../assets/user2.png" class="avatar" />
-          <div class="txt-left">
+          <div class="txt-left .txt-cap">
             {{
               p.name.length > nameLimit
                 ? `${p.name.substring(0, nameLimit)}...`

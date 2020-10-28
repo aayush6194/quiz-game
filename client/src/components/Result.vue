@@ -17,17 +17,19 @@
             src="../assets/user1.png"
           />
           <img v-else class="img avatar" src="../assets/user2.png" />
-          <div class="txt-md bold capitalize">{{ data.name }}</div>
+          <div class="txt-md bold capitalize txt-cap">{{ data.name }}</div>
           <div
             class="txt-md txt-left txt-primary bold"
             :style="{ placeSelf: `center` }"
           >
             <span v-if="isCorrect(data.id)">
-              <i class="fa fa-check" aria-hidden="true"></i> Correct
+              <i class="fa fa-check" aria-hidden="true"></i> 
+              <span class="hide-on-mobile"> Correct</span>
             </span>
 
             <span v-else class="wrong">
-              <i class="fa fa-check" aria-hidden="true"></i> Wrong
+              <i class="fa fa-check" aria-hidden="true"></i>
+                <span class="hide-on-mobile">  Wrong</span>
             </span>
           </div>
         </div>
@@ -92,4 +94,11 @@ export default {
 .wrong {
   color: red;
 }
+
+@media (max-width: 768px) {
+  .results {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>

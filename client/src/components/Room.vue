@@ -1,4 +1,5 @@
 <template>
+
   <div class="wrapper appear">
     <div v-if="join === undefined">
       <h1 class="txt-center">Select a Room</h1>

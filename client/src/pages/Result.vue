@@ -6,12 +6,9 @@
     <div class="txt-primary txt-center txt-lg bold">
       Final Scores <i class="fas fa-medal"></i>
     </div>
-    <div class="score card">
+    <div class=" hide-on-mobile">
       <img class="img" src="../assets/prize.svg" :style="{ width: `150px` }" />
-      <div class="txt-md bold" :style="{ placeSelf: `center` }">
-        Your Score
-        <div class="txt-md txt-left">10</div>
-      </div>
+      <div class="txt-primary bold txt-center txt-lg">Success</div>
     </div>
 
     <ul class="results">
@@ -24,7 +21,7 @@
             src="../assets/user1.png"
           />
           <img v-else class="img avatar" src="../assets/user2.png" />
-          <div class="capitalize">{{ data.player.name }}</div>
+          <div class="capitalize txt-cap">{{ data.player.name }}</div>
           <div class="txt-primary txt-md bold">
             {{ data.right }}
             <span class="txt-lg">/</span>
@@ -53,7 +50,7 @@ export default {
   components: {
     BackButton,
   },
-  computed: mapGetters(["results"]),
+  computed: mapGetters(["results", "player"]),
 };
 </script>
 
@@ -82,6 +79,7 @@ export default {
   grid-template-rows: repeat(12, auto);
   min-height: 50vh;
   width: 400px;
+  max-width: 85vw;
   place-items: start stretch;
   padding: 0;
 }
@@ -90,5 +88,8 @@ export default {
 }
 .result {
   grid-template-columns: auto auto 1fr auto;
+}
+.btn-primary{
+  width: 100%;
 }
 </style>

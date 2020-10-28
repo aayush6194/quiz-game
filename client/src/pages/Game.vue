@@ -1,8 +1,7 @@
 <template>
   <div>
     <Player v-if="!(player.name && player.avatar !== undefined)" />
-    <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
-    <h1 v-else-if="time > 0">{{ time }}</h1>
+    <Room v-else-if="!player.room" />
     <Lobby v-else-if="!question" />
     <div v-else-if="wait">
       <h1>Waiting for other players</h1>
