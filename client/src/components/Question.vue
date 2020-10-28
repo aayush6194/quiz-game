@@ -1,6 +1,5 @@
 <template>
   <div class="wrapper">
-    <div class='bold txt-md'>Question 1/10</div>
     <div class="txt-right bold txt-lg">
       <span> <i class="fas fa-stopwatch" /> {{ time.toFixed(0) }} </span>
     </div>
@@ -22,7 +21,7 @@ export default {
   name: "Question",
   props: {
     data: String,
-    question: [],
+    question: String,
     vote: Function
   },
   created: function() {
@@ -51,7 +50,9 @@ export default {
       }
     },
     buttonClassName(index) {
-      return (this.selectedAnswer === index)? 'btn-option txt-md bold select': 'btn-option txt-md bold';
+      return this.selectedAnswer === index
+        ? "btn-option txt-md bold select"
+        : "btn-option txt-md bold";
     },
     submit(i) {
       if (i !== undefined) {
@@ -65,13 +66,13 @@ export default {
 </script>
 
 <style scoped>
-
 .btn-option {
   border: 2px solid transparent;
 }
 
-.btn-option:hover, .select {
-  border-color:#7fab96;
+.btn-option:hover,
+.select {
+  border-color: #7fab96;
   box-shadow: 2px 2px 5px rgba(42, 109, 42, 0.15),
     1px 2px 2px rgba(15, 102, 29, 0.22);
 }

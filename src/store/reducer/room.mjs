@@ -12,6 +12,13 @@ const roomsById = produce((draft, action) => {
         case ACTIONS.JOIN_ROOM:
             draft[action.payload.roomId].players.push(action.payload.playerId);
             break;
+        case ACTIONS.ADD_VOTE:
+            draft.push(action.payload.vote);
+            break;
+        case ACTIONS.NEXT_VOTE:
+            draft[action.payload.roomId].voting =
+                (draft[action.payload.roomId].voting ?? -1) + 1;
+            break;
     }
 }, {});
 

@@ -33,8 +33,27 @@ function* getPlayersInRoom(roomId) {
     return players.map((playerId) => allPlayers[playerId]);
 }
 
-function* beginVote() {
-    yield put({ type: VOTE.NEXT_VOTE });
+function* beginVote(action) {
+    yield put({
+        type: VOTE.NEXT_VOTE,
+        payload: { roomId: action.payload.roomId },
+    });
+    const [players, question] = yield all([
+        getPlayersInRoom(action.payload.roomId),
+        select((state) => {
+            const voting = state.rooms.byId[action.payload.roomId].voting;
+            const questionId = state.questions.allIds[voting];
+            return state.questions.byId[questionId];
+        }),
+    ]);
+    const questionPayload = JSON.stringify({
+        type: VOTE.NEXT_VOTE,
+        payload: {
+            question,
+        },
+    });
+    yield all(players.map(({ socket }) => socket.send(questionPayload)));
+
     let i = 0;
     const totalQuestions = yield select((state) => state.questions.length);
     while (i < totalQuestions) {

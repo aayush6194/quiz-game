@@ -7,9 +7,6 @@ const state = {
 const getters = {};
 
 const actions = {
-    startVoting() {
-        sendMessage({ type: 'BEGIN_VOTE' });
-    },
     setVoting(voting) {
         state.voting = voting;
     },

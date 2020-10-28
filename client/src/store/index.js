@@ -16,9 +16,4 @@ export default new Vuex.Store({
         result,
     },
     plugins: [plugin],
-    getters: {
-        getQuestionUnderVote: (state) => {
-            return state.question.questions[state.vote.voting];
-        },
-    },
 });

@@ -78,7 +78,6 @@ export default {
         ? `${className} active`
         : className;
     },
-
     validate() {
       const { name, avatar } = this.localPlayer;
       this.error = name.length < 2 || avatar === -1 || avatar === undefined;

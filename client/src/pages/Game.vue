@@ -3,8 +3,8 @@
     <Player v-if="!(player.name && player.avatar !== undefined)" />
     <Room v-else-if="!player.room" :timerUpdate="timerUpdate" />
     <h1 v-else-if="time > 0">{{ time }}</h1>
-    <Lobby v-else-if="!getQuestion" />
-    <Question v-else :data="data" :question="getQuestion" :vote="vote" />
+    <Lobby v-else-if="!question" />
+    <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
 </template>
 
@@ -24,16 +24,7 @@ export default {
     Lobby
   },
   computed: {
-    ...mapGetters(["player", "players", "questions"]),
-    getQuestion() {
-      return this.$store.getters.getQuestionUnderVote;
-    }
-  },
-
-  data: function() {
-    return {
-      room: undefined
-    };
+    ...mapGetters(["player", "players", "question"])
   },
   methods: {
     ...mapActions(["startVoting", "addVote"]),
