@@ -176,6 +176,13 @@ function* createRoom(action) {
             roomId,
         },
     });
+
+    yield joinRoom({ payload: { playerId, roomId } });
+}
+
+function* joinRoom(action) {
+    const { roomId, playerId } = action.payload;
+
     yield put({
         type: ROOM.JOIN_ROOM,
         payload: {
@@ -214,7 +221,10 @@ function* createRoom(action) {
 }
 
 function* roomSaga() {
-    yield takeEvery('CREATE_ROOM', createRoom);
+    yield all([
+        takeEvery('CREATE_ROOM', createRoom),
+        takeEvery('START_JOIN_ROOM', joinRoom),
+    ]);
 }
 
 function* createPlayer(action) {
