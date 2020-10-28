@@ -5,14 +5,14 @@
       {{ result }}
       {{ question }}
       {{ players }}
-      <!-- <li v-for="data in result" :key="data.player.name">
+      <!-- <li v-for="data in player" :key="data.player.name">
         <div class="score card no-select">
           <img
             class="img"
             src="../assets/prize.svg"
             :style="{ width: `60px` }"
           />
-          <img class="img avatar" src="../assets/user1.png" />
+          <img class="img avatar" :src='`../assets/user${}.png`' />
           <div class="txt-md bold capitalize">{{ data.player.name }}</div>
           <div
             class="txt-md txt-left txt-primary bold"
