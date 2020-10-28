@@ -362,8 +362,41 @@ function* createPlayer(action) {
     }
 }
 
+function* deletePlayer(action) {
+    yield put({
+        type: PLAYER.DELETE_USER,
+        payload: action.payload,
+    });
+    const players = yield getPlayersInRoom(action.payload.roomId);
+    if (players.length === 0) {
+        yield put({
+            type: ROOM.DESTROY_ROOM,
+            payload: action.payload,
+        });
+    } else {
+        const serializedPlayers = players.map((player) => player.serialize());
+        yield all(
+            players.map(({ socket }) => {
+                if (socket.readyState === WebSocket.OPEN) {
+                    return socket.send(
+                        JSON.stringify({
+                            type: 'LOAD_PLAYERS',
+                            payload: {
+                                players: serializedPlayers,
+                            },
+                        })
+                    );
+                }
+            })
+        );
+    }
+}
+
 function* playerSaga() {
-    yield takeEvery('CREATE_PLAYER', createPlayer);
+    yield all([
+        takeEvery('CREATE_PLAYER', createPlayer),
+        takeEvery('DISCONNECT_USER', deletePlayer),
+    ]);
 }
 
 export default function* rootSaga() {

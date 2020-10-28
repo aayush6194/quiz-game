@@ -24,8 +24,8 @@ wss.on('connection', (socket) => {
     });
     socket.on('close', () => {
         store.dispatch.bind(store)({
-            type: 'DELETE_USER',
-            payload: { ...socket.META },
+            type: 'DISCONNECT_USER',
+            payload: socket.META,
         });
     });
 });

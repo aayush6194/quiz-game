@@ -36,14 +36,10 @@ const roomsById = produce((draft, action) => {
         case ACTIONS.DESTROY_ROOM:
             delete draft[action.payload.roomId];
             break;
-        // TODO: move this to redux saga to trigger destroy room
         case PLAYER.DELETE_USER:
             draft[action.payload.roomId].players.delete(
                 action.payload.playerId
             );
-            if (draft[action.payload.roomId].players.size === 0) {
-                delete draft[action.payload.roomId];
-            }
             break;
     }
 }, {});
