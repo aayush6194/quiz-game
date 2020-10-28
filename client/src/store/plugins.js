@@ -22,6 +22,9 @@ export default function createWebSocketPlugin(socket) {
                 case 'CREATE_PLAYER':
                     store.commit('setPlayer', action.payload.player);
                     break;
+                case 'JOIN_ROOM':
+                    store.commit('setRoom', action.payload.roomId);
+                    break;
                 default:
                     break;
             }

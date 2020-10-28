@@ -17,13 +17,13 @@ const actions = {
         commit('setPlayer', player);
     },
     setRoom({ commit }, room) {
-        commit('roomSet', room);
+        commit('setRoom', room);
     },
 };
 
 const mutations = {
     setPlayer: (state, player) => (state.player = player),
-    roomSet: (state, room) => (state.player.room = room),
+    setRoom: (state, room) => (state.player.room = room),
     loadPlayers: (state, payload) => (state.players = payload.players),
 };
 

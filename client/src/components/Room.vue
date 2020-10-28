@@ -4,10 +4,7 @@
       <h1 class="txt-center">Select a Room</h1>
       <ul class="options">
         <li>
-          <button
-            @click="timerUpdate() || setJoin(false) || setRoom('111')"
-            class="txt-md btn-primary"
-          >
+          <button @click="createRoom()" class="txt-md btn-primary">
             <i class="fas fa-hammer"></i> Create a Room
           </button>
         </li>
@@ -33,7 +30,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import { sendMessage } from "../socket";
 
 export default {
   name: "Room",
@@ -44,10 +42,17 @@ export default {
     join: undefined,
     roomId: ""
   }),
+  computed: mapGetters(["player"]),
   methods: {
     ...mapActions(["setRoom"]),
     setJoin: function(join) {
       this.join = join;
+    },
+    createRoom() {
+      sendMessage({
+        type: "CREATE_ROOM",
+        payload: { playerId: this.$store.getters.player.id }
+      });
     }
   }
 };

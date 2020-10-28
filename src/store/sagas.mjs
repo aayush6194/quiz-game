@@ -10,6 +10,7 @@ import {
 } from 'redux-saga/dist/redux-saga-effects.umd.js';
 import udid from 'uuid';
 import { ACTIONS as VOTE } from './actions/vote.mjs';
+import { ACTIONS as ROOM } from './actions/room.mjs';
 import { ACTIONS as PLAYER } from './actions/player.mjs';
 import { Player } from '../domains/Player.mjs';
 
@@ -53,6 +54,38 @@ function* voteSaga() {
     yield takeEvery('BEGIN_VOTE', beginVote);
 }
 
+function* createRoom(action) {
+    const roomId = yield call(v1);
+    const { playerId } = action.payload;
+
+    yield put({
+        type: ROOM.ADD_ROOM,
+        payload: {
+            roomId,
+        },
+    });
+    yield put({
+        type: ROOM.JOIN_ROOM,
+        payload: {
+            playerId,
+            roomId,
+        },
+    });
+    const socket = yield select((state) => state.players.byId[playerId].socket);
+    socket.send(
+        JSON.stringify({
+            type: ROOM.JOIN_ROOM,
+            payload: {
+                roomId,
+            },
+        })
+    );
+}
+
+function* roomSaga() {
+    yield takeEvery('CREATE_ROOM', createRoom);
+}
+
 function* createPlayer(action) {
     const id = yield call(v1);
     const player = Player({
@@ -76,5 +109,5 @@ function* playerSaga() {
 }
 
 export default function* rootSaga() {
-    yield all([voteSaga(), playerSaga()]);
+    yield all([voteSaga(), roomSaga(), playerSaga()]);
 }
