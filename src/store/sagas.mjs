@@ -90,11 +90,13 @@ function* notifyQuestion(action, roomId) {
 }
 
 function* getPlayersInRoom(roomId) {
-    const [players, allPlayers] = yield select((state) => [
+    const [playerIds, allPlayers] = yield select((state) => [
         state.rooms.byId[roomId].players,
         state.players.byId,
     ]);
-    return players.map((playerId) => allPlayers[playerId]);
+    const players = [];
+    playerIds.forEach((playerId) => players.push(allPlayers[playerId]));
+    return players;
 }
 
 function* enVote(action) {
@@ -119,7 +121,7 @@ function* enVote(action) {
             const questionId = state.rooms.byId[roomId].questions[voting];
             return [
                 state.rooms.byId[roomId].tallies[questionId],
-                state.rooms.byId[roomId].players.length,
+                state.rooms.byId[roomId].players.size,
             ];
         });
         flag = totalVotes(tallies) === totalPlayers;
@@ -295,6 +297,11 @@ function* joinRoom(action) {
         getPlayersInRoom(roomId),
     ]);
 
+    currPlayer.socket.META = {
+        playerId,
+        roomId,
+    };
+
     const serializedPlayers = players.map((player) => player.serialize());
     if (currPlayer.socket.readyState === WebSocket.OPEN) {
         yield currPlayer.socket.send(
@@ -338,6 +345,9 @@ function* createPlayer(action) {
         socket: action.payload.socket,
         id,
     });
+    action.payload.socket.META = {
+        playerId: id,
+    };
     yield put({ type: PLAYER.ADD_PLAYER, payload: { player } });
 
     const { socket, ...rest } = player;
