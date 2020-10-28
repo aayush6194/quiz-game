@@ -10,7 +10,7 @@
  
     <Result v-else-if="result"/>
     <div v-else-if="result === null">
-      <h1>No1 Voted uwu</h1>
+      <h1>No one Voted!</h1>
     </div>
     <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
@@ -22,10 +22,12 @@ import Player from "../components/Player.vue";
 import Room from "../components/Room.vue";
 import Result from "../components/Result.vue";
 import Lobby from "../components/Lobby.vue";
-//import Timer from "../components/Timer";
 import { mapGetters } from "vuex";
 import { sendMessage } from "../socket";
 
+/**
+ * Game components simulate the quiz game. Renders creating player, pick room, question components
+ */
 export default {
   name: "Game",
   components: {
@@ -34,27 +36,24 @@ export default {
     Room,
     Lobby,
     Result,
-    //  Timer
   },
   computed: mapGetters(["player", "players", "question", "wait", "result"]),
 
   data: function() {
     return {
       room: undefined,
-      time: 0,
-      start: false,
     };
   },
   methods: {
+    /**
+     * @param {string} choiceId is the id of the option player voted for
+     */
     vote(choiceId) {
       sendMessage({
         type: "CAST_VOTE",
         payload: { playerId: this.player.id, choiceId },
       });
-    },
-    startGame() {
-      this.start = true;
-    },
+    }
   },
 };
 </script>

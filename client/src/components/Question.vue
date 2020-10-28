@@ -3,7 +3,6 @@
     <div class="txt-right bold txt-lg">
       <span>
         <i class="fas fa-stopwatch" />
-        <Timer :defaultTime="time" />
         {{ time.toFixed(0) }}
       </span>
     </div>
@@ -11,7 +10,7 @@
       <h1 class="txt-center">{{ question.question }}</h1>
       <ul class="options">
         <Option
-          v-for="(option, index) in question.choices"
+          v-for="(option, index) in choices"
           :key="option"
           :choiceId="option.id"
           :handleSubmit="submit"
@@ -44,11 +43,13 @@ export default {
   },
   created: function() {
     this.timerUpdate();
+    this.choices = this.choices.sort(()=>(0.5 - Math.random()))
   },
   data() {
     return {
       selectedAnswer: -1,
       time: 10,
+      choices: [...this.question.choices],
       voted: false
     };
   },
@@ -100,6 +101,10 @@ h1 {
   border-radius: 1em;
   border: 2px solid;
   padding: 0.2em;
+}
+
+.btn-primary{
+  width: 100%;
 }
 
 @media (max-width: 768px) {

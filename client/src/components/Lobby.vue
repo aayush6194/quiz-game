@@ -3,7 +3,7 @@
     <h1 class="txt-primary txt-center">
       Waiting for players to join...
     </h1>
-    
+
     <div class="txt-center txt-md">
       <i class="fas fa-spinner spin txt-primary"></i>
     </div>
@@ -33,9 +33,7 @@
       <div class="txt-center bold txt-primary">Room Id:</div>
       <div class="cols">
         <input :value="player.room" ref="input" />
-        <button @click="copy">
-          <i class="fa fa-clipboard"/> Copy
-        </button>
+        <button @click="copy"><i class="fa fa-clipboard" /> Copy</button>
       </div>
     </div>
     <button
@@ -90,12 +88,12 @@ export default {
 </script>
 
 <style scoped>
-.cols{
+.cols {
   display: grid;
   grid-template-columns: 1fr auto;
   place-items: center stretch;
-  grid-gap: .5em;
-  margin-top: .5em;
+  grid-gap: 0.5em;
+  margin-top: 0.5em;
 }
 .options {
   list-style: none;

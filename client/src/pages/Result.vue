@@ -45,6 +45,9 @@
 import BackButton from "../components/BackButton.vue";
 import { mapGetters } from "vuex";
 
+/**
+ * Result component is render after each quiz game and shows the list of players and their scores
+ */
 export default {
   name: "Result",
   components: {

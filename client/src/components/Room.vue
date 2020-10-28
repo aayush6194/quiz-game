@@ -4,7 +4,7 @@
       <h1 class="txt-center">Select a Room</h1>
       <ul class="options">
         <li>
-          <button @click="createRoom()" class="txt-md btn-primary">
+          <button @click="createRoom()" class="txt-md btn-primary" >
             <i class="fas fa-hammer"></i> Create a Room
           </button>
         </li>
@@ -33,11 +33,11 @@
 import { mapActions, mapGetters } from "vuex";
 import { sendMessage } from "../socket";
 
+/**
+ * Room components allows users to join or create room.
+ */
 export default {
   name: "Room",
-  props: {
-    timerUpdate: Function
-  },
   data: () => ({
     join: undefined,
     roomId: ""
@@ -71,8 +71,16 @@ export default {
   place-items: stretch;
   grid-gap: 0.5em;
 }
-
+.btn-primary{
+  width:100%
+}
 .options {
   grid-gap: 1em;
+  place-items: stretch;
+}
+@media (max-width: 768px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

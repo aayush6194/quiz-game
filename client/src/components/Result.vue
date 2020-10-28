@@ -1,5 +1,4 @@
 <template>
-
   <div class="card result-wrapper">
     <div class="txt-primary txt-center txt-lg bold">
       Results <i class="fas fa-medal"></i>
@@ -28,7 +27,7 @@
             </span>
 
             <span v-else class="wrong">
-              <i class="fa fa-check" aria-hidden="true"></i>Wrong
+              <i class="fa fa-check" aria-hidden="true"></i> Wrong
             </span>
           </div>
         </div>
@@ -38,17 +37,32 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
-
+/**
+ * Result components is rendered after answer each question. Shows result of each question
+ */
 export default {
   name: "Result",
-  computed: mapGetters(["result", "question", "players"]),
+  computed: {
+    ...mapGetters(["result", "question", "players"]),
+    correctId() {
+      const [answer] = this.question.choices.filter(({ isAnswer }) => isAnswer);
+      const { id: correctId } = answer;
+      return correctId;
+    },
+  },
   methods: {
-    isCorrect(playerId){
-     const [ answer ] =  this.question.choices.filter(({isAnswer}) => isAnswer );
-     const { id: correctId } = answer;
-     return  this.result[correctId] && this.result[correctId].includes(playerId);
-    }
-  }
+    /**
+     * @param {string} playerId is the id of player
+     * @return {boolean} returns true if player answered correctly
+     */
+    isCorrect(playerId) {
+      // result[correctId] contains Ids of player with correct choices
+      return (
+        this.result[this.correctId] &&
+        this.result[this.correctId].includes(playerId)
+      );
+    },
+  },
 };
 </script>
 
