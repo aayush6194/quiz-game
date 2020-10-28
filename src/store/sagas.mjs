@@ -176,7 +176,11 @@ function* enVote(action) {
                 });
                 yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
                 yield all(
-                    players.map(({ socket }) => socket.send(scorePayload))
+                    players.map(({ socket }) => {
+                        if (socket.readyState === WebSocket.OPEN) {
+                            socket.send(scorePayload);
+                        }
+                    })
                 );
             } else {
                 yield beginVote(action);
