@@ -37,8 +37,7 @@ export default {
      Option
   },
   props: {
-    data: String,
-    question: String,
+    question: Object,
     vote: Function,
   },
   created: function() {
