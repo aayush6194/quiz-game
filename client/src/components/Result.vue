@@ -28,7 +28,7 @@
             </span>
 
             <span v-else class="danger">
-              <i class="fa fa-check" aria-hidden="true"></i>
+              <i class="fa fa-times" aria-hidden="true"></i>
                 <span class="hide-on-mobile">  Wrong</span>
             </span>
           </div>

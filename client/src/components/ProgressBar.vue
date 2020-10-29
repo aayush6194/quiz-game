@@ -14,15 +14,13 @@ export default {
   methods: {
     getBarStyle(percent) {
       // Length of the bar
-      const transform = `scaleX(${percent / 10})`;
+      const width = `${percent * 10}%`;
 
       // Red if less than 30%, yellow if less tham 70, green else
       const background =
         percent < 3 ? "#EB5748" : percent < 7 ? "#E6EB48" : "#7fab96";
       return {
-        transform,
-        "-webkit-transform": transform,
-        "-moz-transform": transform,
+        width, 
         background
       };
     }
@@ -32,11 +30,10 @@ export default {
 
 <style scoped>
 .bar {
-  max-width: 80%;
   padding: 0.5em;
-  transform-origin: bottom left;
   border-radius: 2em;
   margin: 2em 0 0.5em 0;
+  max-width: 100%;
   transition: 500ms linear;
 }
 </style>
