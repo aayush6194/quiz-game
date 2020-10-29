@@ -2,8 +2,6 @@ import {
     all,
     takeEvery,
     put,
-    take,
-    race,
     delay,
     select,
     call,
@@ -102,162 +100,23 @@ function* getPlayersInRoom(roomId) {
     return players;
 }
 
-function* enVote(action) {
-    const roomId = action.payload.roomId;
-    let flag = false;
-
-    const { vote, timeout } = yield race({
-        vote: take('CAST_VOTE'),
-        timeout: delay(10_000),
-    });
-    if (vote) {
-        const questionId = yield select((state) => {
-            const voting = state.rooms.byId[roomId].voting;
-            return state.rooms.byId[roomId].questions[voting];
-        });
-        yield put({
-            type: VOTE.ADD_VOTE,
-            payload: { ...vote.payload, roomId, questionId },
-        });
-        const [tallies, totalPlayers] = yield select((state) => {
-            const voting = state.rooms.byId[roomId].voting;
-            const questionId = state.rooms.byId[roomId].questions[voting];
-            return [
-                state.rooms.byId[roomId].tallies[questionId],
-                state.rooms.byId[roomId].players.size,
-            ];
-        });
-        flag = totalVotes(tallies) === totalPlayers;
-        if (!flag) {
-            const socket = yield select(
-                (state) => state.players.byId[action.payload.playerId].socket
-            );
-            if (socket.readyState === WebSocket.OPEN) {
-                socket.send(
-                    JSON.stringify({
-                        type: 'WAIT_RESULT',
-                    })
-                );
-            }
-        } else {
-            const players = yield getPlayersInRoom(roomId);
-            const result = yield select((state) => {
-                const voting = state.rooms.byId[roomId].voting;
-                const questionId = state.rooms.byId[roomId].questions[voting];
-                return [
-                    state.rooms.byId[roomId].tallies[questionId] ?? null,
-                    state.questions.byId[questionId],
-                ];
-            });
-            const [voting, questions, totalQuestions, tallies] = yield select(
-                (state) => {
-                    return [
-                        state.rooms.byId[roomId].voting,
-                        state.questions.byId,
-                        state.questions.allIds.length,
-                        state.rooms.byId[roomId].tallies,
-                    ];
-                }
-            );
-            getScoreBoard({
-                players,
-                questions,
-                tallies,
-            });
-            const resultPayload = JSON.stringify({
-                type: 'LOAD_RESULT',
-                payload: { result },
-            });
-            yield all(
-                players.map(({ socket }) => {
-                    if (socket.readyState === WebSocket.OPEN) {
-                        return socket.send(resultPayload);
-                    }
-                })
-            );
-            yield delay(3_000);
-            if (voting === totalQuestions - 1) {
-                const finalScore = getScoreBoard({
-                    players,
-                    questions,
-                    tallies,
-                });
-                const scorePayload = JSON.stringify({
-                    type: 'LOAD_RESULTS',
-                    payload: { results: finalScore },
-                });
-                yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
-                yield all(
-                    players.map(({ socket }) => {
-                        if (socket.readyState === WebSocket.OPEN) {
-                            socket.send(scorePayload);
-                        }
-                    })
-                );
-            } else {
-                yield beginVote(action);
-            }
-        }
-    }
-
-    if (timeout) {
-        const players = yield getPlayersInRoom(roomId);
-        const result = yield select((state) => {
-            const voting = state.rooms.byId[roomId].voting;
-            const questionId = state.rooms.byId[roomId].questions[voting];
-            return state.rooms.byId[roomId].tallies[questionId] ?? null;
-        });
-        const resultPayload = JSON.stringify({
-            type: 'LOAD_RESULT',
-            payload: { result },
-        });
-        yield all(
-            players.map(({ socket }) => {
-                if (socket.readyState === WebSocket.OPEN) {
-                    return socket.send(resultPayload);
-                }
-            })
-        );
-        yield delay(3_000);
-        const [voting, questions, totalQuestions, tallies] = yield select(
-            (state) => {
-                return [
-                    state.rooms.byId[roomId].voting,
-                    state.questions.byId,
-                    state.questions.allIds.length,
-                    state.rooms.byId[roomId].tallies,
-                ];
-            }
-        );
-        if (voting === totalQuestions - 1) {
-            const finalScore = getScoreBoard({
-                players,
-                questions,
-                tallies,
-            });
-            const scorePayload = JSON.stringify({
-                type: 'LOAD_RESULTS',
-                payload: { results: finalScore },
-            });
-            yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
-            yield all(
-                players.map(({ socket }) => {
-                    if (socket.readyState === WebSocket.OPEN) {
-                        return socket.send(scorePayload);
-                    }
-                })
-            );
-        } else {
-            yield beginVote(action);
-        }
-    }
-}
-
 function* bgTask({ roomId, questionId, playerId }) {
     yield delay(10_000);
+    const currQuestionId = yield select((state) => {
+        const voting = state.rooms.byId[roomId]?.voting;
+        if (voting === undefined) {
+            return undefined;
+        }
+        return state.rooms.byId[roomId].questions[voting];
+    });
     yield put({
         type: 'END_VOTE',
-        payload: { roomId, questionId, playerId, force: true },
+        payload: {
+            roomId,
+            questionId,
+            playerId,
+            force: currQuestionId === questionId,
+        },
     });
 }
 
@@ -298,10 +157,16 @@ function* castVote(action) {
 function* endVote(action) {
     const { roomId, questionId } = action.payload;
     const currQuestionId = yield select((state) => {
-        const voting = state.rooms.byId[roomId].voting;
+        const voting = state.rooms.byId[roomId]?.voting;
+        if (voting === undefined) {
+            return undefined;
+        }
         return state.rooms.byId[roomId].questions[voting];
     });
-    if (questionId === currQuestionId) {
+    if (currQuestionId === undefined) {
+        return;
+    }
+    if (questionId === currQuestionId || action.payload.force) {
         const [tallies, totalPlayers] = yield select((state) => {
             const voting = state.rooms.byId[roomId].voting;
             const questionId = state.rooms.byId[roomId].questions[voting];
@@ -311,7 +176,7 @@ function* endVote(action) {
             ];
         });
 
-        if (totalVotes(tallies) === totalPlayers) {
+        if (totalVotes(tallies) === totalPlayers || action.payload.force) {
             const players = yield getPlayersInRoom(roomId);
             yield put({
                 type: PLAYER.NEXT_STATE,
@@ -372,10 +237,11 @@ function* endVote(action) {
                     })
                 );
             } else {
-                yield put({ type: 'BEGIN_VOTE', payload: action.payload });
+                return yield put({
+                    type: 'BEGIN_VOTE',
+                    payload: action.payload,
+                });
             }
-        } else if (action.payload.force) {
-            yield put({ type: 'BEGIN_VOTE', payload: action.payload });
         } else {
             const socket = yield select(
                 (state) => state.players.byId[action.payload.playerId].socket
