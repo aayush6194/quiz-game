@@ -1,11 +1,10 @@
 <template>
-
   <div class="wrapper appear">
     <div v-if="join === undefined">
       <h1 class="txt-center">Select a Room</h1>
       <ul class="options">
         <li>
-          <button @click="createRoom()" class="txt-md btn-primary" >
+          <button @click="createRoom()" class="txt-md btn-primary">
             <i class="fas fa-hammer"></i> Create a Room
           </button>
         </li>
@@ -26,6 +25,9 @@
           Submit
         </button>
       </div>
+      <div :v-if='error' class="danger slide-down" :style="{ margin: '.5em' }">
+        Error! Make sure the Room Code is correct.
+      </div>
     </div>
   </div>
 </template>
@@ -39,10 +41,13 @@ import { sendMessage } from "../socket";
  */
 export default {
   name: "Room",
-  data: () => ({
-    join: undefined,
-    roomId: ""
-  }),
+  data() {
+    return {
+      join: undefined,
+      roomId: "",
+      error: false,
+    };
+  },
   computed: mapGetters(["player"]),
   methods: {
     ...mapActions(["setRoom"]),
@@ -50,18 +55,22 @@ export default {
       this.join = join;
     },
     setRoom() {
-      sendMessage({
-        type: "START_JOIN_ROOM",
-        payload: { playerId: this.player.id, roomId: this.roomId }
-      });
+      if (this.roomId.length < 5) {
+        this.error = true;
+      } else {
+        sendMessage({
+          type: "START_JOIN_ROOM",
+          payload: { playerId: this.player.id, roomId: this.roomId },
+        });
+      }
     },
     createRoom() {
       sendMessage({
         type: "CREATE_ROOM",
-        payload: { playerId: this.player.id }
+        payload: { playerId: this.player.id },
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -72,8 +81,8 @@ export default {
   place-items: stretch;
   grid-gap: 0.5em;
 }
-.btn-primary{
-  width:100%
+.btn-primary {
+  width: 100%;
 }
 .options {
   grid-gap: 1em;
