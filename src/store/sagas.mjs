@@ -7,6 +7,7 @@ import {
     delay,
     select,
     call,
+    spawn,
 } from 'redux-saga/dist/redux-saga-effects.umd.js';
 import udid from 'uuid';
 import WebSocket from 'ws';
@@ -252,18 +253,65 @@ function* enVote(action) {
     }
 }
 
+function* bgTask({ roomId, questionId }) {
+    yield delay(10_000);
+    yield put({ type: 'END_VOTE', payload: { roomId, questionId } });
+}
+
 function* beginVote(action) {
     const roomId = action.payload.roomId;
-
     yield put({
         type: VOTE.NEXT_VOTE,
         payload: { roomId },
     });
     yield notifyQuestion(action, roomId);
+    const questionId = yield select((state) => {
+        const voting = state.rooms.byId[roomId].voting;
+        return state.rooms.byId[roomId].questions[voting];
+    });
+    yield spawn(bgTask, { roomId, questionId });
+}
+
+function* endVote(action) {
+    const { roomId, questionId } = action.payload;
+    const currQuestionId = yield select((state) => {
+        const voting = state.rooms.byId[roomId].voting;
+        return state.rooms.byId[roomId].questions[voting];
+    });
+    if (questionId === currQuestionId) {
+        const players = yield getPlayersInRoom(roomId);
+        yield put({
+            type: PLAYER.NEXT_STATE,
+            payload: {
+                playerIds: players.map(({ id }) => ({ id })),
+                state: PLAYER_STATE.ON_RESULT,
+            },
+        });
+        const result = yield select((state) => {
+            const voting = state.rooms.byId[roomId].voting;
+            const questionId = state.rooms.byId[roomId].questions[voting];
+            return state.rooms.byId[roomId].tallies[questionId] ?? null;
+        });
+        const payload = JSON.stringify({
+            type: PLAYER.NEXT_STATE,
+            payload: {
+                state: PLAYER_STATE.ON_RESULT,
+                result,
+            },
+        });
+        yield all(
+            players
+                .filter(({ socket }) => socket.readyState === WebSocket.OPEN)
+                .map(({ socket }) => socket.send(payload))
+        );
+    }
 }
 
 function* voteSaga() {
-    yield takeEvery('BEGIN_VOTE', beginVote);
+    yield all([
+        takeEvery('BEGIN_VOTE', beginVote),
+        takeEvery('END_VOTE', endVote),
+    ]);
 }
 
 function* createRoom(action) {
@@ -337,7 +385,6 @@ function* roomSaga() {
     yield all([
         takeEvery('CREATE_ROOM', createRoom),
         takeEvery('START_JOIN_ROOM', joinRoom),
-        takeEvery('EN_VOTE', enVote),
     ]);
 }
 
