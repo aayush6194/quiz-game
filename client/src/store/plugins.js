@@ -34,6 +34,11 @@ export default function createWebSocketPlugin(socket) {
                                 action.payload.question
                             );
                             break;
+                        case 'WAITING_RESULT':
+                            break;
+                        case 'ON_RESULT':
+                            store.commit('setResult', action.payload.result);
+                            break;
                         default:
                             throw new Error(
                                 `unknown state ${JSON.stringify(action)}`
