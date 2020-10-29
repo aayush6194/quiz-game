@@ -18,9 +18,6 @@ export default function createWebSocketPlugin(socket) {
                         results: action.payload.results,
                     });
                     break;
-                case 'WAIT_RESULT':
-                    store.commit('setWait', true);
-                    break;
                 case 'LOAD_RESULT':
                     store.commit('setWait', false);
                     store.commit('setQuestion', action.payload.result[1]);
@@ -49,19 +46,6 @@ export default function createWebSocketPlugin(socket) {
                             );
                     }
                     store.commit('setState', action.payload.state);
-                    break;
-                case 'NEXT_VOTE':
-                    store.commit('setResult', undefined);
-                    store.commit('setQuestion', action.payload.question);
-                    socket.send(
-                        JSON.stringify({
-                            type: 'EN_VOTE',
-                            payload: {
-                                playerId: store.getters.player.id,
-                                roomId: store.getters.player.room,
-                            },
-                        })
-                    );
                     break;
                 case 'CREATE_PLAYER':
                     store.commit('setPlayer', action.payload.player);

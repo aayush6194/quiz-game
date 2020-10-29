@@ -92,7 +92,7 @@ function* notifyQuestion(action, roomId) {
 
 function* getPlayersInRoom(roomId) {
     const [playerIds, allPlayers] = yield select((state) => [
-        state.rooms.byId[roomId].players,
+        state.rooms.byId[roomId] ? state.rooms.byId[roomId].players : [],
         state.players.byId,
     ]);
     const players = [];

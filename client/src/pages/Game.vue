@@ -38,12 +38,6 @@ export default {
     Result
   },
   computed: mapGetters(["player", "players", "question", "wait", "result"]),
-
-  data: function() {
-    return {
-      room: undefined
-    };
-  },
   methods: {
     /**
      * @param {string} choiceId is the id of the option player voted for

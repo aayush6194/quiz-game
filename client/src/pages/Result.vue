@@ -30,17 +30,19 @@
         </div>
       </li>
     </ul>
-    <router-link to="/">
-      <button class="btn-primary bold" :style="{ fontSize: `1.2em` }">
-        Play Again
-      </button>
-    </router-link>
+    <button
+      @click="playAgain"
+      class="btn-primary bold"
+      :style="{ fontSize: `1.2em` }"
+    >
+      Play Again
+    </button>
   </div>
 </template>
 
 <script>
 import BackButton from "../components/BackButton.vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 /**
  * Result component is render after each quiz game and shows the list of players and their scores
@@ -48,9 +50,19 @@ import { mapGetters } from "vuex";
 export default {
   name: "Result",
   components: {
-    BackButton,
+    BackButton
   },
   computed: mapGetters(["results", "player"]),
+  methods: {
+    ...mapActions(["loadResults"]),
+    playAgain() {
+      this.$store.commit("loadResults", {
+        results: undefined
+      });
+      this.$store.commit("setState", "IN_LOBBY");
+      this.$router.push("/game");
+    }
+  }
 };
 </script>
 
@@ -89,7 +101,7 @@ export default {
 .result {
   grid-template-columns: auto auto 1fr auto;
 }
-.btn-primary{
+.btn-primary {
   width: 100%;
 }
 </style>
