@@ -288,51 +288,53 @@ function* createRoom(action) {
 function* joinRoom(action) {
     const { roomId, playerId } = action.payload;
 
-    yield put({
-        type: ROOM.JOIN_ROOM,
-        payload: {
+    if (yield select((state) => state.rooms.byId[roomId])) {
+        yield put({
+            type: ROOM.JOIN_ROOM,
+            payload: {
+                playerId,
+                roomId,
+            },
+        });
+
+        const [currPlayer, players] = yield all([
+            select((state) => state.players.byId[playerId]),
+            getPlayersInRoom(roomId),
+        ]);
+
+        currPlayer.socket.META = {
             playerId,
             roomId,
-        },
-    });
+        };
 
-    const [currPlayer, players] = yield all([
-        select((state) => state.players.byId[playerId]),
-        getPlayersInRoom(roomId),
-    ]);
+        const serializedPlayers = players.map((player) => player.serialize());
+        // TODO: what if game has begun?
+        if (currPlayer.socket.readyState === WebSocket.OPEN) {
+            yield currPlayer.socket.send(
+                JSON.stringify({
+                    type: ROOM.JOIN_ROOM,
+                    payload: {
+                        roomId,
+                    },
+                })
+            );
+        }
 
-    currPlayer.socket.META = {
-        playerId,
-        roomId,
-    };
-
-    const serializedPlayers = players.map((player) => player.serialize());
-    // TODO: what if game has begun?
-    if (currPlayer.socket.readyState === WebSocket.OPEN) {
-        yield currPlayer.socket.send(
-            JSON.stringify({
-                type: ROOM.JOIN_ROOM,
-                payload: {
-                    roomId,
-                },
+        yield all(
+            players.map(({ socket }) => {
+                if (socket.readyState === WebSocket.OPEN) {
+                    return socket.send(
+                        JSON.stringify({
+                            type: 'LOAD_PLAYERS',
+                            payload: {
+                                players: serializedPlayers,
+                            },
+                        })
+                    );
+                }
             })
         );
     }
-
-    yield all(
-        players.map(({ socket }) => {
-            if (socket.readyState === WebSocket.OPEN) {
-                return socket.send(
-                    JSON.stringify({
-                        type: 'LOAD_PLAYERS',
-                        payload: {
-                            players: serializedPlayers,
-                        },
-                    })
-                );
-            }
-        })
-    );
 }
 
 function* roomSaga() {

@@ -25,8 +25,8 @@
           Submit
         </button>
       </div>
-      <div :v-if='error' class="danger slide-down" :style="{ margin: '.5em' }">
-        Error! Make sure the Room Code is correct.
+      <div v-if="error" class="danger slide-down" :style="{ margin: '.5em' }">
+        Make sure the Room Code is correct.
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ export default {
     return {
       join: undefined,
       roomId: "",
-      error: false,
+      error: false
     };
   },
   computed: mapGetters(["player"]),
@@ -55,22 +55,19 @@ export default {
       this.join = join;
     },
     setRoom() {
-      if (this.roomId.length < 5) {
-        this.error = true;
-      } else {
-        sendMessage({
-          type: "START_JOIN_ROOM",
-          payload: { playerId: this.player.id, roomId: this.roomId },
-        });
-      }
+      sendMessage({
+        type: "START_JOIN_ROOM",
+        payload: { playerId: this.player.id, roomId: this.roomId }
+      });
+      this.error = true;
     },
     createRoom() {
       sendMessage({
         type: "CREATE_ROOM",
-        payload: { playerId: this.player.id },
+        payload: { playerId: this.player.id }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

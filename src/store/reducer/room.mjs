@@ -37,9 +37,11 @@ const roomsById = produce((draft, action) => {
             delete draft[action.payload.roomId];
             break;
         case PLAYER.DELETE_USER:
-            draft[action.payload.roomId].players.delete(
-                action.payload.playerId
-            );
+            if (draft[action.payload.roomId]) {
+                draft[action.payload.roomId].players.delete(
+                    action.payload.playerId
+                );
+            }
             break;
     }
 }, {});
