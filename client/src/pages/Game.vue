@@ -6,9 +6,11 @@
     <div v-else-if="player.state === 'WAITING_RESULT'">
       <h1>Waiting for other players to answer...</h1>
     </div>
-    <Result v-else-if="result" />
-    <div v-else-if="result === null">
-      <h1>No one Voted!</h1>
+    <div v-else-if="player.state === 'ON_RESULT'">
+      <Result v-if="result" />
+      <div v-else>
+        <h1>No one voted uwu!</h1>
+      </div>
     </div>
     <Question v-else :data="data" :question="question" :vote="vote" />
   </div>
@@ -49,7 +51,11 @@ export default {
     vote(choiceId) {
       sendMessage({
         type: "CAST_VOTE",
-        payload: { playerId: this.player.id, choiceId }
+        payload: {
+          playerId: this.player.id,
+          roomId: this.player.room,
+          choiceId
+        }
       });
     }
   }

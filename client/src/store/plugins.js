@@ -37,7 +37,11 @@ export default function createWebSocketPlugin(socket) {
                         case 'WAITING_RESULT':
                             break;
                         case 'ON_RESULT':
-                            store.commit('setResult', action.payload.result);
+                            store.commit(
+                                'setQuestion',
+                                action.payload.result[1]
+                            );
+                            store.commit('setResult', action.payload.result[0]);
                             break;
                         default:
                             throw new Error(
