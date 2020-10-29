@@ -210,37 +210,43 @@ function* endVote(action) {
             yield delay(3_000);
             const [voting, questions, totalQuestions, tallies] = yield select(
                 (state) => {
+                    const room = state.rooms.byId[roomId];
+                    if (room === undefined) {
+                        return [undefined];
+                    }
                     return [
-                        state.rooms.byId[roomId].voting,
+                        room.voting,
                         state.questions.byId,
                         state.questions.allIds.length,
-                        state.rooms.byId[roomId].tallies,
+                        room.tallies,
                     ];
                 }
             );
-            if (voting === totalQuestions - 1) {
-                const finalScore = getScoreBoard({
-                    players,
-                    questions,
-                    tallies,
-                });
-                const scorePayload = JSON.stringify({
-                    type: 'LOAD_RESULTS',
-                    payload: { results: finalScore },
-                });
-                yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
-                yield all(
-                    players.map(({ socket }) => {
-                        if (socket.readyState === WebSocket.OPEN) {
-                            return socket.send(scorePayload);
-                        }
-                    })
-                );
-            } else {
-                return yield put({
-                    type: 'BEGIN_VOTE',
-                    payload: action.payload,
-                });
+            if (voting !== undefined) {
+                if (voting === totalQuestions - 1) {
+                    const finalScore = getScoreBoard({
+                        players,
+                        questions,
+                        tallies,
+                    });
+                    const scorePayload = JSON.stringify({
+                        type: 'LOAD_RESULTS',
+                        payload: { results: finalScore },
+                    });
+                    yield put({ type: ROOM.DESTROY_ROOM, payload: { roomId } });
+                    yield all(
+                        players.map(({ socket }) => {
+                            if (socket.readyState === WebSocket.OPEN) {
+                                return socket.send(scorePayload);
+                            }
+                        })
+                    );
+                } else {
+                    return yield put({
+                        type: 'BEGIN_VOTE',
+                        payload: action.payload,
+                    });
+                }
             }
         } else {
             const socket = yield select(
