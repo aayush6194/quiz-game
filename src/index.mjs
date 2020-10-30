@@ -1,11 +1,11 @@
-import express from 'express';
-import { SetRoutes } from './routes/index.mjs';
-import MiddleWares from './middlewares/index.mjs';
-import { Port } from './config.mjs';
-import wss from './socket.mjs';
-import { readFile, getQuestions } from './utils/index.mjs';
-import store from './store/index.mjs';
-import { ACTIONS } from './store/actions/question.mjs';
+import * as express from 'express';
+import { SetRoutes } from './routes/index';
+import MiddleWares from './middlewares/index';
+import { Port } from './config';
+import wss from './socket';
+import { readFile, getQuestions } from './utils/index';
+import store from './store/index';
+import { ACTIONS } from './store/actions/question';
 
 const questions = getQuestions(readFile('quizQuestions.txt'));
 store.dispatch({

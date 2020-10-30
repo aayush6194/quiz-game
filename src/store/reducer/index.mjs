@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import roomReducer from './room.mjs';
-import playerReducer from './player.mjs';
-import questionReducer from './question.mjs';
+import roomReducer from './room';
+import playerReducer from './player';
+import questionReducer from './question';
 
 export default combineReducers({
     rooms: roomReducer,

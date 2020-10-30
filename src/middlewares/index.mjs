@@ -1,5 +1,5 @@
-import bodyParser from 'body-parser';
-import cors from 'cors';
+import * as bodyParser from 'body-parser';
+import * as cors from 'cors';
 
 //Cors and Parsers
 const init = (app) => {

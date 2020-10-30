@@ -1,9 +1,9 @@
-import R from 'rambda';
-import { PLAYER_STATE } from '../store/actions/player.mjs';
+import { compose, curry } from 'rambda';
+import { PLAYER_STATE } from '../store/actions/player';
 
-export const Player = R.curry(
+export const Player = curry(
     ({ id, name, avatar, state = PLAYER_STATE.IN_LOBBY, socket }) =>
-        R.compose(
+        compose(
             Object.seal,
             Object.freeze
         )({

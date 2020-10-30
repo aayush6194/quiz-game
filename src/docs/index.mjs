@@ -1,3 +1,3 @@
-import swaggerDocument from './swagger.mjs';
+import swaggerDocument from './swagger';
 
 export { swaggerDocument };

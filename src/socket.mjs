@@ -1,7 +1,7 @@
-import WebSocket from 'ws';
-import store from './store/index.mjs';
+import { Server } from 'ws';
+import store from './store/index';
 
-const wss = new WebSocket.Server({ noServer: true });
+const wss = new Server({ noServer: true });
 
 wss.on('connection', (socket) => {
     socket.on('message', (data) => {

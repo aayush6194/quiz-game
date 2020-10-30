@@ -1,10 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import udid from 'uuid';
-import { Question } from '../domains/Question.mjs';
-import { Choice } from '../domains/Choice.mjs';
-
-const { v1 } = udid;
+import * as fs from 'fs';
+import { join } from 'path';
+import { v1 } from 'uuid';
+import { Question } from '../domains/Question';
+import { Choice } from '../domains/Choice';
 
 /**
  * Read file syncronously to return its content
@@ -13,7 +11,7 @@ const { v1 } = udid;
  * @returns {string} content of the file
  */
 const readFile = (fileName, location = './') => {
-    const filePath = path.join(location, fileName);
+    const filePath = join(location, fileName);
     return fs.readFileSync(filePath, { encoding: 'utf-8' }, (err, data) =>
         err ? err : data
     );

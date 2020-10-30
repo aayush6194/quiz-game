@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { produce } from 'immer';
-import { ACTIONS } from '../actions/room.mjs';
-import { ACTIONS as PLAYER } from '../actions/player.mjs';
+import produce from 'immer';
+import { ACTIONS } from '../actions/room';
+import { ACTIONS as PLAYER } from '../actions/player';
 import { enableMapSet } from 'immer';
 
 enableMapSet();

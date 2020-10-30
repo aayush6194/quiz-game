@@ -7,14 +7,12 @@ import {
     call,
     spawn,
 } from 'redux-saga/dist/redux-saga-effects.umd.js';
-import udid from 'uuid';
-import WebSocket from 'ws';
-import { ACTIONS as VOTE } from './actions/vote.mjs';
-import { ACTIONS as ROOM } from './actions/room.mjs';
-import { ACTIONS as PLAYER, PLAYER_STATE } from './actions/player.mjs';
-import { Player } from '../domains/Player.mjs';
-
-const { v1 } = udid;
+import { v1 } from 'uuid';
+import * as WebSocket from 'ws';
+import { ACTIONS as VOTE } from './actions/vote';
+import { ACTIONS as ROOM } from './actions/room';
+import { ACTIONS as PLAYER, PLAYER_STATE } from './actions/player';
+import { Player } from '../domains/Player';
 
 const getScoreBoard = ({ players, questions, tallies }) => {
     const scores = {};

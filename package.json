@@ -19,14 +19,21 @@
     "ws": "^5.2.2"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.27",
+    "@swc/core": "^1.2.37",
+    "@types/express": "^4.17.8",
+    "@types/ramda": "^0.27.31",
+    "chokidar": "^2.1.8",
     "prettier": "~1.18.2",
-    "rimraf": "^3.0.0"
+    "rimraf": "^3.0.0",
+    "typescript": "^4.0.5"
   },
   "scripts": {
     "clean": "rimraf coverage build tmp",
-    "start": "node src/index.mjs"
+    "start": "npm run dev && node build/index.js",
+    "dev": "swc src -d build",
+    "dev:watch": "npm run dev -- -w"
   },
   "author": "Aayush Shrestha",
-  "license": "MIT",
-  "type": "module"
+  "license": "MIT"
 }

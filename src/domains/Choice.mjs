@@ -1,7 +1,7 @@
-import R from 'rambda';
+import { compose, curry } from 'rambda';
 
-export const Choice = R.curry((id, value, isAnswer = false) =>
-    R.compose(
+export const Choice = curry((id, value, isAnswer = false) =>
+    compose(
         Object.seal,
         Object.freeze
     )({

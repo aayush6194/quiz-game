@@ -1,4 +1,4 @@
-import controller from './controller.mjs';
+import controller from './controller';
 
 const SetRoutes = (app) => {
     app.get('/', controller.message);

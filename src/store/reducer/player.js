@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { produce } from 'immer';
-import { ACTIONS } from '../actions/player.mjs';
+import produce from 'immer';
+import { ACTIONS } from '../actions/player';
 
 const playersById = produce((draft, action) => {
     switch (action.type) {

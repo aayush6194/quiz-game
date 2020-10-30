@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { produce } from 'immer';
-import { ACTIONS } from '../actions/question.mjs';
+import produce from 'immer';
+import { ACTIONS } from '../actions/question';
 
 const questionsById = produce((draft, action) => {
     switch (action.type) {
